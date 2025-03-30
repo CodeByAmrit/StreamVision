@@ -5,7 +5,7 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
-app.use(cors());  
+app.use(cors({ origin: '*' })); // Allow all origins (Modify for security)
 app.use(express.json());
 app.use(express.static(__dirname + '/public'));
 
@@ -19,14 +19,16 @@ const hlsFolder = path.join(__dirname, 'hls');
 if (!fs.existsSync(hlsFolder)) fs.mkdirSync(hlsFolder);
 
 app.use('/hls', express.static(hlsFolder, {
-    setHeaders: (res, path) => {
-        if (path.endsWith('.m3u8')) {
+    setHeaders: (res, filePath) => {
+        if (filePath.endsWith('.m3u8')) {
             res.setHeader('Content-Type', 'application/vnd.apple.mpegurl');
-        } else if (path.endsWith('.ts')) {
+        } else if (filePath.endsWith('.ts')) {
             res.setHeader('Content-Type', 'video/mp2t');
         }
     }
 }));
+
+const ffmpegProcesses = {};
 
 app.get('/cameras', (req, res) => {
     res.json(getCameras());
@@ -34,63 +36,73 @@ app.get('/cameras', (req, res) => {
 
 app.post('/cameras', (req, res) => {
     const cameras = getCameras();
-    const newCamera = { id: cameras.length + 1, ...req.body };
+    const newId = cameras.length ? Math.max(...cameras.map(c => c.id)) + 1 : 1; // Ensure unique ID
+    const newCamera = { id: newId, ...req.body };
     cameras.push(newCamera);
     saveCameras(cameras);
     res.json(newCamera);
 });
 
 app.delete('/cameras/:id', (req, res) => {
+    const cameraId = parseInt(req.params.id);
     let cameras = getCameras();
-    cameras = cameras.filter(c => c.id != req.params.id);
+    cameras = cameras.filter(c => c.id !== cameraId);
     saveCameras(cameras);
-    res.json({ message: 'Camera deleted' });
-});
 
-const ffmpegProcesses = {};
+    if (ffmpegProcesses[cameraId]) {
+        ffmpegProcesses[cameraId].kill('SIGKILL');
+        delete ffmpegProcesses[cameraId];
+    }
+
+    res.json({ message: `Camera ${cameraId} deleted` });
+});
 
 app.get('/stream/:id', (req, res) => {
     const cameras = getCameras();
-    const camera = cameras.find(c => c.id == req.params.id);
-    if (!camera) return res.status(404).send('Camera not found');
+    const cameraId = parseInt(req.params.id);
+    const camera = cameras.find(c => c.id === cameraId);
 
-    const streamPath = path.join(hlsFolder, `camera${camera.id}.m3u8`);
+    if (!camera) return res.status(404).json({ error: 'Camera not found' });
 
-    if (ffmpegProcesses[camera.id]) {
-        return res.json({ streamUrl: `/hls/camera${camera.id}.m3u8` });
+    const streamPath = path.join(hlsFolder, `camera${cameraId}.m3u8`);
+
+    if (ffmpegProcesses[cameraId]) {
+        return res.json({ streamUrl: `/hls/camera${cameraId}.m3u8` });
     }
 
     const ffmpeg = spawn('ffmpeg', [
         '-rtsp_transport', 'tcp',
         '-i', camera.url,
         '-c:v', 'libx264',
-        '-preset', 'veryfast',
+        '-preset', 'ultrafast',
         '-f', 'hls',
         '-hls_time', '2',
-        '-hls_list_size', '5',
+        '-hls_list_size', '3',
         '-hls_flags', 'delete_segments',
         streamPath
     ]);
 
-    ffmpegProcesses[camera.id] = ffmpeg;
+    ffmpegProcesses[cameraId] = ffmpeg;
 
-    ffmpeg.stderr.on('data', (data) => console.log(`FFmpeg [Camera ${camera.id}]: ${data}`));
-    ffmpeg.on('close', () => {
-        console.log(`FFmpeg process for Camera ${camera.id} stopped`);
-        delete ffmpegProcesses[camera.id];
+    ffmpeg.stderr.on('data', (data) => console.log(`FFmpeg [Camera ${cameraId}]: ${data}`));
+    ffmpeg.on('exit', () => {
+        console.log(`FFmpeg process for Camera ${cameraId} exited`);
+        delete ffmpegProcesses[cameraId];
     });
 
-    res.json({ streamUrl: `/hls/camera${camera.id}.m3u8` });
+    res.json({ streamUrl: `/hls/camera${cameraId}.m3u8` });
 });
 
 app.get('/stop/:id', (req, res) => {
-    const cameraId = req.params.id;
+    const cameraId = parseInt(req.params.id);
     if (ffmpegProcesses[cameraId]) {
-        ffmpegProcesses[cameraId].kill('SIGINT');
+        ffmpegProcesses[cameraId].kill('SIGKILL');
+        delete ffmpegProcesses[cameraId];
         res.json({ message: `Streaming for Camera ${cameraId} stopped` });
     } else {
-        res.status(404).json({ message: 'No active stream found for this camera' });
+        res.status(404).json({ error: 'No active stream for this camera' });
     }
 });
 
-app.listen(5000, () => console.log(`Server running on http://localhost:${5000}`));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

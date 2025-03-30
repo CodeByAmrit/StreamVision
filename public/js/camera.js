@@ -31,7 +31,7 @@ async function loadCameras() {
 
         const player = videojs(video);
         player.src({ src: streamUrl, type: 'application/x-mpegURL' });
-        player.play();
+        // player.play();
     });
 }
 

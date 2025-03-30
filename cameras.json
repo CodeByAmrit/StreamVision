@@ -3,15 +3,5 @@
     "id": 1,
     "name": "Camera 1",
     "url": "rtsp://netwon:netwon@2025@117.218.35.14:554/cam/realmonitor?channel=1&subtype=1"
-  },
-  {
-    "id": 2,
-    "name": "Camera 2",
-    "url": "rtsp://netwon:netwon@2025@117.218.35.14:554/cam/realmonitor?channel=1&subtype=1"
-  },
-  {
-    "id": 3,
-    "name": "Camera 3",
-    "url": "rtsp://netwon:netwon@2025@117.218.35.14:554/cam/realmonitor?channel=1&subtype=1"
   }
 ]
