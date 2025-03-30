@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Camera Streaming</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://vjs.zencdn.net/7.11.4/video-js.css" rel="stylesheet">
+    <script src="https://vjs.zencdn.net/7.11.4/video.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.11.4/video.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.15.0/videojs-contrib-hls.min.js"></script>
+
+</head>
+
+<body class="bg-gray-900 text-white flex flex-col items-center p-6">
+
+    <h1 class="text-3xl font-bold mb-6 text-center">Live Camera Streaming</h1>
+
+    <div class="w-full max-w-xl bg-gray-800 p-4 rounded-lg shadow-lg mb-6">
+        <h2 class="text-lg font-semibold mb-3 text-center">Add New Camera</h2>
+        <div class="flex flex-col sm:flex-row gap-2">
+            <input id="camera-name" type="text" placeholder="Camera Name" class="p-2 rounded-lg text-black flex-1" />
+            <input id="camera-url" type="text" placeholder="RTSP URL" class="p-2 rounded-lg text-black flex-1" />
+        </div>
+        <button onclick="addCamera()" class="bg-green-500 w-full p-2 rounded-lg mt-3">Add Camera</button>
+    </div>
+
+    <div id="cameras" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-full max-w-6xl">
+    </div>
+
+    <script>
+        async function loadCameras() {
+            const response = await fetch('http://localhost:5000/cameras');
+            const cameras = await response.json();
+            const container = document.getElementById('cameras');
+            container.innerHTML = '';
+
+            cameras.forEach(async camera => {
+                const videoContainer = document.createElement('div');
+                videoContainer.classList.add("bg-gray-800", "p-4", "rounded-lg", "shadow-lg", "flex", "flex-col", "items-center");
+
+                const title = document.createElement('h2');
+                title.textContent = camera.name;
+                title.classList.add("text-lg", "font-semibold", "mb-2", "text-center");
+
+                const video = document.createElement('video');
+                video.classList.add("video-js", "vjs-default-skin", "w-full", "rounded-lg");
+                video.setAttribute('controls', '');
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = "Delete";
+                deleteBtn.classList.add("bg-red-500", "text-white", "p-2", "rounded-lg", "mt-3", "w-full");
+                deleteBtn.onclick = () => deleteCamera(camera.id);
+
+                videoContainer.appendChild(title);
+                videoContainer.appendChild(video);
+                videoContainer.appendChild(deleteBtn);
+                container.appendChild(videoContainer);
+
+                const streamResponse = await fetch(`http://localhost:5000/stream/${camera.id}`);
+                const { streamUrl } = await streamResponse.json();
+
+                const player = videojs(video);
+                player.src({ src: streamUrl, type: 'application/x-mpegURL' });
+                player.play();
+            });
+        }
+
+        async function addCamera() {
+            const name = document.getElementById('camera-name').value;
+            const url = document.getElementById('camera-url').value;
+            await fetch('http://localhost:5000/cameras', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, url })
+            });
+            loadCameras();
+        }
+
+        async function deleteCamera(id) {
+            await fetch(`http://localhost:5000/cameras/${id}`, { method: 'DELETE' });
+            loadCameras();
+        }
+
+        loadCameras();
+    </script>
+</body>
+
+</html>
