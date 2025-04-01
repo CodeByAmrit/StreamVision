@@ -30,14 +30,24 @@ exports.startStream = (req, res) => {
     }
 
     const ffmpeg = spawn('ffmpeg', [
-        '-rtsp_transport', 'tcp',
-        '-i', camera.url,
-        '-c:v', 'libx264',
-        '-preset', 'ultrafast',
-        '-f', 'hls',
-        '-hls_time', '2',
-        '-hls_list_size', '3',
-        '-hls_flags', 'delete_segments',
+        '-rtsp_transport', 'tcp',         // Use TCP for more stable streaming
+        '-i', camera.url,                 // RTSP camera input
+        '-fflags', 'nobuffer',            // Reduce buffer delay
+        '-flags', 'low_delay',            // Enable low-latency mode
+        '-strict', 'experimental',        // Allow experimental optimizations
+        '-preset', 'ultrafast',           // Fastest encoding
+        '-tune', 'zerolatency',           // Optimize for real-time
+        '-c:v', 'libx264',                // Encode with H.264
+        '-b:v', '1000k',                  // Bitrate (adjust if needed)
+        '-g', '25',                        // GOP size (keyframe interval)
+        '-sc_threshold', '0',             // Disable scene change detection
+        '-bufsize', '500k',               // Reduce buffer size
+        '-f', 'hls',                      // Output format: HLS
+        '-hls_time', '1',                 // Segment duration (lower = lower latency)
+        '-hls_list_size', '2',            // Keep only 2 segments
+        '-hls_flags', 'delete_segments+append_list',  // Delete old segments to save space
+        '-hls_allow_cache', '0',          // Disable caching to force real-time playback
+        '-hls_start_number_source', 'epoch',  // Use absolute timestamps for sync
         streamPath
     ]);
 
