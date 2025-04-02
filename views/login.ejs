@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script
+        src="https://www.google.com/recaptcha/enterprise.js?render=6LfB29QqAAAAAHo2JKtWWZx24MoRn75EMb0NKg3s"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Login</title>
+    <link rel="stylesheet" href="/css/style.css">
+    
+    <script src="/js/theme.js" defer></script>
+</head>
+
+<body class="font-sans dark:bg-gray-900 dark:text-gray-100">
+
+    <div class="bg-blue-950 p-4 md:p-10 lg:p-10 flex justify-center items-center h-screen">
+
+        <div class="flex justify-center max-w-4xl rounded-2xl bg-white overflow-hidden shadow-lg dark:bg-gray-800">
+            <!-- Left Section -->
+            <div
+                class="hidden lg:flex flex-col w-1/2 bg-gradient-to-b bg-blue-700 text-white p-12 h-auto dark:to-gray-800 dark:from-gray-700">
+                <div class="flex justify-center items-center">
+                    
+                </div>
+                <div class="flex flex-col justify-center items-center h-full">
+                    <img src="/images/cctv.gif" alt="Student" class="w-64 mb-6 mix-blend-multiply">
+                    <div class="text-xl font-bold mb-2">Empower Your Teaching, FREE!</div>
+                    <div class="text-justify text-sm">Equip your students with essential skills using our all-in-one
+                        curriculum,
+                        including data management, digital literacy, and coding!</div>
+                </div>
+            </div>
+
+            <!-- Right Section -->
+
+            <div class="flex flex-col items-start justify-center w-full lg:w-1/2 p-12 lg:py-10 md:mt-0">
+
+
+                <div class="text-2xl font-medium my-5 lg:mt-0">
+                    <div
+                        class="md:hidden lg:hidden mb-20 fixed top-10 left-0 scale-75 w-screen flex justify-center items-center">
+                        <!-- <img src="/image/logo.svg" alt="logo" class="w-1/2"> -->
+                    </div>
+                    Sign in to your account
+                    <br>
+                    <p class="text-sm text-gray-400 font-light pt-2">Please enter your credentials below</p>
+                </div>
+
+                <form action="/login" method="post" class="w-full max-w-md gap-4 flex flex-col" id="login-form">
+                    <div class="relative ">
+                        <input type="email" id="email" name="email"
+                            class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                            placeholder="" autocomplete="username" required>
+                        <label for="email"
+                            class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-800 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 ml-2">Email</label>
+                        <p class="hidden absolute -bottom-5 mt-2 text-sm text-red-600 dark:text-red-500"
+                            id="email-error">Email Not Found</p>
+                    </div>
+
+                    <div class="relative">
+                        <input type="password" id="password" name="password"
+                            class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                            placeholder="" autocomplete="current-password" required>
+                        <label for="password"
+                            class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-800 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 ml-2">Password</label>
+                        <p class="hidden absolute -bottom-5 mt-2 text-sm text-red-600 dark:text-red-500 border-red-500"
+                            id="password-error">Wrong Password</p>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-start">
+                            <div class="flex items-center h-5">
+                                <input id="remember" aria-describedby="remember" type="checkbox"
+                                    class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                                    required="" checked>
+                            </div>
+                            <div class="ml-3 text-sm">
+                                <label for="remember" class="text-gray-500 dark:text-gray-300">Remember me</label>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit"
+                            class="w-full bg-blue-600 dark:bg-blue-600 font-semibold text-white px-6 py-2 rounded-md shadow hover:bg-blue-600 dark:hover:bg-blue-700">
+                            <svg aria-hidden="true" role="status"
+                                class="hidden inline w-4 h-4 me-3 text-white animate-spin" viewBox="0 0 100 101"
+                                fill="none" xmlns="http://www.w3.org/2000/svg" id="login_spinner">
+                                <path
+                                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                    fill="#E5E7EB" />
+                                <path
+                                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                    fill="currentColor" />
+                            </svg>
+                            Sign
+                            in</button>
+                    </div>
+                    <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+                        Don’t have an account yet? <a href="/signup"
+                            class="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</a>
+                    </p>
+                    <!-- Divider -->
+                    <div class="flex items-center my-0">
+                        <hr class="w-full border-gray-300">
+                        <span class="px-3 text-gray-500 dark:text-gray-400">OR</span>
+                        <hr class="w-full border-gray-300">
+                    </div>
+
+                    <!-- Google Login Button -->
+                    <a href="/auth/google"
+                        class="w-full flex p-3 justify-center items-centerpy-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                        <img src="/images/google.png" class="w-5 h-5 mr-2" alt="Google Logo">
+                        Sign in with Google
+                    </a>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    
+
+
+
+
+
+    <script src="/flowbite/flowbite.min.js"></script>
+    <script src="/js/theme.js"></script>
+    <script src="/js/login.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</body>
+
+</html>

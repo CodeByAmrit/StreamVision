@@ -3,5 +3,50 @@
     "id": 1,
     "name": "Camera 1",
     "url": "rtsp://netwon:netwon@2025@117.218.35.14:554/cam/realmonitor?channel=1&subtype=1"
+  },
+  {
+    "id": 2,
+    "name": "Camera 2",
+    "url": "rtsp://netwon:netwon@2025@117.218.35.14:554/cam/realmonitor?channel=2&subtype=1"
+  },
+  {
+    "id": 3,
+    "name": "Camera 3",
+    "url": "rtsp://netwon:netwon@2025@117.218.35.14:554/cam/realmonitor?channel=3&subtype=1"
+  },
+  {
+    "id": 4,
+    "name": "Camera 4",
+    "url": "rtsp://netwon:netwon@2025@117.218.35.14:554/cam/realmonitor?channel=4&subtype=1"
+  },
+  {
+    "id": 5,
+    "name": "Camera 5",
+    "url": "rtsp://netwon:netwon@2025@117.218.35.14:554/cam/realmonitor?channel=5&subtype=1"
+  },
+  {
+    "id": 6,
+    "name": "Camera 6",
+    "url": "rtsp://netwon:netwon@2025@117.218.35.14:554/cam/realmonitor?channel=6&subtype=1"
+  },
+  {
+    "id": 7,
+    "name": "Camera 7",
+    "url": "rtsp://netwon:netwon@2025@117.218.35.14:554/cam/realmonitor?channel=7&subtype=1"
+  },
+  {
+    "id": 8,
+    "name": "Camera 8",
+    "url": "rtsp://netwon:netwon@2025@117.218.35.14:554/cam/realmonitor?channel=8&subtype=1"
+  },
+  {
+    "id": 9,
+    "name": "Camera 9",
+    "url": "rtsp://netwon:netwon@2025@117.218.35.14:554/cam/realmonitor?channel=9&subtype=1"
+  },
+  {
+    "id": 10,
+    "name": "Camera 10",
+    "url": "rtsp://netwon:netwon@2025@117.218.35.14:554/cam/realmonitor?channel=10&subtype=1"
   }
 ]
