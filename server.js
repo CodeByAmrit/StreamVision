@@ -32,7 +32,7 @@ app.use('/hls', express.static(hlsFolder, {
 
 // Routes
 app.get('/', (req, res) => res.render('index', { title: 'RTSP Streamer' }));
-app.use('/', userRouter);
+// app.use('/', userRouter);
 app.use('/cameras', cameraRoutes);
 app.use('/stream', streamRoutes);
 
