@@ -1,10 +1,10 @@
 {
   "name": "rtsp-streaming-server",
   "version": "1.0.0",
-  "main": "cluster.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node cluster",
-    "dev": "nodemon cluster",
+    "start": "node app",
+    "dev": "nodemon app",
     "build:css": "npx tailwindcss -i ./src/input.css -o ./public/css/style.css --watch",
     "vercel-build": "npm install",
     "start:pm2": "pm2 start ./bin/www --name studenttracker --env production"
@@ -25,7 +25,6 @@
     "encrypt": "^0.0.1",
     "express": "^4.21.2",
     "express-validator": "^7.2.1",
-    "favicon": "^0.0.2",
     "flowbite": "^3.1.2",
     "fs": "^0.0.1-security",
     "helmet": "^8.1.0",
@@ -34,6 +33,7 @@
     "nodemon": "^3.1.9",
     "path": "^0.12.7",
     "pg": "^8.14.1",
+    "serve-favicon": "^2.5.0",
     "tailwindcss": "^4.1.1",
     "ws": "^8.18.1"
   }

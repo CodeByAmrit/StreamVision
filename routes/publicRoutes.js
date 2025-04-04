@@ -1,46 +1,51 @@
 const express = require('express');
 const router = express.Router();
-const publicStreamController = require("../controllers/publicStreamController");
-const dvrController = require('../controllers/dvrController');
 const fs = require('fs');
 const path = require('path');
-const { startStream, stopStream } = require('../utils/streamManager');
 
-// Prevent browser caching of HLS segments
+const publicStreamController = require('../controllers/publicStreamController');
+const dvrController = require('../controllers/dvrController');
+const { startStream, isStreamActive } = require('../utils/streamManager');
+
+// Disable caching for HLS segments
 router.use('/streams', (req, res, next) => {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-    next();
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  res.setHeader('Surrogate-Control', 'no-store');
+  next();
 });
 
-// DVR Live Public View - Start Streams if Not Already Running
+// DVR Live View (Public)
 router.get('/public/dvr/:id', async (req, res) => {
-    try {
-        const dvr = await dvrController.getDvrWithCamerasById(req.params.id);
+  try {
+    const dvrId = req.params.id;
 
-        dvr.cameras.forEach(cam => {
-            const camPath = path.join(__dirname, '..', 'public', 'streams', `dvr_${dvr.id}`, `cam_${cam.id}`);
-            fs.mkdirSync(camPath, { recursive: true });
-
-            // Unique key per DVR camera
-            const camKey = `${dvr.id}_${cam.id}`;
-            startStream(camKey, cam.rtsp_url, camPath);
-        });
-
-        res.render('dvr_live_public', { dvr, cameras: dvr.cameras });
-    } catch (error) {
-        console.error("Error loading DVR stream page:", error);
-        res.status(500).send("Failed to load DVR page");
+    // Sanitize: Only digits allowed in ID (prevent traversal attacks)
+    if (!/^\d+$/.test(dvrId)) {
+      return res.status(400).send('Invalid DVR ID');
     }
+
+    const dvr = await dvrController.getDvrWithCamerasById(dvrId);
+    if (!dvr || !Array.isArray(dvr.cameras)) {
+      return res.status(404).send('DVR or cameras not found');
+    }
+
+    for (const cam of dvr.cameras) {
+      const camPath = path.join(__dirname, '..', 'public', 'streams', `dvr_${dvr.id}`, `cam_${cam.id}`);
+      fs.mkdirSync(camPath, { recursive: true });
+
+      const camKey = `${dvr.id}_${cam.id}`;
+      if (!isStreamActive(camKey)) {
+        startStream(camKey, cam.rtsp_url, camPath);
+      }
+    }
+
+    res.render('dvr_live_public', { nonce: res.locals.nonce, dvr, cameras: dvr.cameras });
+  } catch (error) {
+    console.error('Error loading public DVR stream:', error);
+    res.status(500).send('Failed to load DVR stream');
+  }
 });
-
-// DVR-level Live View Controller
-router.get('/live/:dvrId', publicStreamController.renderDvrLiveStream);
-
-// Optional Camera-level live view endpoints (currently commented out)
-// router.get('/live/:dvrId/:cameraId', publicStreamController.renderCameraLiveStream);
-// router.get('/live/:dvrId/:cameraId/stream.m3u8', publicStreamController.getHlsStream);
 
 module.exports = router;

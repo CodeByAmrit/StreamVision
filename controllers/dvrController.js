@@ -15,8 +15,8 @@ const getAllDvrs = async (req, res) => {
             GROUP BY d.id, d.dvr_name, l.location_name
             ORDER BY d.id DESC;
         `;
-        const [rows] = await db.execute(query);
-        res.json(rows);
+        const [rows] = await connection.execute(query);
+        return rows;
     } catch (error) {
         console.error("Error fetching DVRs:", error);
         res.status(500).json({ error: 'Failed to retrieve DVRs' });

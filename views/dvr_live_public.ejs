@@ -1,122 +1,121 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><%= dvr.dvr_name %> - Live Stream</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>
+    <%= dvr.dvr_name %> - Live Stream
+  </title>
 
-  <!-- Video.js -->
-  <link href="https://vjs.zencdn.net/8.5.2/video-js.css" rel="stylesheet" />
-  <script src="https://vjs.zencdn.net/8.5.2/video.min.js"></script>
+  <!-- Prevent caching -->
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
 
+  <!-- HLS.js CDN (allowed by CSP nonce) -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest" nonce="<%= nonce %>"></script>
+
+  <!-- Styles -->
   <style>
-    .video-js {
-      border-radius: 1rem;
-    }
-    .lazy-placeholder {
-      background: repeating-linear-gradient(
-        45deg,
-        #e0e0e0,
-        #e0e0e0 10px,
-        #f0f0f0 10px,
-        #f0f0f0 20px
-      );
-      animation: pulse 1.5s infinite ease-in-out;
+    body {
+      background: #111;
+      color: #fff;
+      font-family: system-ui, sans-serif;
+      margin: 0;
+      padding: 0;
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
+    header {
+      padding: 1rem;
+      background-color: #222;
+      text-align: center;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      padding: 10px;
+    }
+
+    video {
+      width: 100%;
+      height: auto;
+      background: black;
+      border-radius: 8px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.875rem;
+      color: #aaa;
+    }
+
+    @media (min-width: 600px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 900px) {
+      .grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
     }
   </style>
-
-  <script>
-    // Dark mode setting
-    if (localStorage.getItem('theme') === 'dark' ||
-        (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  </script>
 </head>
 
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen">
-
-  <header class="bg-white dark:bg-gray-800 shadow py-4 px-6 flex justify-between items-center">
-    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
-      📹 <%= dvr.dvr_name %> - Live Streams
-    </h1>
-    <span class="text-sm text-gray-500 dark:text-gray-400">
-      Location: <%= dvr.location_name %>
-    </span>
+<body>
+  <header>
+    <h2>
+      <%= dvr.dvr_name %> - Live Camera Streams
+    </h2>
+    <p>📍 Location: <%= dvr.location_name %>
+    </p>
   </header>
 
-  <main class="p-4 sm:p-8">
-    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" id="camera-grid">
-      <% cameras.forEach(camera => { %>
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-4">
-          <h2 class="text-lg font-semibold mb-2 text-gray-900 dark:text-white">
-            🎥 <%= camera.camera_name %>
-          </h2>
-
-          <!-- Placeholder div for lazy loading -->
-          <div class="video-container lazy-placeholder h-64 rounded-lg" 
-              data-camera-id="<%= camera.id %>" 
-              data-src="/streams/dvr_<%= dvr.id %>/cam_<%= camera.id %>/stream.m3u8">
-          </div>
-        </div>
+  <main class="grid">
+    <% cameras.forEach((camera, index)=> { %>
+      <video id="video<%= index + 1 %>" controls autoplay muted playsinline></video>
       <% }) %>
-    </div>
   </main>
 
-  <footer class="text-center py-6 text-sm text-gray-400 dark:text-gray-600">
+  <footer>
     &copy; <%= new Date().getFullYear() %> StreamVision. All rights reserved.
   </footer>
 
-  <script>
-    // Lazy load cameras on scroll
-    const observer = new IntersectionObserver((entries, obs) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const container = entry.target;
-          const cameraId = container.dataset.cameraId;
-          const src = container.dataset.src;
+  <!-- Inline script with nonce -->
+  <script nonce="<%= nonce %>">
+    const cameras = <%- JSON.stringify(cameras) %>;
+    const dvrId = <%= dvr.id %>;
 
-          // Create video element dynamically after delay
-          setTimeout(() => {
-            const video = document.createElement('video');
-            video.id = 'camera-' + cameraId;
-            video.className = 'video-js vjs-default-skin w-full h-64';
-            video.setAttribute('controls', '');
-            video.setAttribute('playsinline', '');
-            video.setAttribute('muted', '');
-            video.setAttribute('preload', 'auto');
-            video.setAttribute('autoplay', '');
+    cameras.forEach((camera, index) => {
+      const video = document.getElementById(`video${index + 1}`);
+      const source = `/streams/dvr_${dvrId}/cam_${camera.id}/index.m3u8`;
 
-            const source = document.createElement('source');
-            source.src = src;
-            source.type = 'application/x-mpegURL';
-
-            video.appendChild(source);
-            container.replaceWith(video);
-
-            videojs(video); // Initialize Video.js
-          }, 3000); // 3 seconds buffer for FFmpeg
-          
-          obs.unobserve(container); // Load only once
-        }
-      });
-    }, {
-      rootMargin: '100px',
-      threshold: 0.1
+      if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(source);
+        hls.attachMedia(video);
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = source;
+      } else {
+        video.outerHTML = '<p style="color: red;">HLS not supported in this browser.</p>';
+      }
     });
-
-    document.querySelectorAll('.video-container').forEach(el => observer.observe(el));
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000 * 60 * 0.75); 
   </script>
 </body>
 

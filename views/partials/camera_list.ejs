@@ -3,13 +3,13 @@
 
         <!-- DVR Header -->
         <div class="flex items-center justify-between mb-4">
-            <h2 class="text-2xl font-semibold">DVR: <%= dvr.dvr_name %></h2>
+            <h2 class="text-2xl font-semibold">Location: <%= dvr.location_name %></h2>
             <a href="/camera/add/<%= dvr.id %>" 
                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm">
                + Add Camera
             </a>
         </div>
-        <p class="text-gray-400 mb-6">Location: <%= dvr.location_name %></p>
+        <!-- <p class="text-gray-400 mb-6">Location: <%= dvr.location_name %></p> -->
 
         <!-- Camera Table -->
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">

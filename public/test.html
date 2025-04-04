@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>All DVR Cameras</title>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <style>
+    body { background: #111; color: white; font-family: sans-serif; }
+    .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 10px; }
+    video { width: 100%; height: auto; background: black; }
+  </style>
+</head>
+<body>
+  <h2 style="text-align: center;">Live Camera Streams</h2>
+  <div class="grid">
+    <!-- 16 video elements for each camera -->
+    <video id="video1" controls autoplay muted></video>
+    <video id="video2" controls autoplay muted></video>
+    <video id="video3" controls autoplay muted></video>
+    <video id="video4" controls autoplay muted></video>
+    <video id="video5" controls autoplay muted></video>
+    <video id="video6" controls autoplay muted></video>
+    <video id="video7" controls autoplay muted></video>
+    <video id="video8" controls autoplay muted></video>
+    <video id="video9" controls autoplay muted></video>
+    <video id="video10" controls autoplay muted></video>
+    <video id="video11" controls autoplay muted></video>
+    <video id="video12" controls autoplay muted></video>
+    <video id="video13" controls autoplay muted></video>
+    <video id="video14" controls autoplay muted></video>
+    <video id="video15" controls autoplay muted></video>
+    <video id="video16" controls autoplay muted></video>
+  </div>
+
+  <script>
+    for (let i = 1; i <= 16; i++) {
+      const video = document.getElementById(`video${i}`);
+      const source = `streams/dvr_1/cam_${i}/index.m3u8`;
+      if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(source);
+        hls.attachMedia(video);
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = source;
+      }
+    }
+  </script>
+</body>
+</html>

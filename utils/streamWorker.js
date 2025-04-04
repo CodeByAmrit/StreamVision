@@ -7,26 +7,15 @@ fs.mkdirSync(workerData.outputPath, { recursive: true });
 
 const ffmpeg = spawn('ffmpeg', [
     '-rtsp_transport', 'tcp',
-    '-i', workerData.rtspUrl,
-    '-c:v', 'libx264',
-    '-preset', 'veryfast',
-    '-tune', 'zerolatency',
-    '-c:a', 'aac',
+    '-i', workerData.rtspUrl, // Example: rtsp://username:password@ip:554/cam/realmonitor?channel=1&subtype=1
+    '-c:v', 'copy',
     '-f', 'hls',
-    '-hls_time', '2',
-    '-hls_list_size', '5',
-    '-hls_flags', 'delete_segments',
+    '-hls_time', '4',
+    '-hls_list_size', '3',
+    '-hls_flags', 'delete_segments+omit_endlist',
     '-hls_segment_filename', `${workerData.outputPath}/segment_%03d.ts`,
-    `${workerData.outputPath}/stream.m3u8`
-]);
-
-ffmpeg.stderr.on('data', (data) => {
-    parentPort.postMessage({ type: 'log', data: data.toString() });
+    `${workerData.outputPath}/index.m3u8`
+], {
+    stdio: 'ignore', // Optional: if you want to suppress logs like > /dev/null 2>&1
 });
 
-ffmpeg.on('exit', (code) => {
-    parentPort.postMessage({ type: 'exit', code });
-});
-ffmpeg.on('error', (error) => {
-    parentPort.postMessage({ type: 'error', error: error.message });
-});

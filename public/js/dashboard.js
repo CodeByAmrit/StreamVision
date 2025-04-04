@@ -1,4 +1,4 @@
-
+console.log("Dashboard script loaded.");
 window.addEventListener('load', () => {
     setTimeout(() => {
         const introScreen = document.getElementById('introScreen');
