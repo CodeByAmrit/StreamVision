@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
-const checkAuth = require('../services/checkAuth');
+const checkAuth = require('../services/checkauth');
 const {getAllDvrs} = require("../controllers/dvrController");
 require('dotenv').config()
 
