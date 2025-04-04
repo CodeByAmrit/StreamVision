@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teacher Login</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/style.css">    
     
     <script src="/js/theme.js" defer></script>
 </head>
@@ -24,12 +24,12 @@
                     
                 </div>
                 <div class="flex flex-col justify-center items-center h-full">
-                    <img src="/images/cctv.gif" alt="Student" class="w-64 mb-6 mix-blend-multiply">
-                    <div class="text-xl font-bold mb-2">Empower Your Teaching, FREE!</div>
-                    <div class="text-justify text-sm">Equip your students with essential skills using our all-in-one
-                        curriculum,
-                        including data management, digital literacy, and coding!</div>
+                    <img src="/images/camera.png" alt="StreamVision" class="w-64 mb-6 login_spinner">
+                    <div class="text-xl font-bold mb-2">Monitor Your Locations, Anytime, Anywhere!</div>
+                    <div class="text-justify text-sm">Effortlessly track live camera feeds across multiple locations with our 
+                        real-time streaming platform. Secure, scalable, and easy to use!</div>
                 </div>
+
             </div>
 
             <!-- Right Section -->
@@ -49,13 +49,13 @@
 
                 <form action="/login" method="post" class="w-full max-w-md gap-4 flex flex-col" id="login-form">
                     <div class="relative ">
-                        <input type="email" id="email" name="email"
+                        <input type="text" id="email" name="email"
                             class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                             placeholder="" autocomplete="username" required>
                         <label for="email"
                             class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-800 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 ml-2">Email</label>
                         <p class="hidden absolute -bottom-5 mt-2 text-sm text-red-600 dark:text-red-500"
-                            id="email-error">Email Not Found</p>
+                            id="email-error">Username Not Found</p>
                     </div>
 
                     <div class="relative">
@@ -84,9 +84,9 @@
 
                     <div class="text-center">
                         <button type="submit"
-                            class="w-full bg-blue-600 dark:bg-blue-600 font-semibold text-white px-6 py-2 rounded-md shadow hover:bg-blue-600 dark:hover:bg-blue-700">
+                            class="w-full z-50 bg-blue-600  cursor-pointer  dark:bg-blue-600 font-semibold text-white px-6 py-2 rounded-md shadow hover:bg-blue-600 dark:hover:bg-blue-700">
                             <svg aria-hidden="true" role="status"
-                                class="hidden inline w-4 h-4 me-3 text-white animate-spin" viewBox="0 0 100 101"
+                                class="inline w-4 h-4 me-3 text-white animate-spin" viewBox="0 0 100 101"
                                 fill="none" xmlns="http://www.w3.org/2000/svg" id="login_spinner">
                                 <path
                                     d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"

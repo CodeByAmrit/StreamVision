@@ -1,0 +1,47 @@
+<section class="p-4 sm:ml-64 dark:bg-gray-900 dark:text-white">
+    <div class="w-full h-full mt-15">
+
+        <!-- DVR Header -->
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-2xl font-semibold">DVR: <%= dvr.dvr_name %></h2>
+            <a href="/camera/add/<%= dvr.id %>" 
+               class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm">
+               + Add Camera
+            </a>
+        </div>
+        <p class="text-gray-400 mb-6">Location: <%= dvr.location_name %></p>
+
+        <!-- Camera Table -->
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th class="px-6 py-3">#</th>
+                        <th class="px-6 py-3">Camera Name</th>
+                        <th class="px-6 py-3">RTSP URL</th>
+                        <th class="px-6 py-3 text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (dvr.cameras.length === 0) { %>
+                        <tr class="bg-white dark:bg-gray-800 text-center">
+                            <td colspan="4" class="px-6 py-4">No cameras linked to this DVR.</td>
+                        </tr>
+                    <% } else { %>
+                        <% dvr.cameras.forEach((camera, index) => { %>
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td class="px-6 py-2 font-medium text-gray-900 dark:text-white"><%= index + 1 %></td>
+                                <td class="px-6 py-2"><%= camera.camera_name %></td>
+                                <td class="px-6 py-2 text-blue-500 truncate max-w-sm"><%= camera.rtsp_url %></td>
+                                <td class="px-6 py-2 text-center flex justify-center space-x-4">
+                                    <a href="/camera/edit/<%= camera.id %>" class="text-blue-600 hover:underline">Edit</a>
+                                    <a href="/camera/delete/<%= camera.id %>" class="text-red-600 hover:underline">Delete</a>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

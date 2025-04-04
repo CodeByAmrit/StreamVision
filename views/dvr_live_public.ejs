@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= dvr.dvr_name %> - Live Stream</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Video.js -->
+  <link href="https://vjs.zencdn.net/8.5.2/video-js.css" rel="stylesheet" />
+  <script src="https://vjs.zencdn.net/8.5.2/video.min.js"></script>
+
+  <style>
+    .video-js {
+      border-radius: 1rem;
+    }
+    .lazy-placeholder {
+      background: repeating-linear-gradient(
+        45deg,
+        #e0e0e0,
+        #e0e0e0 10px,
+        #f0f0f0 10px,
+        #f0f0f0 20px
+      );
+      animation: pulse 1.5s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+  </style>
+
+  <script>
+    // Dark mode setting
+    if (localStorage.getItem('theme') === 'dark' ||
+        (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  </script>
+</head>
+
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen">
+
+  <header class="bg-white dark:bg-gray-800 shadow py-4 px-6 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+      📹 <%= dvr.dvr_name %> - Live Streams
+    </h1>
+    <span class="text-sm text-gray-500 dark:text-gray-400">
+      Location: <%= dvr.location_name %>
+    </span>
+  </header>
+
+  <main class="p-4 sm:p-8">
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" id="camera-grid">
+      <% cameras.forEach(camera => { %>
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-4">
+          <h2 class="text-lg font-semibold mb-2 text-gray-900 dark:text-white">
+            🎥 <%= camera.camera_name %>
+          </h2>
+
+          <!-- Placeholder div for lazy loading -->
+          <div class="video-container lazy-placeholder h-64 rounded-lg" 
+              data-camera-id="<%= camera.id %>" 
+              data-src="/streams/dvr_<%= dvr.id %>/cam_<%= camera.id %>/stream.m3u8">
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </main>
+
+  <footer class="text-center py-6 text-sm text-gray-400 dark:text-gray-600">
+    &copy; <%= new Date().getFullYear() %> StreamVision. All rights reserved.
+  </footer>
+
+  <script>
+    // Lazy load cameras on scroll
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const container = entry.target;
+          const cameraId = container.dataset.cameraId;
+          const src = container.dataset.src;
+
+          // Create video element dynamically after delay
+          setTimeout(() => {
+            const video = document.createElement('video');
+            video.id = 'camera-' + cameraId;
+            video.className = 'video-js vjs-default-skin w-full h-64';
+            video.setAttribute('controls', '');
+            video.setAttribute('playsinline', '');
+            video.setAttribute('muted', '');
+            video.setAttribute('preload', 'auto');
+            video.setAttribute('autoplay', '');
+
+            const source = document.createElement('source');
+            source.src = src;
+            source.type = 'application/x-mpegURL';
+
+            video.appendChild(source);
+            container.replaceWith(video);
+
+            videojs(video); // Initialize Video.js
+          }, 3000); // 3 seconds buffer for FFmpeg
+          
+          obs.unobserve(container); // Load only once
+        }
+      });
+    }, {
+      rootMargin: '100px',
+      threshold: 0.1
+    });
+
+    document.querySelectorAll('.video-container').forEach(el => observer.observe(el));
+  </script>
+</body>
+
+</html>

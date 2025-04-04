@@ -1,3 +1,6 @@
+
+document.getElementById("login_spinner").style.display = "none"; // Hide spinner on page load
+
 document.getElementById('login-form').onsubmit = async function (e) {
     e.preventDefault();
 
@@ -6,7 +9,7 @@ document.getElementById('login-form').onsubmit = async function (e) {
     const loginBtn = this.querySelector('button[type="submit"]');
 
     // Show spinner loading button
-    document.getElementById("login_spinner").classList.remove("hidden");
+    document.getElementById("login_spinner").style.display = "inline";
 
     try {
         // Get reCAPTCHA token
@@ -42,12 +45,10 @@ document.getElementById('login-form').onsubmit = async function (e) {
 
         const data = await res.json();
 
-        console.log(data);
-
         if (data.status === 'success') {
             window.location.href = '/dashboard';
         } else {
-            document.getElementById("login_spinner").classList.add("hidden");
+            document.getElementById("login_spinner").style.display = "none";
 
             if (data.status === 'Invalid Password') {
                 document.getElementById('password-error').classList.remove('hidden');

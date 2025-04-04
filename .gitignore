@@ -1,5 +1,7 @@
 .env
 
+streams
+
 /node_modules
 
 /hls

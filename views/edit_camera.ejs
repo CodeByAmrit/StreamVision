@@ -1,0 +1,46 @@
+<%- include('./partials/header.ejs',{title: "Edit Camera"}) %>
+<%- include('./partials/topMenu.ejs') %>
+<%- include('./partials/navbar.ejs') %>
+
+<section class="p-4 sm:ml-64 dark:bg-gray-900 dark:text-white min-h-screen">
+    <div class="max-w-xl mx-auto mt-16 bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
+
+        <h2 class="text-xl font-semibold mb-6 text-center text-gray-800 dark:text-white">Edit Camera</h2>
+
+        <form action="/camera/edit/<%= camera.id %>" method="POST" class="space-y-4">
+            <!-- Hidden camera ID -->
+            <input type="hidden" name="id" value="<%= camera.id %>">
+
+            <!-- DVR Info -->
+            <div>
+                <label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">DVR Name</label>
+                <input type="text" value="<%= dvr.dvr_name %>" disabled
+                    class="w-full px-3 py-2 text-sm bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md cursor-not-allowed text-gray-600 dark:text-gray-400" />
+            </div>
+
+            <!-- Camera Name -->
+            <div>
+                <label for="camera_name" class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Camera Name</label>
+                <input type="text" id="camera_name" name="camera_name" value="<%= camera.camera_name %>" required
+                    class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+
+            <!-- RTSP URL -->
+            <div>
+                <label for="rtsp_url" class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">RTSP URL</label>
+                <input type="text" id="rtsp_url" name="rtsp_url" value="<%= camera.rtsp_url %>" required
+                    class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+
+            <!-- Submit -->
+            <div class="flex justify-end">
+                <button type="submit"
+                    class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-all">
+                    Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<%- include('./partials/footer.ejs') %>
