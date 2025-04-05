@@ -110,6 +110,21 @@ app.use('/', publicRoute);
 // Cleanup inactive streams every 5 minutes
 setInterval(() => cleanupInactiveStreams(5 * 60 * 1000), 5 * 60 * 1000);
 
+app.get('/debug/streams', (req, res) => {
+  const activeStreams = require('./utils/streamManager').activeStreams;
+  res.json(
+    Object.fromEntries(
+      Object.entries(activeStreams).map(([id, stream]) => [
+        id,
+        {
+          lastAccessAgo: (Date.now() - stream.lastAccess) + ' ms',
+        }
+      ])
+    )
+  );
+});
+
+
 // Start Server
 app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);
