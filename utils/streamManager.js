@@ -86,7 +86,7 @@ function cleanupInactiveStreams(timeoutMs = 5 * 60 * 1000) {
     const now = Date.now();
     for (const [cameraId, stream] of Object.entries(activeStreams)) {
         if (now - stream.lastAccess > timeoutMs) {
-            console.log(`⏹️ Stopping inactive stream: ${cameraId}`);
+            console.log(`⏹ Stopping inactive stream: ${cameraId}`);
             stopStream(cameraId);
         }
     }

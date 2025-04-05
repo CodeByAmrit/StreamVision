@@ -6,16 +6,14 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>
-    <%= dvr.dvr_name %> - Live Stream
-  </title>
+  <title><%= dvr.dvr_name %> - Live Stream</title>
 
   <!-- Prevent caching -->
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <!-- HLS.js CDN (allowed by CSP nonce) -->
+  <!-- HLS.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest" nonce="<%= nonce %>"></script>
 
   <!-- Styles -->
@@ -77,17 +75,14 @@
 
 <body>
   <header>
-    <h2>
-      <%= dvr.dvr_name %> - Live Camera Streams
-    </h2>
-    <p>📍 Location: <%= dvr.location_name %>
-    </p>
+    <h2><%= dvr.dvr_name %> - Live Camera Streams</h2>
+    <p>📍 Location: <%= dvr.location_name %></p>
   </header>
 
   <main class="grid">
-    <% cameras.forEach((camera, index)=> { %>
+    <% cameras.forEach((camera, index) => { %>
       <video id="video<%= index + 1 %>" controls autoplay muted playsinline></video>
-      <% }) %>
+    <% }) %>
   </main>
 
   <footer>
@@ -99,23 +94,58 @@
     const cameras = <%- JSON.stringify(cameras) %>;
     const dvrId = <%= dvr.id %>;
 
-    cameras.forEach((camera, index) => {
-      const video = document.getElementById(`video${index + 1}`);
-      const source = `/streams/dvr_${dvrId}/cam_${camera.id}/index.m3u8`;
+    function reloadStreams() {
+      cameras.forEach((camera, index) => {
+        const video = document.getElementById(`video${index + 1}`);
+        const source = `/streams/dvr_${dvrId}/cam_${camera.id}/index.m3u8`;
 
-      if (Hls.isSupported()) {
-        const hls = new Hls();
-        hls.loadSource(source);
-        hls.attachMedia(video);
-      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = source;
-      } else {
-        video.outerHTML = '<p style="color: red;">HLS not supported in this browser.</p>';
-      }
-    });
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000 * 60 * 0.75); 
+        if (Hls.isSupported()) {
+          const hls = new Hls({
+            lowLatencyMode: true,
+            backBufferLength: 30,
+            liveSyncDuration: 4,
+            liveMaxLatencyDuration: 8,
+            maxLiveSyncPlaybackRate: 1.5,
+            enableWorker: true,
+            nudgeMaxRetry: 10
+          });
+
+          hls.loadSource(source);
+          hls.attachMedia(video);
+
+          hls.on(Hls.Events.ERROR, (event, data) => {
+            if (data.fatal) {
+              switch (data.type) {
+                case Hls.ErrorTypes.NETWORK_ERROR:
+                  console.warn(`[HLS] Network error on cam ${camera.id}, retrying...`);
+                  hls.startLoad();
+                  break;
+                case Hls.ErrorTypes.MEDIA_ERROR:
+                  console.warn(`[HLS] Media error on cam ${camera.id}, recovering...`);
+                  hls.recoverMediaError();
+                  break;
+                default:
+                  console.error(`[HLS] Fatal error on cam ${camera.id}, destroying HLS instance.`);
+                  hls.destroy();
+                  break;
+              }
+            }
+          });
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+          video.src = source;
+        } else {
+          video.outerHTML = '<p style="color: red;">HLS not supported in this browser.</p>';
+        }
+      });
+    }
+
+    reloadStreams();
+
+    // Refresh stream sources every 5 minutes without reloading the whole page
+    setInterval(() => {
+      console.log("Refreshing stream sources...");
+      reloadStreams();
+    }, 1000 * 60 * 5);
   </script>
 </body>
 

@@ -6,6 +6,7 @@ const crypto = require('crypto');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const favicon = require('serve-favicon');
+const status = require('express-status-monitor');
 
 const checkAuth = require('./services/checkauth');
 const cameraRoutes = require('./routes/cameraRoutes');
@@ -17,6 +18,8 @@ const { cleanupInactiveStreams } = require('./utils/streamManager');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+app.use(status());
 
 // === Nonce middleware for CSP ===
 app.use((req, res, next) => {
@@ -105,7 +108,7 @@ app.use('/dvr', checkAuth, dvrRoutes);
 app.use('/', publicRoute);
 
 // Cleanup inactive streams every 5 minutes
-setInterval(() => cleanupInactiveStreams(30 * 1000), 5 * 60 * 1000);
+setInterval(() => cleanupInactiveStreams(5 * 60 * 1000), 5 * 60 * 1000);
 
 // Start Server
 app.listen(PORT, () => {
