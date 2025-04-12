@@ -37,6 +37,7 @@ app.use(helmet({
         "https://cdn.jsdelivr.net",
         (req, res) => `'nonce-${res.locals.nonce}'`
       ],
+      "worker-src": ["'self'", "blob:"],
       "style-src": ["'self'", "'unsafe-inline'"],
       "media-src": ["'self'", "blob:"],
       "img-src": ["'self'", "data:", "blob:"],
@@ -57,7 +58,7 @@ app.use(helmet.hsts({ maxAge: 31536000 }));
 
 // CORS
 app.use(cors({
-  origin: ['https://yourdomain.com'], // Replace with your production domain(s)
+  origin: ['https://cctvcameralive.in'], // Replace with your production domain(s)
   credentials: true
 }));
 
