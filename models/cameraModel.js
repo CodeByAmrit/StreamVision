@@ -1,30 +1,28 @@
-const fs = require('fs');
-const path = require('path');
+const bcrypt = require("bcrypt");
+const { setUser } = require("../services/aouth");
+const db = require("../config/getConnection"); // Your MySQL db connection wrapper
 
-const camerasFile = path.join(__dirname, '../data/cameras.json');
+class Camera {
+    static async findById(req, res) {
+        const cameraId = parseInt(req.params.id);
+        if (!cameraId) return res.status(400).json({ error: "Invalid ID" });
 
-// Ensure the file exists
-if (!fs.existsSync(camerasFile)) {
-    fs.writeFileSync(camerasFile, JSON.stringify([]));
+        let connection;
+        try {
+            connection = await db.getConnection();
+            const [rows] = await connection.execute(`SELECT * FROM cameras WHERE id = ?`, [cameraId]);
+            
+            return rows[0];
+        } catch (error) {
+            console.error("Error fetching camera:", error);
+            
+        }
+        finally {
+            if (connection) {
+                connection.end();
+            }
+        }
+    }
 }
 
-// Read cameras from file
-const getCameras = () => {
-    try {
-        return JSON.parse(fs.readFileSync(camerasFile, 'utf-8'));
-    } catch (error) {
-        console.error('Error reading cameras.json:', error);
-        return [];
-    }
-};
-
-// Save cameras to file
-const saveCameras = (cameras) => {
-    try {
-        fs.writeFileSync(camerasFile, JSON.stringify(cameras, null, 2));
-    } catch (error) {
-        console.error('Error writing to cameras.json:', error);
-    }
-};
-
-module.exports = { getCameras, saveCameras };
+module.exports = Camera;

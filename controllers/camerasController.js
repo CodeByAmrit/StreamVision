@@ -44,7 +44,7 @@ const getCameraById = async (req, res) => {
         }
         const [dvr] = await connection.execute(`SELECT dvr_name FROM dvrs WHERE id = ?`, [rows[0].dvr_id]);
         // console.log(rows);
-        res.render('edit_camera', { dvr: dvr[0], cameraId, camera:rows[0] });
+        res.render('edit_camera', { dvr: dvr[0], cameraId, camera: rows[0] });
     } catch (error) {
         console.error("Error fetching camera:", error);
         res.status(500).json({ error: 'Failed to retrieve camera' });
@@ -202,6 +202,41 @@ const updateCamera = async (req, res) => {
     }
 };
 
+
+const getCameraById_ejs = async (req, res) => {
+    const cameraId = req.params.id;
+    let connection;
+
+    try {
+        connection = await db.getConnection();
+
+        const [rows] = await connection.execute(`
+        SELECT c.*, dvr.dvr_name, dvr.id AS dvr_id, l.location_name AS location_name
+        FROM cameras c
+        JOIN dvrs dvr ON c.dvr_id = dvr.id
+        JOIN locations l ON dvr.location_id = l.id
+        WHERE c.id = ?
+      `, [cameraId]);
+
+        const camera = rows[0];
+
+        if (!camera) {
+            return res.status(404).send('Camera not found');
+        }
+
+        res.render('camera', {
+            camera,
+        });
+
+    } catch (err) {
+        console.error('Error loading camera view:', err);
+        res.status(500).send('Internal Server Error');
+    } finally {
+        if (connection) connection.end();
+    }
+};
+
+
 module.exports = {
     getAllCameras,
     getCameraById,
@@ -210,4 +245,5 @@ module.exports = {
     deleteCamera,
     updateCamera,
     renderAddCameraPage,
+    getCameraById_ejs
 };

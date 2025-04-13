@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+        <%= camera.camera_name %> - Live View
+    </title>
+
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest" nonce="<%= nonce %>"></script>
+    <script src="https://cdn.tailwindcss.com" nonce="<%= nonce %>"></script>
+</head>
+
+<body class="bg-gray-900 text-white min-h-screen flex flex-col">
+    <header class="bg-gray-800 p-4 shadow-md flex items-center justify-between">
+        <div>
+            <h1 class="text-xl font-semibold">
+                <%= camera.camera_name %> - Live Stream
+            </h1>
+            <p class="text-sm text-gray-400">📍 Location: <%= camera.location_name %> | 🎥 DVR: <%= camera.dvr_name %>
+            </p>
+        </div>
+        <button id="toggleTheme" class="bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded text-sm">Toggle Theme</button>
+    </header>
+
+    <main class="flex-1 p-4 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Video Player -->
+        <div class="lg:col-span-2 space-y-4">
+            <div id="videoContainer" class="bg-black rounded-lg overflow-hidden relative aspect-video">
+                <div id="spinner"
+                    class="absolute inset-0 flex items-center justify-center bg-gray-300 dark:bg-gray-700 animate-pulse z-10">
+                    <span class="text-sm text-gray-700 dark:text-gray-400">Loading stream...</span>
+                </div>
+                <video id="video" class="hidden w-full h-full" controls autoplay muted playsinline></video>
+            </div>
+
+            <div class="flex gap-4">
+                <button data-action="fullscreen"
+                    class="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded text-sm">Fullscreen</button>
+                <button data-action="mute" class="bg-green-600 hover:bg-green-500 px-4 py-2 rounded text-sm">Toggle
+                    Mute</button>
+                <button data-action="reload"
+                    class="bg-yellow-600 hover:bg-yellow-500 px-4 py-2 rounded text-sm">Reload</button>
+            </div>
+        </div>
+
+        <!-- Metadata -->
+        <div class="bg-gray-800 rounded-lg p-4 shadow-lg space-y-6">
+            <!-- Basic Info -->
+            <section>
+                <h2 class="text-lg font-semibold">📋 Basic Info</h2>
+                <ul class="text-sm text-gray-300 space-y-1">
+                    <li><strong>Camera Name:</strong>
+                        <%= camera.camera_name %>
+                    </li>
+                    <li><strong>DVR:</strong>
+                        <%= camera.dvr_name %>
+                    </li>
+                    <li><strong>Location:</strong>
+                        <%= camera.location_name %>
+                    </li>
+                    <li><strong>RTSP URL:</strong> <code class="break-all"><%= camera.rtsp_url %></code></li>
+                    <li><strong>Camera ID:</strong>
+                        <%= camera.id %>
+                    </li>
+                    <li><strong>DVR ID:</strong>
+                        <%= camera.dvr_id %>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Live Status -->
+            <section>
+                <h2 class="text-lg font-semibold">📡 Live Status</h2>
+                <p id="liveStatus" class="text-green-400 text-sm">Streaming...</p>
+            </section>
+
+            <!-- Advanced Metadata + Deep Stream Analysis -->
+            <div>
+                <h2 class="text-lg font-semibold">🔬 Advanced Stream Info</h2>
+                <ul id="advancedInfo" class="text-sm text-gray-300 space-y-1">
+                    <li><strong>Codec:</strong> <span id="codec_name">Loading...</span></li>
+                    <li><strong>Resolution:</strong> <span id="resolution">Loading...</span></li>
+                    <li><strong>Bitrate:</strong> <span id="bitrate">Loading...</span></li>
+                    <li><strong>Frame Rate:</strong> <span id="frame_rate">Loading...</span></li>
+                    <li><strong>Audio:</strong> <span id="has_audio">Loading...</span></li>
+                    <li><strong>Key Frame Interval:</strong> <span id="keyframe_interval">Loading...</span></li>
+                    <li><strong>Stream Duration:</strong> <span id="duration">Loading...</span></li>
+                    <li><strong>Packet Loss / Errors:</strong> <span id="packet_loss">Analyzing...</span></li>
+                </ul>
+            </div>
+
+            <!-- Last Seen / Analytics -->
+            <section>
+                <h2 class="text-lg font-semibold">🧠 Analytics</h2>
+                <ul class="text-sm text-gray-300 space-y-1">
+                    <li><strong>Last Frame Received:</strong>
+                        <%= camera.analytics?.last_seen || 'Unknown' %>
+                    </li>
+                    <li><strong>Packet Loss:</strong>
+                        <%= camera.analytics?.packet_loss || '0%' %>
+                    </li>
+                    <li><strong>Connection Drops:</strong>
+                        <%= camera.analytics?.connection_drops || 0 %>
+                    </li>
+                    <li><strong>Error Count:</strong>
+                        <%= camera.analytics?.error_count || 0 %>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Notes -->
+            <section>
+                <h2 class="text-lg font-semibold">📝 Camera Notes</h2>
+                <textarea id="cameraNotes" class="w-full p-2 bg-gray-700 text-white rounded text-sm h-28"
+                    placeholder="Write observations..."></textarea>
+                <button id="saveNote"
+                    class="mt-2 bg-indigo-600 hover:bg-indigo-500 px-3 py-1 rounded text-sm float-right">Save
+                    Note</button>
+            </section>
+
+            <!-- Logs -->
+            <section>
+                <h2 class="text-lg font-semibold">🧾 Logs</h2>
+                <div id="cameraLogs" class="bg-gray-900 rounded text-xs p-2 h-32 overflow-y-auto">
+                    <p>[<%= new Date().toLocaleTimeString() %>] Initializing stream...</p>
+                </div>
+            </section>
+        </div>
+
+
+    </main>
+
+    <footer class="bg-gray-800 p-4 text-center text-sm text-gray-400">
+        &copy; <%= new Date().getFullYear() %> StreamVision. Camera ID: <%= camera.id %>
+    </footer>
+
+    <script nonce="<%= nonce %>">
+        const cameraId = <%= camera.id %>;
+        const dvrId = <%= camera.dvr_id %>;
+        const video = document.getElementById('video');
+        const spinner = document.getElementById('spinner');
+        const statusEl = document.getElementById('liveStatus');
+        const logs = document.getElementById('cameraLogs');
+        const source = `/streams/dvr_${dvrId}/cam_${cameraId}/index.m3u8`;
+
+        fetch(`/public/dvr/${dvrId}`);
+
+        function log(message) {
+            const time = new Date().toLocaleTimeString();
+            logs.innerHTML += `<p>[${time}] ${message}</p>`;
+            logs.scrollTop = logs.scrollHeight;
+        }
+
+        function initStream() {
+            if (Hls.isSupported()) {
+                const hls = new Hls({ lowLatencyMode: true });
+                hls.loadSource(source);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                    spinner.classList.add('hidden');
+                    video.classList.remove('hidden');
+                    statusEl.textContent = 'Streaming';
+                    log('Stream started.');
+                });
+                hls.on(Hls.Events.ERROR, (_, data) => {
+                    statusEl.textContent = 'Error';
+                    log(`Error: ${data.details}`);
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = source;
+                video.addEventListener('loadedmetadata', () => {
+                    spinner.classList.add('hidden');
+                    video.classList.remove('hidden');
+                    statusEl.textContent = 'Streaming';
+                    log('Stream started (native support).');
+                });
+            } else {
+                spinner.innerHTML = '<p class="text-sm text-red-400 p-4">HLS not supported.</p>';
+                log('HLS not supported in this browser.');
+            }
+        }
+
+        function toggleMute() {
+            video.muted = !video.muted;
+            log(`Mute toggled: ${video.muted}`);
+        }
+
+        function toggleFullscreen() {
+            if (video.requestFullscreen) {
+                video.requestFullscreen();
+            } else if (video.webkitRequestFullscreen) {
+                video.webkitRequestFullscreen();
+            } else if (video.msRequestFullscreen) {
+                video.msRequestFullscreen();
+            }
+            log('Fullscreen toggled.');
+        }
+
+        function reloadStream() {
+            video.pause();
+            video.src = '';
+            spinner.classList.remove('hidden');
+            statusEl.textContent = 'Reconnecting...';
+            fetch(`/public/dvr/${dvrId}`);
+            log('Reloading stream.');
+            initStream();
+        }
+
+        document.querySelector('[data-action="fullscreen"]').addEventListener('click', toggleFullscreen);
+        document.querySelector('[data-action="mute"]').addEventListener('click', toggleMute);
+        document.querySelector('[data-action="reload"]').addEventListener('click', reloadStream);
+
+        document.getElementById('toggleTheme').addEventListener('click', () => {
+            document.body.classList.toggle('bg-gray-100');
+            document.body.classList.toggle('text-gray-900');
+        });
+
+        document.getElementById('saveNote').addEventListener('click', () => {
+            const note = document.getElementById('cameraNotes').value;
+            log(`Note saved: ${note}`);
+            alert('Note saved (mock).');
+        });
+
+        window.addEventListener('DOMContentLoaded', initStream);
+        function loadAdvancedStreamInfo() {
+            fetch(`/camera/view/${cameraId}/ffprobe`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data && data.streams && data.streams.length > 0) {
+                        const videoStream = data.streams.find(s => s.codec_type === 'video');
+                        const audioStream = data.streams.find(s => s.codec_type === 'audio');
+                        document.getElementById('codec_name').textContent = videoStream.codec_name || 'N/A';
+                        document.getElementById('resolution').textContent = `${videoStream.width}x${videoStream.height}` || 'N/A';
+                        document.getElementById('bitrate').textContent = (videoStream.bit_rate || data.format.bit_rate || '0') + ' bps';
+                        document.getElementById('frame_rate').textContent = videoStream.avg_frame_rate || 'N/A';
+                        document.getElementById('has_audio').textContent = audioStream ? 'Yes' : 'No';
+                        const nbFrames = parseFloat(videoStream.nb_frames);
+                        const duration = parseFloat(videoStream.duration);
+                        document.getElementById('keyframe_interval').textContent =
+                            (!isNaN(nbFrames) && !isNaN(duration) && duration > 0)
+                                ? Math.round(nbFrames / duration) + ' frames'
+                                : 'N/A';
+                        document.getElementById('duration').textContent = data.format.duration + 's';
+                        document.getElementById('packet_loss').textContent = data.errors || 'N/A';
+                    } else {
+                        log("⚠️ No stream info found from ffprobe.");
+                    }
+                })
+                .catch(err => {
+                    console.error('Error loading stream metadata:', err);
+                    log(`Error fetching metadata: ${err.message}`);
+                });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initStream();
+            loadAdvancedStreamInfo(); // 🔍 Load metadata when page loads
+        });
+    </script>
+</body>
+
+</html>

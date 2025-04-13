@@ -10,6 +10,7 @@ const status = require('express-status-monitor');
 
 const checkAuth = require('./services/checkauth');
 const cameraRoutes = require('./routes/cameraRoutes');
+const cameraRoute = require('./routes/camera');
 const userRouter = require('./routes/userRouters');
 const dvrRoutes = require('./routes/dvrs');
 const publicRoute = require('./routes/publicRoutes');
@@ -107,6 +108,7 @@ app.use('/', userRouter);
 app.use('/camera', checkAuth, cameraRoutes);
 app.use('/dvr', checkAuth, dvrRoutes);
 app.use('/', publicRoute);
+app.use('/camera/view', cameraRoute);
 
 // Cleanup inactive streams every 5 minutes
 setInterval(() => cleanupInactiveStreams(5 * 60 * 1000), 5 * 60 * 1000);
