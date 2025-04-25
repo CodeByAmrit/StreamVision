@@ -1,0 +1,21 @@
+{
+    "name": "Stream Vision",
+    "short_name": "StreamVision",
+    "description": "RTSP Live Stream Viewer for real-time feed viewing",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#0000ff",
+    "icons": [
+        {
+            "src": "/images/icons/favicon.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/images/icons/favicon.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

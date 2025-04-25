@@ -1,133 +1,241 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <!-- Basic Meta Tags -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RTSP Live Stream Viewer | StreamVision</title>
-    <meta name="description" content="StreamVision - View and manage your RTSP CCTV camera feeds live in real time with powerful analytics and security.">
-    <meta name="keywords" content="RTSP, CCTV, Live Stream, IP Camera, HLS, FFmpeg, Viewer, StreamVision">
-    <meta name="author" content="Amrit, Developer of StreamVision">
+    <meta
+      name="description"
+      content="StreamVision - View and manage your RTSP CCTV camera feeds live in real time with powerful analytics and security."
+    />
+    <meta
+      name="keywords"
+      content="RTSP, CCTV, Live Stream, IP Camera, HLS, FFmpeg, Viewer, StreamVision"
+    />
+    <meta name="author" content="Amrit, Developer of StreamVision" />
 
     <!-- Canonical and Robots -->
     <link rel="canonical" href="https://cctvcameralive.in/" />
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="index, follow" />
 
     <!-- Open Graph (for social sharing) -->
-    <meta property="og:title" content="StreamVision | RTSP Live CCTV Viewer">
-    <meta property="og:description" content="Real-time RTSP CCTV camera streaming using HLS and analytics.">
-    <meta property="og:image" content="https://cctvcameralive.in/images/banner.svg">
-    <meta property="og:url" content="https://cctvcameralive.in">
-    <meta property="og:type" content="website">
+    <meta property="og:title" content="StreamVision | RTSP Live CCTV Viewer" />
+    <meta
+      property="og:description"
+      content="Real-time RTSP CCTV camera streaming using HLS and analytics."
+    />
+    <meta
+      property="og:image"
+      content="https://cctvcameralive.in/images/banner.svg"
+    />
+    <meta property="og:url" content="https://cctvcameralive.in" />
+    <meta property="og:type" content="website" />
 
     <!-- Twitter Meta -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="StreamVision | RTSP Live CCTV Viewer">
-    <meta name="twitter:description" content="Real-time RTSP CCTV camera streaming using HLS and analytics.">
-    <meta name="twitter:image" content="https://cctvcameralive.in/images/banner.svg">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="StreamVision | RTSP Live CCTV Viewer" />
+    <meta
+      name="twitter:description"
+      content="Real-time RTSP CCTV camera streaming using HLS and analytics."
+    />
+    <meta
+      name="twitter:image"
+      content="https://cctvcameralive.in/images/banner.svg"
+    />
 
     <!-- Favicon & Web Manifest -->
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <link rel="manifest" href="/site.webmanifest">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="manifest" href="/site.webmanifest" />
 
     <!-- External Fonts or Preconnects (optional for performance) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
 
     <!-- Tailwind / Your Custom CSS -->
-    <link rel="stylesheet" href="/css/style.css" nonce="<%= nonce %>">
+    <link rel="stylesheet" href="/css/style.css" nonce="<%= nonce %>" />
 
     <!-- Flowbite + HLS.js -->
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@1.4.0/dist/flowbite.min.js" defer nonce="<%= nonce %>"></script>
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest" defer nonce="<%= nonce %>"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/flowbite@1.4.0/dist/flowbite.min.js"
+      defer
+      nonce="<%= nonce %>"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/hls.js@latest"
+      defer
+      nonce="<%= nonce %>"
+    ></script>
 
     <!-- Disable Caching -->
-    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-</head>
+    <meta
+      http-equiv="Cache-Control"
+      content="no-store, no-cache, must-revalidate, max-age=0"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+  </head>
 
-<body class="bg-white dark:bg-gray-900 ">
-
-<!-- Navigation Bar -->
-<nav class="bg-white border-gray-200 dark:bg-gray-900 bg-opacity-50">
-    
-    <div class="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto p-4">
-        <a href="https://flowbite.com" class="flex items-center space-x-3 rtl:space-x-reverse">
-            <img src="/images/favicon.png" class="h-8 dark:invert" alt="Flowbite Logo" />
-            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Stream Vision</span>
+  <body class="bg-white dark:bg-gray-900">
+    <!-- Navigation Bar -->
+    <nav class="bg-white border-gray-200 dark:bg-gray-900 bg-opacity-50">
+      <div
+        class="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto p-4"
+      >
+        <a
+          href="https://flowbite.com"
+          class="flex items-center space-x-3 rtl:space-x-reverse"
+        >
+          <img
+            src="/images/favicon.png"
+            class="h-8 dark:invert"
+            alt="Flowbite Logo"
+          />
+          <span
+            class="hidden lg:block self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
+            >Stream Vision</span
+          >
         </a>
-        <div class="flex items-center md:order-2 space-x-1 md:space-x-2 rtl:space-x-reverse">
-            <button id="theme-toggle" type="button"
-                            class="text-gray-600 dark:text-gray-200  hover:bg-gray-300 dark:hover:bg-gray-900 focus:outline-none focus:ring-0 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
-                            <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor"
-                                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
-                            </svg>
-                            <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor"
-                                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
-                                    fill-rule="evenodd" clip-rule="evenodd"></path>
-                            </svg>
-                        </button>
-            <!-- <a href="#" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Login</a> -->
-            <a href="/login" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Admin Login</a>
-        </div>
-    </div>
-</nav>
-
-<!-- Main Section -->
-<section class="bg-white dark:bg-gray-900 bg-opacity-50">
-    <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 bg-opacity-50" >
-        <a href="/updates" class="inline-flex justify-between items-center py-1 px-1 pe-4 mb-7 text-sm text-green-700 bg-green-100 rounded-full dark:bg-green-900 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-800">
-            <span class="text-xs bg-green-600 rounded-full text-white px-4 py-1.5 me-3">Update</span> 
-            <span class="text-sm font-medium">StreamVision v2.0 is live! Check out the new features 🚀</span>
-            <svg class="w-2.5 h-2.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+        <div
+          class="flex items-center md:order-2 space-x-1 md:space-x-2 rtl:space-x-reverse"
+        >
+          <button
+            id="theme-toggle"
+            type="button"
+            class="text-gray-600 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-900 focus:outline-none focus:ring-0 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5"
+          >
+            <svg
+              id="theme-toggle-dark-icon"
+              class="hidden w-5 h-5"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
+              ></path>
             </svg>
+            <svg
+              id="theme-toggle-light-icon"
+              class="hidden w-5 h-5"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+          </button>
+          <a
+            href="/login"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 md:px-5 md:py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            >Admin Login</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Section -->
+    <section class="bg-white dark:bg-gray-900 bg-opacity-50">
+      <div
+        class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 bg-opacity-50"
+      >
+        <a
+          href="/updates"
+          class="inline-flex flex-col sm:flex-row justify-between items-center py-2 px-3 sm:py-1 sm:px-1 pe-4 mb-7 text-xs sm:text-sm text-green-700 bg-green-100 rounded-full dark:bg-green-900 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-800"
+        >
+          <span
+            class="text-xs bg-green-600 rounded-full text-white px-3 py-1 sm:px-4 sm:py-1.5 me-0 sm:me-3 mb-1 sm:mb-0"
+            >Update</span
+          >
+          <span class="text-xs sm:text-sm font-medium text-center sm:text-left"
+            >StreamVision v2.0 is live! Check out the new features 🚀</span
+          >
+          <svg
+            class="w-2 h-2 sm:w-2.5 sm:h-2.5 ms-0 sm:ms-2 rtl:rotate-180"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 6 10"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m1 9 4-4-4-4"
+            />
+          </svg>
         </a>
-        
-        <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">RTSP Live Stream Viewer</h1>
-        <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-400">Enter your RTSP stream URL below to view the live feed in real-time.</p>
+
+        <h1
+          class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white"
+        >
+          RTSP Live Stream Viewer
+        </h1>
+        <p
+          class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-400"
+        >
+          Enter your RTSP stream URL below to view the live feed in real-time.
+        </p>
 
         <!-- Input Form for RTSP Link -->
-        <div class="flex flex-col items-center space-y-4 sm:flex-row sm:justify-center sm:space-y-0 gap-4">
-            <input type="text" id="rtspInput" class="sm:w-96 w-full px-4 py-2 text-gray-900 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:focus:ring-blue-500" placeholder="Enter RTSP Stream URL">
-            <button id="playBtn" class="py-2 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">
-                Start Stream
-            </button>
-            <button id="stopBtn" class="hidden py-2 px-5 text-base font-medium text-center text-white rounded-lg bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900">Stop Stream</button>
+        <div
+          class="flex flex-col items-center space-y-4 sm:flex-row sm:justify-center sm:space-y-0 gap-4"
+        >
+          <input
+            type="text"
+            id="rtspInput"
+            class="sm:w-96 w-full px-4 py-2 text-gray-900 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:focus:ring-blue-500"
+            placeholder="Enter RTSP Stream URL"
+          />
+          <button
+            id="playBtn"
+            class="py-2 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900"
+          >
+            Start Stream
+          </button>
+          <button
+            id="stopBtn"
+            class="hidden py-2 px-5 text-base font-medium text-center text-white rounded-lg bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900"
+          >
+            Stop Stream
+          </button>
         </div>
 
         <!-- Video Player for Stream -->
         <div class="mt-8">
-            <video id="videoPlayer" width="800" controls class="mx-auto hidden">
-                <source id="streamSource" type="application/x-mpegURL">
-                Your browser does not support HTML5 video.
-            </video>
+          <video id="videoPlayer" width="100%" controls class="mx-auto hidden">
+            <source id="streamSource" type="application/x-mpegURL" />
+            Your browser does not support HTML5 video.
+          </video>
         </div>
-    </div>
-</section>
+      </div>
+    </section>
 
-<script nonce="<%= nonce %>">
-    let currentRtspUrl = '';
+    <script nonce="<%= nonce %>">
+      let currentRtspUrl = "";
 
-    document.getElementById('playBtn').addEventListener('click', async function () {
-        const rtspUrl = document.getElementById('rtspInput').value.trim();
-        const video = document.getElementById('videoPlayer');
-        const stopBtn = document.getElementById('stopBtn');
+      document
+        .getElementById("playBtn")
+        .addEventListener("click", async function () {
+          const rtspUrl = document.getElementById("rtspInput").value.trim();
+          const video = document.getElementById("videoPlayer");
+          const stopBtn = document.getElementById("stopBtn");
 
-        if (!rtspUrl.startsWith('rtsp://')) {
+          if (!rtspUrl.startsWith("rtsp://")) {
             alert("Please enter a valid RTSP link.");
             return;
-        }
+          }
 
-        try {
-            const response = await fetch('/api/start-stream', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ rtspUrl })
+          try {
+            const response = await fetch("/api/start-stream", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ rtspUrl }),
             });
 
             const data = await response.json();
@@ -139,86 +247,92 @@
             let attempts = 0;
 
             const tryLoadHLS = async () => {
-                try {
-                    const probe = await fetch(hlsUrl, { method: 'HEAD' });
-                    if (probe.ok) {
-                        video.classList.remove('hidden');
-                        stopBtn.classList.remove('hidden');
-                        currentRtspUrl = rtspUrl;
+              try {
+                const probe = await fetch(hlsUrl, { method: "HEAD" });
+                if (probe.ok) {
+                  video.classList.remove("hidden");
+                  stopBtn.classList.remove("hidden");
+                  currentRtspUrl = rtspUrl;
 
-                        if (Hls.isSupported()) {
-                            const hls = new Hls();
-                            hls.loadSource(hlsUrl);
-                            hls.attachMedia(video);
-                            hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                                video.play();
-                            });
-                        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                            video.src = hlsUrl;
-                            video.addEventListener('loadedmetadata', () => {
-                                video.play();
-                            });
-                        } else {
-                            alert("HLS not supported in this browser.");
-                        }
-                        return;
-                    }
-                } catch (e) {
-                    // silently retry
+                  if (Hls.isSupported()) {
+                    const hls = new Hls();
+                    hls.loadSource(hlsUrl);
+                    hls.attachMedia(video);
+                    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                      video.play();
+                    });
+                  } else if (
+                    video.canPlayType("application/vnd.apple.mpegurl")
+                  ) {
+                    video.src = hlsUrl;
+                    video.addEventListener("loadedmetadata", () => {
+                      video.play();
+                    });
+                  } else {
+                    alert("HLS not supported in this browser.");
+                  }
+                  return;
                 }
+              } catch (e) {
+                // silently retry
+              }
 
-                if (++attempts < maxAttempts) {
-                    setTimeout(tryLoadHLS, 2000);
-                } else {
-                    alert("Stream not ready after multiple attempts. Try again later.");
-                }
+              if (++attempts < maxAttempts) {
+                setTimeout(tryLoadHLS, 2000);
+              } else {
+                alert(
+                  "Stream not ready after multiple attempts. Try again later."
+                );
+              }
             };
 
             tryLoadHLS();
+          } catch (err) {
+            console.error("Error starting stream:", err);
+            alert(
+              "Failed to start stream. Please check RTSP link or server status."
+            );
+          }
+        });
 
-        } catch (err) {
-            console.error('Error starting stream:', err);
-            alert("Failed to start stream. Please check RTSP link or server status.");
-        }
-    });
+      // Stop button logic
+      document
+        .getElementById("stopBtn")
+        .addEventListener("click", async function () {
+          const stopBtn = document.getElementById("stopBtn");
+          const video = document.getElementById("videoPlayer");
 
-    // Stop button logic
-    document.getElementById('stopBtn').addEventListener('click', async function () {
-        const stopBtn = document.getElementById('stopBtn');
-        const video = document.getElementById('videoPlayer');
-
-        if (!currentRtspUrl) {
+          if (!currentRtspUrl) {
             alert("No stream to stop.");
             return;
-        }
+          }
 
-        try {
-            const response = await fetch('/api/stop-stream', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ rtspUrl: currentRtspUrl })
+          try {
+            const response = await fetch("/api/stop-stream", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ rtspUrl: currentRtspUrl }),
             });
 
             const result = await response.json();
 
             if (response.ok) {
-                video.pause();
-                video.src = '';
-                video.classList.add('hidden');
-                stopBtn.classList.add('hidden');
-                currentRtspUrl = '';
-                console.log(result.message);
+              video.pause();
+              video.src = "";
+              video.classList.add("hidden");
+              stopBtn.classList.add("hidden");
+              currentRtspUrl = "";
+              console.log(result.message);
             } else {
-                alert(result.error || "Failed to stop stream.");
+              alert(result.error || "Failed to stop stream.");
             }
-        } catch (err) {
-            console.error('Error stopping stream:', err);
+          } catch (err) {
+            console.error("Error stopping stream:", err);
             alert("Failed to stop stream.");
-        }
-    });
-</script>
+          }
+        });
+    </script>
 
-<script src="/js/theme.js" nonce="<% nonce %>"></script>
-
-</body>
+    <script src="/js/theme.js" nonce="<% nonce %>"></script>
+  </body>
 </html>
