@@ -216,7 +216,37 @@
       </div>
     </section>
 
+    <!-- Chrome Extension Prompt -->
+    <div class="mt-12 flex justify-center">
+      <div
+        class="max-w-xl w-full bg-yellow-50 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-100 border border-yellow-200 dark:border-yellow-700 rounded-xl p-6 shadow-md text-center"
+      >
+        <h2 class="text-xl font-semibold mb-2">
+          📦 Install Our Chrome Extension
+        </h2>
+        <p class="mb-4 text-sm md:text-base">
+          Enhance your experience by installing our Chrome extension to quickly
+          launch RTSP streams from your browser.
+        </p>
+        <a
+          href="https://chrome.google.com/webstore/detail/your-extension-id"
+          target="_blank"
+          class="inline-block bg-yellow-600 hover:bg-yellow-700 text-white font-medium py-2 px-4 rounded-lg transition-all"
+        >
+          Install Extension
+        </a>
+      </div>
+    </div>
+
     <script nonce="<%= nonce %>">
+      window.addEventListener("DOMContentLoaded", () => {
+        const params = new URLSearchParams(window.location.search);
+        const rtsp = params.get("rtsp");
+        if (rtsp) {
+          document.getElementById("rtspInput").value = rtsp;
+          document.getElementById("playBtn").click();
+        }
+      });
       let currentRtspUrl = "";
 
       document
