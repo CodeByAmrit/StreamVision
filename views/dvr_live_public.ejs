@@ -1,119 +1,153 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= dvr.dvr_name %> - Live Stream</title>
 
-  <title><%= dvr.dvr_name %> - Live Stream</title>
+    <!-- Flowbite CDN -->
+    <link href="/css/style.css" rel="stylesheet" />
+    <script src="/js/flowbite.min.js"></script>
 
-  <!-- Flowbite CDN -->
-  <link href="/css/style.css" rel="stylesheet" />
-  <script src="/js/flowbite.min.js"></script>
+    <!-- HLS.js -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/hls.js@latest"
+      nonce="<%= nonce %>"
+    ></script>
 
-  <!-- HLS.js -->
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest" nonce="<%= nonce %>"></script>
+    <!-- Cache control -->
+    <meta
+      http-equiv="Cache-Control"
+      content="no-store, no-cache, must-revalidate, max-age=0"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+  </head>
 
-  <!-- Cache control -->
-  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
-</head>
+  <body class="bg-gray-950 text-white min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="bg-gray-900 shadow-md py-4 px-6 text-center">
+      <h1 class="text-2xl font-bold text-white">
+        <%= dvr.dvr_name %> - Live Camera Streams
+      </h1>
+      <p class="text-sm text-gray-400 mt-1">
+        📍 Location: <%= dvr.location_name %>
+      </p>
+    </header>
 
-<body class="bg-gray-950 text-white min-h-screen flex flex-col">
-
-  <!-- Header -->
-  <header class="bg-gray-900 shadow-md py-4 px-6 text-center">
-    <h1 class="text-2xl font-bold text-white"><%= dvr.dvr_name %> - Live Camera Streams</h1>
-    <p class="text-sm text-gray-400 mt-1">📍 Location: <%= dvr.location_name %></p>
-  </header>
-
-  <!-- Video Grid -->
-  <main class="flex-1 p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-    <% cameras.forEach((camera, index) => { %>
+    <!-- Video Grid -->
+    <main
+      class="flex-1 p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+    >
+      <% cameras.forEach((camera, index) => { %>
       <div class="relative rounded-lg overflow-hidden bg-black">
         <!-- Spinner -->
-        <div id="spinner<%= index + 1 %>" role="status" class="flex items-center justify-center h-64">
-          <svg aria-hidden="true" class="w-8 h-8 mr-2 text-gray-200 animate-spin fill-blue-600" viewBox="0 0 100 101"
-            fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div
+          id="spinner<%= index + 1 %>"
+          role="status"
+          class="flex items-center justify-center h-64"
+        >
+          <svg
+            aria-hidden="true"
+            class="w-8 h-8 mr-2 text-gray-200 animate-spin fill-blue-600"
+            viewBox="0 0 100 101"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M100 50.5908C100 78.2051 77.6142 100.591 50..."
-              fill="currentColor" />
+              fill="currentColor"
+            />
             <path
               d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116..."
-              fill="currentFill" />
+              fill="currentFill"
+            />
           </svg>
           <span class="sr-only">Loading...</span>
         </div>
         <!-- Video -->
-        <video id="video<%= index + 1 %>" class="hidden w-full h-auto" controls autoplay muted playsinline></video>
+        <video
+          id="video<%= index + 1 %>"
+          class="hidden w-full h-auto"
+          controls
+          autoplay
+          muted
+          playsinline
+        ></video>
       </div>
-    <% }) %>
-  </main>
+      <% }) %>
+    </main>
 
-  <!-- Footer -->
-  <footer class="bg-gray-900 text-center py-3 text-sm text-gray-500">
-    &copy; <%= new Date().getFullYear() %> StreamVision. All rights reserved.
-  </footer>
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-center py-3 text-sm text-gray-500">
+      &copy; <%= new Date().getFullYear() %> StreamVision. All rights reserved.
+    </footer>
 
-  <!-- Client-side JS -->
-  <script nonce="<%= nonce %>">
-    const cameras = <%- JSON.stringify(cameras) %>;
-    const dvrId = <%= dvr.id %>;
+    <!-- Client-side JS -->
+    <script nonce="<%= nonce %>">
+      const cameras = <%- JSON.stringify(cameras) %>;
+      const dvrId = <%= dvr.id %>;
+      const RETRY_INTERVAL = 2000; // 2 seconds
+      const MAX_RETRIES = 5;
 
-    function tryLoadStream(camera, index, retries = 5, delay = 2000) {
-      const video = document.getElementById(`video${index + 1}`);
-      const spinner = document.getElementById(`spinner${index + 1}`);
-      const source = `/streams/dvr_${dvrId}/cam_${camera.id}/index.m3u8`;
+      function tryLoadStream(camera, index, retriesLeft = MAX_RETRIES) {
+        const video = document.getElementById(`video${index + 1}`);
+        const spinner = document.getElementById(`spinner${index + 1}`);
+        const source = `/streams/dvr_${dvrId}/cam_${camera.id}/index.m3u8`;
 
-      fetch(source).then(response => {
-        if (response.ok) {
-          if (Hls.isSupported()) {
-            const hls = new Hls();
-            hls.loadSource(source);
-            hls.attachMedia(video);
-            hls.on(Hls.Events.MANIFEST_PARSED, () => {
-              spinner.classList.add('hidden');
-              video.classList.remove('hidden');
-              // console.log(`Stream started for cam ${camera.id}`);
-            });
-          } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            video.src = source;
-            video.addEventListener('loadedmetadata', () => {
-              spinner.classList.add('hidden');
-              video.classList.remove('hidden');
-            });
+        fetch(source)
+          .then(response => {
+            if (response.ok) {
+              if (Hls.isSupported()) {
+                const hls = new Hls();
+                hls.loadSource(source);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                  spinner.classList.add('hidden');
+                  video.classList.remove('hidden');
+                });
+              } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = source;
+                video.addEventListener('loadedmetadata', () => {
+                  spinner.classList.add('hidden');
+                  video.classList.remove('hidden');
+                });
+              }
+            } else {
+              handleRetry();
+            }
+          })
+          .catch(err => {
+            console.error(`Error for cam ${camera.id}:`, err);
+            handleRetry();
+          });
+
+        function handleRetry() {
+          if (retriesLeft > 0) {
+            console.warn(`Retrying cam ${camera.id} in ${RETRY_INTERVAL / 1000}s...`);
+            setTimeout(() => tryLoadStream(camera, index, retriesLeft - 1), RETRY_INTERVAL);
+          } else {
+            spinner.innerHTML = `<p class="text-red-500 text-center">Stream not available for cam ${camera.id}</p>`;
           }
-        } else if (retries > 0) {
-          console.warn(`Retrying cam ${camera.id} in ${delay / 1000}s`);
-          setTimeout(() => tryLoadStream(camera, index, retries - 1, delay * 2), delay);
-        } else {
-          spinner.innerHTML = `<p class="text-red-500 text-center">Stream not available for cam ${camera.id}</p>`;
         }
-      }).catch(err => {
-        console.error(`Error for cam ${camera.id}:`, err);
-        spinner.innerHTML = `<p class="text-red-500 text-center">Error loading cam ${camera.id}</p>`;
-      });
-    }
+      }
 
-    function loadAllStreams() {
-      cameras.forEach((camera, index) => {
-        tryLoadStream(camera, index);
-      });
-    }
+      function loadAllStreams() {
+        cameras.forEach((camera, index) => {
+          tryLoadStream(camera, index);
+        });
+      }
 
-    setTimeout(() => {
-      // console.log("Initializing all streams...");
-      loadAllStreams();
-    }, 1000);
+      setTimeout(() => {
+        loadAllStreams();
+      }, 1000);
 
-    setInterval(() => {
-      console.log("Refreshing streams...");
-      loadAllStreams();
-    }, 1000 * 60 * 5);
-  </script>
-
-</body>
-
+      setInterval(() => {
+        console.log("Refreshing streams...");
+        loadAllStreams();
+      }, 1000 * 60 * 5);
+    </script>
+  </body>
 </html>
