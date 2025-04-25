@@ -130,7 +130,7 @@ app.post('/api/start-stream', (req, res) => {
   const streamId = hashRtspUrl(rtspUrl);
   const outputPath = path.join(streamDir, streamId);
   const playlistPath = path.join(outputPath, 'index.m3u8');
-  const hlsUrl = `http://localhost:${PORT}/hls/${streamId}/index.m3u8`;
+  const hlsUrl = `/hls/${streamId}/index.m3u8`;
 
   if (activeStreams[streamId]) {
     return res.json({ hlsUrl });
