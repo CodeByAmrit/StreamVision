@@ -139,7 +139,7 @@ app.post('/api/start-stream', (req, res) => {
   fs.mkdirSync(outputPath, { recursive: true });
 
   const ffmpeg = spawn('ffmpeg', [
-    '-rtsp_transport', 'tcp',
+    '-rtsp_transport', 'udp',
     '-fflags', 'nobuffer',
     '-flags', 'low_delay',
     '-strict', 'experimental',
@@ -148,8 +148,8 @@ app.post('/api/start-stream', (req, res) => {
     '-preset', 'ultrafast',
     '-tune', 'zerolatency',
     '-f', 'hls',
-    '-hls_time', '2',
-    '-hls_list_size', '3',
+    '-hls_time', '1',
+    '-hls_list_size', '2',
     '-hls_flags', 'delete_segments+omit_endlist+discont_start',
     '-hls_segment_type', 'mpegts',
     `-hls_segment_filename`, `${outputPath}/segment_%03d.ts`,
