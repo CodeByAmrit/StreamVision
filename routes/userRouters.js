@@ -43,6 +43,10 @@ router.get('/', async (req, res) => {
     res.render("index");
 });
 
+router.get('/updates', (req, res) => {
+    res.render('updates');
+});
+
 
 router.post('/login', async (req, res) => {
     try {
