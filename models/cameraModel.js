@@ -1,5 +1,3 @@
-const bcrypt = require("bcrypt");
-const { setUser } = require("../services/aouth");
 const db = require("../config/getConnection"); // Your MySQL db connection wrapper
 
 class Camera {

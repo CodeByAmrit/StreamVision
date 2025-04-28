@@ -139,7 +139,7 @@ app.post('/api/start-stream', (req, res) => {
   fs.mkdirSync(outputPath, { recursive: true });
 
   const ffmpeg = spawn('ffmpeg', [
-    '-rtsp_transport', 'udp',
+    '-rtsp_transport', 'tcp',
     '-fflags', 'nobuffer',
     '-flags', 'low_delay',
     '-strict', 'experimental',

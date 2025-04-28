@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 const path = require('path');
-
-const publicStreamController = require('../controllers/publicStreamController');
 const dvrController = require('../controllers/dvrController');
 const { startStream, isStreamActive } = require('../utils/streamManager');
 
