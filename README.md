@@ -32,35 +32,62 @@
 
 ```bash
 StreamVision/
-├── app.js                         # Main Express server
-├── package.json                   # Project metadata and dependencies
+├── [app.js](http://_vscodecontentref_/1)                         # Main Express server
+├── [cluster.js](http://_vscodecontentref_/2)                     # Cluster setup for multi-threaded server
+├── [config.nginx](http://_vscodecontentref_/3)                   # Nginx configuration for reverse proxy
+├── [ecosystem.config.js](http://_vscodecontentref_/4)            # PM2 process manager configuration
+├── [package.json](http://_vscodecontentref_/5)                   # Project metadata and dependencies
+├── [README.md](http://_vscodecontentref_/6)                      # Project documentation
+├── [tailwind.config.js](http://_vscodecontentref_/7)             # Tailwind CSS configuration
 ├── .env                           # Environment variables
-├── README.md                      # Project documentation
+├── .gitignore                     # Git ignore rules
+
+├── config/                        # Configuration files
+│   └── getConnection.js           # Database connection logic
+
+├── controllers/                   # Business logic
+│   ├── camerasController.js       # Handles camera-related operations
+│   ├── dvrController.js           # Handles DVR-related operations
+│   └── publicStreamController.js  # Handles public stream-related operations
+
+├── database/                      # Database-related files
+│   └── structure.sql              # SQL script for database structure
+
+├── models/                        # Data models
+│   ├── cameraModel.js             # Camera model
+│   └── user.js                    # User model
 
 ├── public/                        # Static assets and stream outputs
+│   ├── site.webmanifest           # Web manifest for PWA
+│   ├── up.html                    # Uptime status page
+│   ├── css/                       # CSS files
+│   ├── images/                    # Image assets
+│   ├── js/                        # JavaScript files
 │   └── streams/                   # HLS video output directories
-│       └── dvr_<id>/cam_<id>/     # Each DVR and camera has its own stream folder
+
+├── routes/                        # Express route definitions
+│   ├── camera.js                  # Camera-related routes
+│   ├── cameraRoutes.js            # Additional camera routes
+│   ├── dvrs.js                    # DVR-related routes
+│   ├── publicRoutes.js            # Public-facing routes
+│   └── userRouters.js             # User-related routes
+
+├── services/                      # Service logic
+│   ├── aouth.js                   # OAuth-related logic
+│   ├── auth.js                    # Authentication logic
+│   └── checkauth.js               # Middleware to check authentication
+
+├── src/                           # Source files
+│   └── input.css                  # Tailwind CSS input file
+
+├── streams/                       # Stream-related files
+│   └── (dynamic HLS stream folders created at runtime)
+
+├── utils/                         # Utility functions
+│   └── streamManager.js           # Manages active HLS streams
 
 ├── views/                         # EJS templates
 │   └── dvr_live_public.ejs        # Public DVR stream view
-
-├── routes/                        # Express route definitions
-│   └── dvrRoutes.js               # DVR stream-related routes
-
-├── controllers/                   # Business logic
-│   └── dvrController.js           # Fetch DVR, camera, and location data
-
-├── workers/                       # FFmpeg streaming and management logic
-│   ├── streamWorker.js            # FFmpeg process for DVR (handles all 16 cameras)
-│   └── streamManager.js           # Manages active worker processes per DVR
-
-├── utils/                         # Utility functions (optional)
-│   └── cleanupStreams.js          # Scheduled cleanup for inactive HLS streams (if used)
-
-└── config/                        # Configuration files (optional)
-    └── db.js                      # Database connection setup
-```
-
 ---
 
 ## ⚙️ Setup Instructions
