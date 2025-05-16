@@ -3,6 +3,8 @@ name: Deploy StreamVision to VPS
 on:
   push:
     branches: [main]
+  workflow_dispatch:
+  
 
 jobs:
   deploy:
