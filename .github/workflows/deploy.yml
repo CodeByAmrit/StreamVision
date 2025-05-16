@@ -1,0 +1,35 @@
+name: Deploy StreamVision to VPS
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to VPS via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /home/ubuntu/StreamVision
+            git pull origin main
+            npm install
+            # Optional: build tailwind or run migrations
+            # npm run build:tailwind
+            # npx sequelize db:migrate
+
+            # Restart or start app using ecosystem.config.js
+            pm2 describe streamvision-server > /dev/null \
+              && pm2 restart streamvision-server \
+              || pm2 start ecosystem.config.js
+
+            # Save PM2 process list (important if using PM2 startup)
+            pm2 save
