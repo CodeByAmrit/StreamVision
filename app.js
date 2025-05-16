@@ -43,7 +43,7 @@ app.use(helmet({
       "worker-src": ["'self'", "blob:"],
       "style-src": ["'self'", "'unsafe-inline'"],
       "media-src": ["'self'", "blob:"],
-      "img-src": ["'self'", "data:", "blob:"],
+      "img-src": ["'self'", "data:", "blob:", "https://avatars.githubusercontent.com"],
       "object-src": ["'self'"],
       "frame-src": ["'self'"],
       "connect-src": ["'self'"],
