@@ -2,7 +2,7 @@ name: Deploy StreamVision to VPS
 
 on:
   push:
-    branches: [main]
+    branches: [master]
   workflow_dispatch:
   
 
@@ -22,7 +22,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/ubuntu/StreamVision
-            git pull origin main
+            git pull 
             npm install
             # Optional: build tailwind or run migrations
             # npm run build:tailwind
