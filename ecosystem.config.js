@@ -8,7 +8,7 @@ module.exports = {
             watch: false, // Don't watch files (production only)
             autorestart: true, // Restart if crash
             restart_delay: 5000, // Wait 5 seconds before restarting (to avoid crash loops)
-            max_memory_restart: '2G', // Restart if using more than 2GB RAM (safe limit for 4GB RAM server)
+            max_memory_restart: '4G', // Restart if using more than 2GB RAM (safe limit for 4GB RAM server)
             env: {
                 NODE_ENV: 'production', // Environment variable for production
                 PORT: 3000 // Optional, set your app's port
