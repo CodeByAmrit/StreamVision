@@ -101,17 +101,32 @@ npm install
 ### 2. 🛠️ FFmpeg Setup
 - Make sure FFmpeg is installed and accessible in your environment:
 
+---
+
 ### 3. Set Up Configuration
 
-Create a `.env` file and add:
+Create a `.env` file at the root of your project and add the following:
 
 ```ini
+# Server Configuration
 PORT=3000
+NODE_ENV=development
+
+# Database Configuration
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=yourpassword
-DB_NAME=streamvision
+DB_DATABASE=streamvision
+DB_PORT=3306
 
+# JWT Configuration
+jwt_token=your_jwt_secret
+
+# Password Hashing
+saltRounds=10
+
+# SSL Configuration (Optional)
+DB_CA=/path/to/your/server-cert.pem
 ```
 
  ### 4. 🧠 Run the App
