@@ -1,5 +1,5 @@
 
-![Stream Vision](public/images/banner.svg)
+![Stream Vision](public/images/banner2.png)
 
 # 📹 StreamVision
 
