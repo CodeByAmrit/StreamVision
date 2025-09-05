@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title || "Default Title" %></title>
+    <link rel="stylesheet" href="/css/style.css?v=3.0" />
+    <style>
+      /* Simple pulse animation for the intro logo */
+      @keyframes pulse {
+        50% {
+          opacity: 0.5;
+        }
+      }
+      .animate-pulse-slow {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+    </style>
+  </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <%= title || "Default Title" %>
-    </title>
-    <link rel="stylesheet" href="/css/style.css?v=3.0">
-</head>
-
-<body class="dark:bg-gray-900 dark:border-gray-700 ">
+  <body class="dark:bg-gray-900 dark:border-gray-700"></body>
+</html>

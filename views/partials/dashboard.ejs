@@ -1,53 +1,151 @@
 
-  <!-- Intro Screen -->
-  <div id="introScreen" class="w-screen h-screen bg-white z-50 fixed top-0 left-0 flex justify-center items-center">
-    <img src="/images/cctv.gif" alt="favicon" class="scale-75 w-40 bg-white md:scale-100">
-  </div>
+  <body class="font-sans bg-slate-50 dark:bg-slate-900 antialiased">
+    <div
+      id="introScreen"
+      class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-50 dark:bg-slate-900 transition-opacity duration-500"
+    >
+      <img
+        src="/images/cctv.gif"
+        alt="StreamVision Logo"
+        class="w-24 h-24 animate-pulse-slow mix-blend-multiply"
+      />
+    </div>
 
-  <!-- Main Dashboard Content -->
-  <div class="p-4 sm:ml-64 mt-16 min-h-screen">
-    <div class="flex gap-5 flex-wrap">
-
-      <!-- DVR Count Card -->
-      <div class="flex flex-col md:flex-row xl:flex-col gap-5 w-full md:w-auto">
-        <div class="bg-white dark:bg-gray-800 flex px-0 pl-4 gap-2 justify-center items-center rounded-md shadow w-full min-w-fit">
-          <div class="h-auto flex-none flex justify-center items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" class="bg-blue-100 dark:bg-blue-200 rounded-full p-2" viewBox="0 0 24 24">
-              <path fill="blue" d="M12 12a5 5 0 1 0 0-10a5 5 0 0 0 0 10Zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5Z"/>
-            </svg>
-          </div>
-          <div class="p-4 flex flex-col justify-between">
+    <div class="p-4 sm:p-6 lg:p-8 sm:ml-64 mt-16 min-h-screen">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div
+          class="p-6 bg-white dark:bg-slate-800/50 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700"
+        >
+          <div class="flex items-start justify-between">
             <div>
-              <div class="text-gray-900 dark:text-white font-bold text-3xl">
+              <p class="text-sm font-medium text-slate-500 dark:text-slate-400">
+                Total Locations
+              </p>
+              <p class="text-3xl font-bold text-slate-900 dark:text-white mt-1">
                 <%= total_dvrs || 0 %>
-              </div>
-              <p class="text-gray-700 dark:text-gray-300 text-base">Total DVRs</p>
+              </p>
+            </div>
+            <div class="p-3 bg-blue-100 dark:bg-blue-900/50 rounded-lg">
+              <svg
+                class="w-6 h-6 text-blue-600 dark:text-blue-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+                ></path>
+              </svg>
             </div>
           </div>
         </div>
-
-        <!-- Camera Count Card -->
-        <div class="bg-white dark:bg-gray-800 flex px-0 pl-4 gap-2 justify-center items-center rounded-md shadow w-full">
-          <div class="h-auto flex-none flex justify-center items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" class="bg-green-100 dark:bg-green-200 rounded-full p-2" viewBox="0 0 24 24">
-              <path fill="green" d="M17 10.5V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1.5l4 3v-9l-4 3Z"/>
-            </svg>
-          </div>
-          <div class="p-4 flex flex-col justify-between">
+        <div
+          class="p-6 bg-white dark:bg-slate-800/50 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700"
+        >
+          <div class="flex items-start justify-between">
             <div>
-              <div class="text-gray-900 dark:text-white font-bold text-3xl">
+              <p class="text-sm font-medium text-slate-500 dark:text-slate-400">
+                Total Cameras
+              </p>
+              <p class="text-3xl font-bold text-slate-900 dark:text-white mt-1">
                 <%= total_cameras || 0 %>
-              </div>
-              <p class="text-gray-700 dark:text-gray-300 text-base">Total Cameras</p>
+              </p>
+            </div>
+            <div class="p-3 bg-green-100 dark:bg-green-900/50 rounded-lg">
+              <svg
+                class="w-6 h-6 text-green-600 dark:text-green-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                ></path>
+              </svg>
             </div>
           </div>
         </div>
       </div>
 
-      
-
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div
+          class="lg:col-span-2 p-6 bg-white dark:bg-slate-800/50 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700"
+        >
+          <h3 class="text-lg font-semibold text-slate-800 dark:text-white mb-4">
+            Stream Activity (Last 7 Days)
+          </h3>
+          <div
+            id="activity-chart"
+            class="w-full h-80 text-slate-400 flex items-center justify-center"
+          >
+            Chart placeholder...
+          </div>
+        </div>
+        <div
+          class="p-6 bg-white dark:bg-slate-800/50 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700"
+        >
+          <h3 class="text-lg font-semibold text-slate-800 dark:text-white mb-4">
+            Recent Activity
+          </h3>
+          <ul class="space-y-4">
+            <li class="flex items-center space-x-3">
+              <div class="p-2 bg-green-100 dark:bg-green-900/50 rounded-full">
+                <svg
+                  class="w-4 h-4 text-green-600 dark:text-green-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </div>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                New camera added to 'Warehouse'
+              </p>
+            </li>
+            <li class="flex items-center space-x-3">
+              <div class="p-2 bg-red-100 dark:bg-red-900/50 rounded-full">
+                <svg
+                  class="w-4 h-4 text-red-600 dark:text-red-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M8.257 3.099a.75.75 0 01.387.65l-.828 6.013a.75.75 0 01-1.49.034l.828-6.013a.75.75 0 011.103-.684zM9 13.5a1 1 0 11-2 0 1 1 0 012 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+              </div>
+              <p class="text-sm text-slate-600 dark:text-slate-300">
+                'Lobby Cam 2' stream went offline
+              </p>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
-  </div>
 
-
-  
+    <script>
+      // Simple script to hide the intro screen after a delay
+      window.addEventListener("load", () => {
+        const introScreen = document.getElementById("introScreen");
+        setTimeout(() => {
+          if (introScreen) {
+            introScreen.style.opacity = "0";
+            setTimeout(() => (introScreen.style.display = "none"), 500);
+          }
+        }, 1000); // 1-second delay
+      });
+    </script>
+  </body>
+</html>
