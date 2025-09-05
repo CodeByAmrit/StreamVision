@@ -38,12 +38,26 @@ app.use(helmet({
       "script-src": [
         "'self'",
         "https://cdn.jsdelivr.net",
+        "https://cdnjs.cloudflare.com", // <-- This line allows GSAP
         (req, res) => `'nonce-${res.locals.nonce}'`
       ],
       "worker-src": ["'self'", "blob:"],
-      "style-src": ["'self'", "'unsafe-inline'"],
+      "style-src": [
+        "'self'",
+        "https://fonts.googleapis.com",
+        "'unsafe-inline'"
+      ],
+      "font-src": [
+        "'self'",
+        "https://fonts.gstatic.com"
+      ],
       "media-src": ["'self'", "blob:"],
-      "img-src": ["'self'", "data:", "blob:", "https://avatars.githubusercontent.com"],
+      "img-src": [
+        "'self'",
+        "data:",
+        "blob:",
+        "https://avatars.githubusercontent.com"
+      ],
       "object-src": ["'self'"],
       "frame-src": ["'self'"],
       "connect-src": ["'self'"],

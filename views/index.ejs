@@ -96,8 +96,19 @@
   </head>
 
   <body
-    class="bg-slate-50 dark:bg-slate-900 font-sans text-slate-800 dark:text-slate-200 antialiased overflow-x-hidden"
+    class="dark:bg-slate-900 font-sans text-slate-800 dark:text-slate-200 antialiased overflow-x-hidden"
   >
+    <video id="earth"
+      autoplay
+      loop
+      muted
+      playsinline
+      class="absolute dark:block top-9 h-screen w-screen -z-20 object-cover opacity-20 overflow-hidden"
+    >
+      <source src="/images/earth.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+
     <header
       class="sticky top-0 z-50 w-full bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-800"
     >
@@ -213,7 +224,6 @@
               />
             </svg>
           </a>
-
           <h1
             class="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-5xl lg:text-6xl"
           >
@@ -227,7 +237,7 @@
           </p>
 
           <div
-            class="mt-12 max-w-3xl mx-auto bg-white dark:bg-slate-800/50 rounded-2xl shadow-2xl shadow-slate-200/50 dark:shadow-black/20 p-6 sm:p-8 border border-slate-200 dark:border-slate-700"
+            class="mt-12 max-w-3xl mx-auto bg-white/80 dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl shadow-2xl shadow-slate-200/50 dark:shadow-black/20 p-6 sm:p-8 border border-slate-200 dark:border-slate-700"
           >
             <div class="flex flex-col sm:flex-row items-center gap-4">
               <input
@@ -281,7 +291,8 @@
             </div>
 
             <div
-              class="mt-6 aspect-video bg-black rounded-lg overflow-hidden relative"
+              id="videoContainer"
+              class="hidden mt-6 aspect-video bg-black rounded-lg overflow-hidden relative"
             >
               <div
                 id="loader"
@@ -510,22 +521,27 @@
     </footer>
 
     <script nonce="<%= nonce %>">
+      // --- Element Selectors ---
+      const rtspInput = document.getElementById("rtspInput");
+      const playBtn = document.getElementById("playBtn");
+      const stopBtn = document.getElementById("stopBtn");
+      const videoContainer = document.getElementById("videoContainer"); // Container for player and loader
+      const loader = document.getElementById("loader");
+      const video = document.getElementById("videoPlayer");
+      let currentRtspUrl = "";
+      let hls = null; // To hold the HLS instance
+
+      // --- Autoplay from URL Parameter ---
       window.addEventListener("DOMContentLoaded", () => {
         const params = new URLSearchParams(window.location.search);
         const rtsp = params.get("rtsp");
         if (rtsp) {
-          document.getElementById("rtspInput").value = rtsp;
-          document.getElementById("playBtn").click();
+          rtspInput.value = rtsp;
+          playBtn.click();
         }
       });
 
-      let currentRtspUrl = "";
-      const playBtn = document.getElementById("playBtn");
-      const stopBtn = document.getElementById("stopBtn");
-      const video = document.getElementById("videoPlayer");
-      const loader = document.getElementById("loader");
-      const rtspInput = document.getElementById("rtspInput");
-
+      // --- Main Play Logic ---
       playBtn.addEventListener("click", async function () {
         const rtspUrl = rtspInput.value.trim();
 
@@ -534,7 +550,8 @@
           return;
         }
 
-        // --- UX Improvement: Show loader and disable button ---
+        // Show the video container and loader
+        videoContainer.classList.remove("hidden");
         loader.classList.remove("hidden");
         video.classList.add("hidden");
         playBtn.disabled = true;
@@ -556,64 +573,65 @@
 
           if (!hlsUrl) throw new Error("No HLS URL returned from server");
 
-          const maxAttempts = 8;
-          let attempts = 0;
-
-          const tryLoadHLS = async () => {
-            try {
-              const probe = await fetch(hlsUrl, { method: "HEAD" });
-              if (probe.ok) {
-                // --- UX Improvement: Hide loader ---
-                loader.classList.add("hidden");
-                playBtn.disabled = false;
-
-                video.classList.remove("hidden");
-                stopBtn.classList.remove("hidden");
-                currentRtspUrl = rtspUrl;
-
-                if (Hls.isSupported()) {
-                  const hls = new Hls();
-                  hls.loadSource(hlsUrl);
-                  hls.attachMedia(video);
-                  hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
-                } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
-                  video.src = hlsUrl;
-                  video.addEventListener("loadedmetadata", () => video.play());
-                } else {
-                  alert("HLS not supported in this browser.");
-                }
-                return; // Success, exit retry loop
-              }
-            } catch (e) {
-              // Silently retry
-            }
-
-            if (++attempts < maxAttempts) {
-              setTimeout(tryLoadHLS, 2000);
-            } else {
-              alert(
-                "Stream not ready after multiple attempts. Please check the RTSP URL or try again later."
-              );
-              loader.classList.add("hidden");
-              playBtn.disabled = false;
-            }
-          };
-
-          tryLoadHLS();
+          currentRtspUrl = rtspUrl;
+          loadHlsStream(hlsUrl);
         } catch (err) {
           console.error("Error starting stream:", err);
           alert(`Failed to start stream: ${err.message}`);
-          // --- UX Improvement: Hide loader on failure ---
-          loader.classList.add("hidden");
-          playBtn.disabled = false;
+          resetPlayerUI(true); // Reset UI and hide container on error
         }
       });
 
+      // --- HLS Stream Loading with Retry ---
+      function loadHlsStream(hlsUrl) {
+        const maxAttempts = 8;
+        let attempts = 0;
+
+        const tryLoad = async () => {
+          try {
+            // Check if the manifest file is available
+            const probe = await fetch(hlsUrl, { method: "HEAD" });
+            if (probe.ok) {
+              loader.classList.add("hidden");
+              video.classList.remove("hidden");
+              stopBtn.classList.remove("hidden");
+              playBtn.disabled = false;
+
+              if (Hls.isSupported()) {
+                hls = new Hls();
+                hls.loadSource(hlsUrl);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
+              } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+                video.src = hlsUrl;
+                video.addEventListener("loadedmetadata", () => video.play());
+              } else {
+                alert("HLS is not supported in this browser.");
+                resetPlayerUI(true);
+              }
+              return; // Success, so exit the retry loop
+            }
+          } catch (e) {
+            // This error is expected while waiting for the file, so we ignore it and retry
+          }
+
+          // If not successful, retry after a delay
+          if (++attempts < maxAttempts) {
+            setTimeout(tryLoad, 2000);
+          } else {
+            alert(
+              "Stream not ready after multiple attempts. Please check the RTSP URL or try again later."
+            );
+            resetPlayerUI(true); // Reset UI and hide container on failure
+          }
+        };
+
+        tryLoad();
+      }
+
+      // --- Stop Button Logic ---
       stopBtn.addEventListener("click", async function () {
-        if (!currentRtspUrl) {
-          alert("No active stream to stop.");
-          return;
-        }
+        if (!currentRtspUrl) return;
 
         try {
           const response = await fetch("/api/stop-stream", {
@@ -621,17 +639,10 @@
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ rtspUrl: currentRtspUrl }),
           });
-
-          const result = await response.json();
-
           if (response.ok) {
-            video.pause();
-            video.src = "";
-            video.classList.add("hidden");
-            stopBtn.classList.add("hidden");
-            currentRtspUrl = "";
-            console.log(result.message);
+            resetPlayerUI(true);
           } else {
+            const result = await response.json();
             alert(result.error || "Failed to stop the stream.");
           }
         } catch (err) {
@@ -639,8 +650,61 @@
           alert("An error occurred while trying to stop the stream.");
         }
       });
-    </script>
 
+      // --- UI Reset Function ---
+      function resetPlayerUI(hideContainer = false) {
+        // Destroy HLS instance if it exists to free up resources
+        if (hls) {
+          hls.destroy();
+          hls = null;
+        }
+        video.pause();
+        video.src = "";
+        video.classList.add("hidden");
+        stopBtn.classList.add("hidden");
+        loader.classList.add("hidden");
+        playBtn.disabled = false;
+        currentRtspUrl = "";
+
+        if (hideContainer) {
+          videoContainer.classList.add("hidden");
+        }
+      }
+    </script>
+     <script nonce="<%= nonce %>">
+        // --- Lazy Load Background Video ---
+        window.addEventListener('load', () => {
+            const video = document.getElementById('backgroundVideo');
+            if (video) {
+                const source = document.createElement('source');
+                source.src = video.getAttribute('data-src');
+                source.type = 'video/mp4';
+                video.appendChild(source);
+                video.load();
+            }
+        });
+
+        // --- GSAP Scroll Animations ---
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof gsap !== 'undefined') {
+                gsap.registerPlugin(ScrollTrigger);
+                gsap.utils.toArray('.gsap-reveal').forEach(elem => {
+                    gsap.from(elem, {
+                        scrollTrigger: {
+                            trigger: elem,
+                            start: 'top 85%',
+                            toggleActions: 'play none none none'
+                        },
+                        opacity: 0,
+                        y: 50,
+                        duration: 1,
+                        ease: 'power3.out'
+                    });
+                });
+            }
+        });
+    </script>
+    
     <script src="/js/theme.js" nonce="<%= nonce %>"></script>
-  </body>
+</body>
 </html>
