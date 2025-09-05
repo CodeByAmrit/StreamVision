@@ -52,6 +52,15 @@
     <link rel="stylesheet" href="/css/style.css" nonce="<%= nonce %>" />
 
     <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+      defer
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
+      defer
+    ></script>
+
+    <script
       src="https://cdn.jsdelivr.net/npm/flowbite@1.4.0/dist/flowbite.min.js"
       defer
       nonce="<%= nonce %>"
@@ -98,7 +107,8 @@
   <body
     class="dark:bg-slate-900 font-sans text-slate-800 dark:text-slate-200 antialiased overflow-x-hidden"
   >
-    <video id="earth"
+    <video
+      id="earth"
       autoplay
       loop
       muted
@@ -117,7 +127,7 @@
           <a href="/" class="flex items-center space-x-3">
             <img
               src="/images/favicon.png"
-              class="h-8 dark:invert"
+              class="h-8"
               alt="StreamVision Logo"
             />
             <span class="text-2xl font-bold text-slate-900 dark:text-white"
@@ -225,19 +235,19 @@
             </svg>
           </a>
           <h1
-            class="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-5xl lg:text-6xl"
+            class="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-5xl lg:text-6xl gsap-reveal"
           >
             Live RTSP Stream Viewer
           </h1>
           <p
-            class="mt-6 max-w-2xl mx-auto text-lg text-slate-600 dark:text-slate-400"
+            class="mt-6 max-w-2xl mx-auto text-lg text-slate-600 dark:text-slate-400 gsap-reveal"
           >
             Simply paste your camera's RTSP URL below to start viewing the live
             feed securely in your browser.
           </p>
 
           <div
-            class="mt-12 max-w-3xl mx-auto bg-white/80 dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl shadow-2xl shadow-slate-200/50 dark:shadow-black/20 p-6 sm:p-8 border border-slate-200 dark:border-slate-700"
+            class="mt-12 max-w-3xl mx-auto bg-white/80 dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl shadow-2xl shadow-slate-200/50 dark:shadow-black/20 p-6 sm:p-8 border border-slate-200 dark:border-slate-700 gsap-reveal"
           >
             <div class="flex flex-col sm:flex-row items-center gap-4">
               <input
@@ -320,17 +330,17 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="text-center">
             <h2
-              class="text-base font-semibold leading-7 text-blue-600 dark:text-blue-400"
+              class="text-base font-semibold leading-7 text-blue-600 dark:text-blue-400 gsap-reveal"
             >
               Why Choose StreamVision?
             </h2>
             <p
-              class="mt-2 text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl"
+              class="mt-2 text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl gsap-reveal"
             >
               Everything You Need for Modern Surveillance
             </p>
             <p
-              class="mt-6 max-w-2xl mx-auto text-lg leading-8 text-slate-600 dark:text-slate-400"
+              class="mt-6 max-w-2xl mx-auto text-lg leading-8 text-slate-600 dark:text-slate-400 gsap-reveal"
             >
               From low-latency viewing to secure sharing, we provide a robust
               platform for all your streaming needs.
@@ -339,7 +349,9 @@
           <div
             class="mt-16 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
           >
-            <div class="p-8 bg-slate-100/50 dark:bg-slate-800/50 rounded-xl">
+            <div
+              class="p-8 bg-slate-100/50 dark:bg-slate-800/50 rounded-xl gsap-reveal"
+            >
               <div
                 class="inline-flex items-center justify-center w-12 h-12 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-lg"
               >
@@ -365,7 +377,9 @@
                 latency, powered by HLS and FFmpeg.
               </p>
             </div>
-            <div class="p-8 bg-slate-100/50 dark:bg-slate-800/50 rounded-xl">
+            <div
+              class="p-8 bg-slate-100/50 dark:bg-slate-800/50 rounded-xl gsap-reveal"
+            >
               <div
                 class="inline-flex items-center justify-center w-12 h-12 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-lg"
               >
@@ -391,7 +405,9 @@
                 external stakeholders without requiring a login.
               </p>
             </div>
-            <div class="p-8 bg-slate-100/50 dark:bg-slate-800/50 rounded-xl">
+            <div
+              class="p-8 bg-slate-100/50 dark:bg-slate-800/50 rounded-xl gsap-reveal"
+            >
               <div
                 class="inline-flex items-center justify-center w-12 h-12 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-lg"
               >
@@ -424,18 +440,20 @@
       <section class="py-20 sm:py-24">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2
-            class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl"
+            class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl gsap-reveal"
           >
             About the Developer
           </h2>
-          <p class="mt-4 text-lg text-slate-600 dark:text-slate-400">
+          <p
+            class="mt-4 text-lg text-slate-600 dark:text-slate-400 gsap-reveal"
+          >
             StreamVision is developed and maintained by a passionate software
             engineer dedicated to building high-quality, real-time video
             solutions.
           </p>
         </div>
         <div
-          class="mt-16 max-w-sm mx-auto bg-white dark:bg-slate-800/50 rounded-2xl shadow-lg p-8 text-center border border-slate-200 dark:border-slate-700"
+          class="mt-16 max-w-sm mx-auto bg-white dark:bg-slate-800/50 rounded-2xl shadow-lg p-8 text-center border border-slate-200 dark:border-slate-700 gsap-reveal"
         >
           <img
             class="w-24 h-24 rounded-full mx-auto"
@@ -491,8 +509,9 @@
         <div
           class="text-center text-sm text-slate-500 dark:text-slate-400 md:text-left"
         >
-          &copy; 2025 <a href="/" class="hover:underline">StreamVision™</a>. All
-          Rights Reserved.
+          &copy; 2025
+          <a href="/" class="hover:underline">StreamVision™</a>. All Rights
+          Reserved.
         </div>
         <ul class="flex justify-center mt-4 space-x-6 md:mt-0 md:order-2">
           <li>
@@ -570,7 +589,6 @@
 
           const data = await response.json();
           const hlsUrl = data.hlsUrl;
-
           if (!hlsUrl) throw new Error("No HLS URL returned from server");
 
           currentRtspUrl = rtspUrl;
@@ -671,40 +689,31 @@
         }
       }
     </script>
-     <script nonce="<%= nonce %>">
-        // --- Lazy Load Background Video ---
-        window.addEventListener('load', () => {
-            const video = document.getElementById('backgroundVideo');
-            if (video) {
-                const source = document.createElement('source');
-                source.src = video.getAttribute('data-src');
-                source.type = 'video/mp4';
-                video.appendChild(source);
-                video.load();
-            }
-        });
+    <script nonce="<%= nonce %>">
+      // --- GSAP Scroll Animations ---
+      document.addEventListener("DOMContentLoaded", () => {
+        // Wait for GSAP and ScrollTrigger to be available
+        if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+          gsap.registerPlugin(ScrollTrigger);
 
-        // --- GSAP Scroll Animations ---
-        document.addEventListener('DOMContentLoaded', () => {
-            if (typeof gsap !== 'undefined') {
-                gsap.registerPlugin(ScrollTrigger);
-                gsap.utils.toArray('.gsap-reveal').forEach(elem => {
-                    gsap.from(elem, {
-                        scrollTrigger: {
-                            trigger: elem,
-                            start: 'top 85%',
-                            toggleActions: 'play none none none'
-                        },
-                        opacity: 0,
-                        y: 50,
-                        duration: 1,
-                        ease: 'power3.out'
-                    });
-                });
-            }
-        });
+          // Find all elements with the 'gsap-reveal' class and animate them
+          gsap.utils.toArray(".gsap-reveal").forEach((elem) => {
+            gsap.from(elem, {
+              scrollTrigger: {
+                trigger: elem,
+                start: "top 85%", // Animation starts when the top of the element is 85% from the top of the viewport
+                toggleActions: "play none none none", // Play the animation once when it enters and do nothing else
+              },
+              opacity: 0,
+              y: 50, // Start 50px below its final position
+              duration: 1,
+              ease: "power3.out",
+            });
+          });
+        }
+      });
     </script>
-    
+
     <script src="/js/theme.js" nonce="<%= nonce %>"></script>
-</body>
+  </body>
 </html>
