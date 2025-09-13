@@ -78,7 +78,7 @@
     <style>
       /* Simple style for the loader */
       .loader {
-        border-top-color: #3b82f6; /* Updated to blue */
+        border-top-color: #f68f3b; /* Updated to blue */
         -webkit-animation: spinner 1.5s linear infinite;
         animation: spinner 1.5s linear infinite;
       }
@@ -102,51 +102,42 @@
   </head>
 
   <body
-    class="dark:bg-slate-900 font-sans text-slate-800 dark:text-slate-200 antialiased overflow-x-hidden"
+    class="dark:bg-black font-sans text-slate-800 dark:text-slate-200 antialiased overflow-x-hidden"
   >
-    <video
-      id="earth"
-      autoplay
-      loop
-      muted
-      playsinline
-      class="absolute dark:block top-9 h-screen w-screen -z-20 object-cover opacity-20 overflow-hidden"
-    >
-      <source src="/images/earth.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
-
-    <header
-      class="sticky top-0 z-50 w-full bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-800"
-    >
+    <header class="sticky top-0 z-50 w-full bg-[#100f12]/80 backdrop-blur-md border-b border-[#4A4654]/40">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
+          
+          <!-- Logo + Brand -->
           <a href="/" class="flex items-center space-x-3">
-            <img
-              src="/images/favicon.png"
-              class="h-8"
-              alt="StreamVision Logo"
-            />
-            <span class="text-2xl font-bold text-slate-900 dark:text-white"
-              >StreamVision</span
+            <img src="/images/favicon.png" class="h-8" alt="StreamVision Logo" />
+            <span
+              class="text-2xl font-bold bg-gradient-to-r from-cyan-300 to-purple-400 bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(115,251,253,0.4)]"
             >
+              StreamVision
+            </span>
           </a>
+
+          <!-- Right Side: Theme Toggle + CTA -->
           <div class="flex items-center space-x-4">
+            
+            <!-- Theme Toggle -->
             <button
               id="theme-toggle"
               type="button"
-              class="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="p-2 rounded-xl text-[#4A4654] hover:bg-[#382F2A]/60 hover:text-cyan-300 focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-offset-2 focus:ring-offset-[#100f12] transition-all"
             >
+              <!-- Dark Mode Icon -->
               <svg
                 id="theme-toggle-dark-icon"
                 class="hidden w-5 h-5"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
-                <path
-                  d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
-                ></path>
+                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
               </svg>
+
+              <!-- Light Mode Icon -->
               <svg
                 id="theme-toggle-light-icon"
                 class="hidden w-5 h-5"
@@ -160,9 +151,11 @@
                 ></path>
               </svg>
             </button>
+
+            <!-- Admin Login Button -->
             <a
               href="/login"
-              class="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900 transition-colors"
+              class="px-4 py-2 text-sm font-semibold text-[#100f12] bg-cyan-300 rounded-xl shadow-[0_0_12px_#73FBFD70] hover:shadow-[0_0_18px_#73FBFD] hover:scale-105 transition-all focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-offset-2 focus:ring-offset-[#100f12]"
             >
               Admin Login
             </a>
@@ -172,153 +165,88 @@
     </header>
 
     <main>
-      <section class="relative py-20">
-        <div
-          class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
-          aria-hidden="true"
-        >
-          <div
-            class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#38bdf8] to-[#6366f1] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
-            style="
-              clip-path: polygon(
-                74.1% 44.1%,
-                100% 61.6%,
-                97.5% 26.9%,
-                85.5% 0.1%,
-                80.7% 2%,
-                72.5% 32.5%,
-                60.2% 62.4%,
-                52.4% 68.1%,
-                47.5% 58.3%,
-                45.2% 34.5%,
-                27.5% 76.7%,
-                0.1% 64.9%,
-                17.9% 100%,
-                27.6% 76.8%,
-                76.1% 97.7%,
-                74.1% 44.1%
-              );
-            "
-          ></div>
-        </div>
+      <section class="relative py-20 h-screen bg-[url('/images/background.jpg')]  bg-cover bg-center">
+        <!-- Strong Dark Overlay -->
+        <div class="absolute inset-0"></div>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <a
-            href="/updates"
-            class="inline-flex flex-col sm:flex-row justify-between items-center py-2 px-3 sm:py-1 sm:px-1 pe-4 mb-7 text-xs sm:text-sm text-green-700 bg-green-100 rounded-full dark:bg-green-900 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-800"
-          >
-            <span
-              class="text-xs bg-green-600 rounded-full text-white px-3 py-1 sm:px-4 sm:py-1.5 me-0 sm:me-3 mb-1 sm:mb-0"
-              >Update</span
-            >
-            <span
-              class="text-xs sm:text-sm font-medium text-center sm:text-left"
-              >StreamVision v2.0 is live! Check out the new features 🚀</span
-            >
-            <svg
-              class="w-2 h-2 sm:w-2.5 sm:h-2.5 ms-0 sm:ms-2 rtl:rotate-180"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 6 10"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m1 9 4-4-4-4"
-              />
-            </svg>
-          </a>
-          <h1
-            class="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-5xl lg:text-6xl gsap-reveal"
-          >
-            Live RTSP Stream Viewer
-          </h1>
-          <p
-            class="mt-6 max-w-2xl mx-auto text-lg text-slate-600 dark:text-slate-400 gsap-reveal"
-          >
-            Simply paste your camera's RTSP URL below to start viewing the live
-            feed securely in your browser.
-          </p>
+        <div class="flex justify-center relative z-10 xl:h-screen">
+          <div class="w-full md:w-1/2 flex gap-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center font-[Inter]">
 
-          <div
-            class="mt-12 max-w-3xl mx-auto bg-white/80 dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl shadow-2xl shadow-slate-200/50 dark:shadow-black/20 p-6 sm:p-8 border border-slate-200 dark:border-slate-700 gsap-reveal"
-          >
-            <div class="flex flex-col sm:flex-row items-center gap-4">
-              <input
-                type="text"
-                id="rtspInput"
-                class="w-full px-4 py-3 text-base bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-white border-2 border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                placeholder="rtsp://user:pass@ip_address:port/stream"
-              />
-              <button
-                id="playBtn"
-                class="flex-shrink-0 w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 text-base font-semibold text-white bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              <!-- Update Banner -->
+              <a
+                href="/updates"
+                class="inline-flex flex-col sm:flex-row justify-between items-center py-2 px-3 sm:py-1 sm:px-1 pe-4 mb-7 text-xs sm:text-sm text-gray-900 bg-cyan-300/30 rounded-full hover:bg-cyan-300/50 shadow-[0_0_15px_#22d3ee70] transition"
               >
-                <svg
-                  class="w-5 h-5 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+                <span
+                  class="text-xs bg-cyan-300 rounded-full text-gray-900 px-3 py-1 sm:px-4 sm:py-1.5 me-0 sm:me-3 mb-1 sm:mb-0 shadow-[0_0_12px_#22d3ee80]"
                 >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
-                  ></path>
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  ></path>
-                </svg>
-                Start Stream
-              </button>
-              <button
-                id="stopBtn"
-                class="hidden flex-shrink-0 w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 text-base font-semibold text-white bg-red-600 rounded-lg shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900 transition-colors"
-              >
-                <svg
-                  class="w-5 h-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 001-1V8a1 1 0 00-1-1H8z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-                Stop Stream
-              </button>
-            </div>
+                  Update
+                </span>
+                <span class="text-xs sm:text-sm font-medium text-gray-100">
+                  StreamVision v2.0 is live! Check out the new features 🚀
+                </span>
+              </a>
 
-            <div
-              id="videoContainer"
-              class="hidden mt-6 aspect-video bg-black rounded-lg overflow-hidden relative"
-            >
+              <!-- Main Heading with Tailwind Gradient -->
+              <h1
+                class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight 
+                      bg-gradient-to-r from-cyan-300 via-white to-purple-400 
+                      bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(34,211,238,0.5)]"
+              >
+                Live RTSP Stream Viewer
+              </h1>
+
+              <!-- Subtitle -->
+              <p class="mt-6 max-w-2xl mx-auto text-lg text-gray-200 drop-shadow-md">
+                Simply paste your camera's RTSP URL below to start viewing the live feed securely in your browser.
+              </p>
+
+              <!-- Input + Buttons (No border now) -->
               <div
-                id="loader"
-                class="hidden absolute inset-0 flex items-center justify-center"
+                class="mt-12 max-w-3xl mx-auto bg-black/50 backdrop-blur-md rounded-2xl shadow-xl shadow-black/40 p-6 sm:p-8"
               >
-                <div
-                  class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12"
-                ></div>
+                <div class="flex flex-col sm:flex-row items-center gap-4">
+                  <!-- Input Field -->
+                  <input
+                    type="text"
+                    id="rtspInput"
+                    class="w-full px-4 py-3 text-base bg-black/40 backdrop-blur-md text-gray-100 placeholder-gray-400 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:border-cyan-300 transition"
+                    placeholder="rtsp://user:pass@ip_address:port/stream"
+                  />
+
+                  <!-- Primary Button -->
+                  <button
+                    id="playBtn"
+                    class="flex-shrink-0 w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 text-base font-semibold text-gray-900 bg-cyan-300 rounded-lg shadow-lg hover:shadow-cyan-300/50 hover:scale-105 transition-all focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-offset-2"
+                  >
+                    ▶ Start Stream
+                  </button>
+
+                  <!-- Secondary Button -->
+                  <button
+                    id="stopBtn"
+                    class="hidden flex-shrink-0 w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 text-base font-semibold text-purple-400 border border-purple-400 rounded-lg hover:bg-purple-400 hover:text-gray-900 hover:shadow-[0_0_20px_#c084fc] transition-all focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2"
+                  >
+                    ■ Stop Stream
+                  </button>
+                </div>
+
+                <!-- Video Container -->
+                <div id="videoContainer" class="hidden mt-6 aspect-video bg-black/60 rounded-lg overflow-hidden relative">
+                  <div id="loader" class="hidden absolute inset-0 flex items-center justify-center">
+                    <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-400 h-12 w-12"></div>
+                  </div>
+                  <video id="videoPlayer" width="100%" controls class="w-full h-full hidden"></video>
+                </div>
               </div>
-              <video
-                id="videoPlayer"
-                width="100%"
-                controls
-                class="w-full h-full hidden"
-              ></video>
             </div>
           </div>
+
+          <div class="hidden md:block w-1/2"></div>
         </div>
       </section>
+
 
       <section
         id="features"

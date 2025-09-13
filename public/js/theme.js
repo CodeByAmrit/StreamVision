@@ -12,13 +12,11 @@ document.addEventListener("DOMContentLoaded", function () {
       darkIcon.classList.add("hidden");
       lightIcon.classList.remove("hidden");
       localStorage.setItem("theme", "dark");
-      earth.classList.remove("hidden");
     } else {
       document.documentElement.classList.remove("dark");
       lightIcon.classList.add("hidden");
       darkIcon.classList.remove("hidden");
       localStorage.setItem("theme", "light");
-      earth.classList.add("hidden");
     }
   };
 

@@ -22,30 +22,26 @@
     ></script>
   </head>
 
-  <body
-    class="bg-slate-50 dark:bg-slate-900 font-sans text-slate-800 dark:text-slate-200 antialiased"
-  >
+  <body class="bg-[#100f12] font-sans text-[#EAE6F3] antialiased">
+    <!-- HEADER -->
     <header
-      class="sticky top-0 z-50 w-full bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-800"
+      class="sticky top-0 z-50 w-full bg-[#100f12]/70 backdrop-blur-md border-b border-[#4A4654]/30"
     >
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
           <a href="/" class="flex items-center space-x-3">
-            <img
-              src="/images/favicon.png"
-              class="h-"
-              alt="StreamVision Logo"
-            />
-            <span class="text-2xl font-bold text-slate-900 dark:text-white"
-              >StreamVision</span
-            >
+            <img src="/images/favicon.png" class="h-8" alt="StreamVision Logo" />
+            <span class="text-2xl font-bold text-[#EAE6F3]">
+              StreamVision
+            </span>
           </a>
           <div class="flex items-center space-x-4">
             <button
               id="theme-toggle"
               type="button"
-              class="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              class="p-2 rounded-lg text-[#EAE6F3]/70 hover:bg-[#4A4654]/30 focus:outline-none focus:ring-2 focus:ring-[#73FBFD]/40"
             >
+              <!-- Theme Toggle Icons -->
               <svg
                 id="theme-toggle-dark-icon"
                 class="hidden w-5 h-5"
@@ -71,7 +67,7 @@
             </button>
             <a
               href="/login"
-              class="px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900 transition-colors"
+              class="px-4 py-2 text-sm font-semibold bg-[#73FBFD] text-[#100f12] rounded-lg shadow-md hover:shadow-[#73FBFD]/40 hover:bg-[#73FBFD]/90 transition-all"
             >
               Admin Login
             </a>
@@ -80,6 +76,7 @@
       </div>
     </header>
 
+    <!-- MAIN CONTENT -->
     <main>
       <div class="relative py-20 sm:py-24 lg:py-32">
         <div
@@ -87,136 +84,103 @@
           aria-hidden="true"
         >
           <div
-            class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#38bdf8] to-[#6366f1] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
+            class="relative left-1/2 aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#73FBFD] to-[#C8A2FF] opacity-20 sm:w-[72.1875rem]"
           ></div>
         </div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="max-w-2xl mx-auto text-center">
             <h1
-              class="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-5xl"
+              class="text-4xl sm:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-[#73FBFD] to-[#C8A2FF] bg-clip-text text-transparent"
             >
               📢 StreamVision Updates
             </h1>
-            <p class="mt-6 text-lg text-slate-600 dark:text-slate-400">
+            <p class="mt-6 text-lg text-[#EAE6F3]/70">
               Stay informed with the latest features, improvements, and fixes
               for the StreamVision platform.
             </p>
           </div>
 
-          <div class="mt-16 max-w-3xl mx-auto">
+          <!-- UPDATES LIST -->
+          <div class="mt-16 max-w-3xl mx-auto space-y-10">
+            <!-- Update Card -->
             <div
-              class="relative border-l-2 border-slate-200 dark:border-slate-700 space-y-12 pl-6"
+              class="relative border-l-2 border-[#C8A2FF]/40 pl-6 space-y-12"
             >
-              <div class="relative">
-                <div
-                  class="absolute -left-[34px] top-1 h-4 w-4 rounded-full bg-blue-500 ring-8 ring-slate-50 dark:ring-slate-900"
-                ></div>
-                <div
-                  class="p-6 bg-white dark:bg-slate-800/50 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700"
-                >
-                  <div class="flex items-center justify-between mb-2">
-                    <h2
-                      class="text-xl font-bold text-slate-800 dark:text-white"
-                    >
-                      🚀 Quick RTSP View Launched
-                    </h2>
-                    <span
-                      class="bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300 text-xs font-semibold px-3 py-1 rounded-full"
-                      >New</span
-                    >
-                  </div>
-                  <p class="text-slate-600 dark:text-slate-400 mb-4">
-                    You can now instantly test your RTSP URL streams before
-                    adding them to your dashboard. Just paste the URL on the
-                    homepage and see the live feed in seconds!
-                  </p>
-                  <div class="text-sm text-slate-400 dark:text-slate-500">
-                    Released on: April 27, 2025
-                  </div>
+              <div
+                class="absolute -left-[34px] top-1 h-4 w-4 rounded-full bg-[#73FBFD] ring-8 ring-[#100f12]"
+              ></div>
+              <div
+                class="p-6 bg-[#1A1920]/60 rounded-2xl shadow-lg border border-[#4A4654]/50 backdrop-blur-md"
+              >
+                <div class="flex items-center justify-between mb-2">
+                  <h2
+                    class="text-xl font-bold bg-gradient-to-r from-[#73FBFD] to-[#C8A2FF] bg-clip-text text-transparent"
+                  >
+                    🚀 Quick RTSP View Launched
+                  </h2>
+                  <span
+                    class="bg-[#73FBFD]/20 text-[#73FBFD] text-xs font-semibold px-3 py-1 rounded-full border border-[#73FBFD]/40"
+                    >New</span
+                  >
+                </div>
+                <p class="text-[#EAE6F3]/80 mb-4">
+                  You can now instantly test your RTSP URL streams before adding
+                  them to your dashboard. Just paste the URL on the homepage and
+                  see the live feed in seconds!
+                </p>
+                <div class="text-sm text-[#4A4654]">
+                  Released on: April 27, 2025
                 </div>
               </div>
+            </div>
 
-              <div class="relative">
-                <div
-                  class="absolute -left-[34px] top-1 h-4 w-4 rounded-full bg-blue-500 ring-8 ring-slate-50 dark:ring-slate-900"
-                ></div>
-                <div
-                  class="p-6 bg-white dark:bg-slate-800/50 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700"
-                >
-                  <div class="flex items-center justify-between mb-2">
-                    <h2
-                      class="text-xl font-bold text-slate-800 dark:text-white"
-                    >
-                      ⚡ Performance and Security
-                    </h2>
-                    <span
-                      class="bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300 text-xs font-semibold px-3 py-1 rounded-full"
-                      >Improvement</span
-                    >
-                  </div>
-                  <ul
-                    class="list-disc list-inside text-slate-600 dark:text-slate-400 mb-4 space-y-1 pl-2"
+            <!-- Another Update -->
+            <div class="relative border-l-2 border-[#C8A2FF]/40 pl-6">
+              <div
+                class="absolute -left-[34px] top-1 h-4 w-4 rounded-full bg-[#C8A2FF] ring-8 ring-[#100f12]"
+              ></div>
+              <div
+                class="p-6 bg-[#1A1920]/60 rounded-2xl shadow-lg border border-[#4A4654]/50 backdrop-blur-md"
+              >
+                <div class="flex items-center justify-between mb-2">
+                  <h2
+                    class="text-xl font-bold bg-gradient-to-r from-[#C8A2FF] to-[#73FBFD] bg-clip-text text-transparent"
                   >
-                    <li>
-                      Optimized FFmpeg processing for 30% faster stream startup
-                      times.
-                    </li>
-                    <li>
-                      Enhanced security with token-based protection for all
-                      streaming endpoints.
-                    </li>
-                    <li>
-                      Strengthened JWT implementation for the admin login
-                      process.
-                    </li>
-                  </ul>
-                  <div class="text-sm text-slate-400 dark:text-slate-500">
-                    Released on: April 20, 2025
-                  </div>
+                    ⚡ Performance and Security
+                  </h2>
+                  <span
+                    class="bg-[#C8A2FF]/20 text-[#C8A2FF] text-xs font-semibold px-3 py-1 rounded-full border border-[#C8A2FF]/40"
+                    >Improvement</span
+                  >
                 </div>
-              </div>
-
-              <div class="relative">
-                <div
-                  class="absolute -left-[34px] top-1 h-4 w-4 rounded-full bg-blue-500 ring-8 ring-slate-50 dark:ring-slate-900"
-                ></div>
-                <div
-                  class="p-6 bg-white dark:bg-slate-800/50 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700"
+                <ul
+                  class="list-disc list-inside text-[#EAE6F3]/80 mb-4 space-y-1 pl-2"
                 >
-                  <div class="flex items-center justify-between mb-2">
-                    <h2
-                      class="text-xl font-bold text-slate-800 dark:text-white"
-                    >
-                      ✨ Version 1.0 Release
-                    </h2>
-                    <span
-                      class="bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300 text-xs font-semibold px-3 py-1 rounded-full"
-                      >Major Update</span
-                    >
-                  </div>
-                  <ul
-                    class="list-disc list-inside text-slate-600 dark:text-slate-400 mb-4 space-y-1 pl-2"
-                  >
-                    <li>Public shareable HLS links for live camera streams.</li>
-                    <li>
-                      Real-time stream metadata extraction (FPS, bitrate,
-                      resolution).
-                    </li>
-                    <li>Multi-camera live dashboard with status indicators.</li>
-                  </ul>
-                  <div class="text-sm text-slate-400 dark:text-slate-500">
-                    Released on: April 15, 2025
-                  </div>
+                  <li>
+                    Optimized FFmpeg processing for 30% faster stream startup
+                    times.
+                  </li>
+                  <li>
+                    Enhanced security with token-based protection for all
+                    streaming endpoints.
+                  </li>
+                  <li>
+                    Strengthened JWT implementation for the admin login process.
+                  </li>
+                </ul>
+                <div class="text-sm text-[#4A4654]">
+                  Released on: April 20, 2025
                 </div>
               </div>
             </div>
           </div>
 
+          <!-- BACK BUTTON -->
           <div class="text-center mt-12">
             <a
               href="/"
-              class="inline-flex items-center justify-center px-6 py-3 text-base font-semibold text-white bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900 transition-colors"
+              class="inline-flex items-center justify-center px-6 py-3 text-base font-semibold bg-[#73FBFD] text-[#100f12] rounded-lg shadow-md hover:shadow-[#73FBFD]/40 hover:bg-[#73FBFD]/90 transition-all"
             >
               ← Back to Viewer
             </a>
@@ -225,37 +189,35 @@
       </div>
     </main>
 
-    <footer
-      class="bg-white dark:bg-slate-950/20 border-t border-slate-200 dark:border-slate-800"
-    >
+    <!-- FOOTER -->
+    <footer class="bg-[#1A1920]/40 border-t border-[#4A4654]/50">
       <div
         class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 md:flex md:items-center md:justify-between"
       >
-        <div
-          class="text-center text-sm text-slate-500 dark:text-slate-400 md:text-left"
-        >
-          &copy; 2025 <a href="/" class="hover:underline">StreamVision™</a>. All
-          Rights Reserved.
+        <div class="text-center text-sm text-[#EAE6F3]/60 md:text-left">
+          &copy; 2025
+          <a href="/" class="hover:underline text-[#73FBFD]">StreamVision™</a>.
+          All Rights Reserved.
         </div>
         <ul class="flex justify-center mt-4 space-x-6 md:mt-0 md:order-2">
           <li>
             <a
               href="#"
-              class="text-sm text-slate-500 dark:text-slate-400 hover:underline"
+              class="text-sm text-[#EAE6F3]/60 hover:text-[#73FBFD]"
               >About</a
             >
           </li>
           <li>
             <a
               href="#"
-              class="text-sm text-slate-500 dark:text-slate-400 hover:underline"
+              class="text-sm text-[#EAE6F3]/60 hover:text-[#73FBFD]"
               >Privacy</a
             >
           </li>
           <li>
             <a
               href="#"
-              class="text-sm text-slate-500 dark:text-slate-400 hover:underline"
+              class="text-sm text-[#EAE6F3]/60 hover:text-[#73FBFD]"
               >Contact</a
             >
           </li>
