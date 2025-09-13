@@ -1677,6 +1677,11 @@ input:checked + .toggle-bg {
   margin-bottom: 1rem;
 }
 
+.mx-6 {
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
+}
+
 .-mb-4 {
   margin-bottom: -1rem;
 }
@@ -2662,6 +2667,10 @@ input:checked + .toggle-bg {
 
 .bg-sky-500\/10 {
   background-color: rgb(14 165 233 / 0.1);
+}
+
+.bg-transparent {
+  background-color: transparent;
 }
 
 .bg-\[url\(\'\/images\/background\.jpg\'\)\] {
