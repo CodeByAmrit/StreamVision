@@ -13,6 +13,7 @@
 
     <div class="p-4 sm:p-6 lg:p-8 sm:ml-64 mt-16 min-h-screen">
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <!-- Total Location -->
         <div
           class="p-6 bg-white dark:bg-slate-800/50 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700"
         >
@@ -42,6 +43,7 @@
             </div>
           </div>
         </div>
+        <!-- Total Cameras -->
         <div
           class="p-6 bg-white dark:bg-slate-800/50 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700"
         >
@@ -71,68 +73,78 @@
             </div>
           </div>
         </div>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div
-          class="lg:col-span-2 p-6 bg-white dark:bg-slate-800/50 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700"
-        >
-          <h3 class="text-lg font-semibold text-slate-800 dark:text-white mb-4">
-            Stream Activity (Last 7 Days)
-          </h3>
-          <div
-            id="activity-chart"
-            class="w-full h-80 text-slate-400 flex items-center justify-center"
-          >
-            Chart placeholder...
-          </div>
-        </div>
+        <!-- Total Live Streams -->
         <div
           class="p-6 bg-white dark:bg-slate-800/50 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700"
         >
-          <h3 class="text-lg font-semibold text-slate-800 dark:text-white mb-4">
-            Recent Activity
-          </h3>
-          <ul class="space-y-4">
-            <li class="flex items-center space-x-3">
-              <div class="p-2 bg-green-100 dark:bg-green-900/50 rounded-full">
-                <svg
-                  class="w-4 h-4 text-green-600 dark:text-green-400"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-              </div>
-              <p class="text-sm text-slate-600 dark:text-slate-300">
-                New camera added to 'Warehouse'
+          <div class="flex items-start justify-between">
+            <div>
+              <p class="text-sm font-medium text-slate-500 dark:text-slate-400">
+                Total Live Streams
               </p>
-            </li>
-            <li class="flex items-center space-x-3">
-              <div class="p-2 bg-red-100 dark:bg-red-900/50 rounded-full">
-                <svg
-                  class="w-4 h-4 text-red-600 dark:text-red-400"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M8.257 3.099a.75.75 0 01.387.65l-.828 6.013a.75.75 0 01-1.49.034l.828-6.013a.75.75 0 011.103-.684zM9 13.5a1 1 0 11-2 0 1 1 0 012 0z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-              </div>
-              <p class="text-sm text-slate-600 dark:text-slate-300">
-                'Lobby Cam 2' stream went offline
+              <p class="text-3xl font-bold text-slate-900 dark:text-white mt-1">
+                <%= active_streams || 0 %>
               </p>
-            </li>
-          </ul>
+            </div>
+            <div class="p-3 bg-indigo-100 dark:bg-indigo-900/50 rounded-lg">
+              <svg
+                class="w-6 h-6 text-indigo-600 dark:text-indigo-400"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M6.34277267,4.93867691 C6.73329697,5.3292012 6.73329697,5.96236618 6.34277267,6.35289047 C3.21757171,9.47809143 3.21757171,14.5450433 6.34277267,17.6702443 C6.73329697,18.0607686 6.73329697,18.6939336 6.34277267,19.0844579 C5.95224838,19.4749821 5.3190834,19.4749821 4.92855911,19.0844579 C1.02230957,15.1782083 1.02230957,8.84492646 4.92855911,4.93867691 C5.3190834,4.54815262 5.95224838,4.54815262 6.34277267,4.93867691 Z M19.0743401,4.93867691 C22.9805896,8.84492646 22.9805896,15.1782083 19.0743401,19.0844579 C18.6838158,19.4749821 18.0506508,19.4749821 17.6601265,19.0844579 C17.2696022,18.6939336 17.2696022,18.0607686 17.6601265,17.6702443 C20.7853275,14.5450433 20.7853275,9.47809143 17.6601265,6.35289047 C17.2696022,5.96236618 17.2696022,5.3292012 17.6601265,4.93867691 C18.0506508,4.54815262 18.6838158,4.54815262 19.0743401,4.93867691 Z M9.3094225,7.81205295 C9.69994679,8.20257725 9.69994679,8.83574222 9.3094225,9.22626652 C7.77845993,10.7572291 7.77845993,13.2394099 9.3094225,14.7703724 C9.69994679,15.1608967 9.69994679,15.7940617 9.3094225,16.184586 C8.91889821,16.5751103 8.28573323,16.5751103 7.89520894,16.184586 C5.58319778,13.8725748 5.58319778,10.1240641 7.89520894,7.81205295 C8.28573323,7.42152866 8.91889821,7.42152866 9.3094225,7.81205295 Z M16.267742,7.81205295 C18.5797531,10.1240641 18.5797531,13.8725748 16.267742,16.184586 C15.8772177,16.5751103 15.2440527,16.5751103 14.8535284,16.184586 C14.4630041,15.7940617 14.4630041,15.1608967 14.8535284,14.7703724 C16.384491,13.2394099 16.384491,10.7572291 14.8535284,9.22626652 C14.4630041,8.83574222 14.4630041,8.20257725 14.8535284,7.81205295 C15.2440527,7.42152866 15.8772177,7.42152866 16.267742,7.81205295 Z M12.0814755,10.5814755 C12.9099026,10.5814755 13.5814755,11.2530483 13.5814755,12.0814755 C13.5814755,12.9099026 12.9099026,13.5814755 12.0814755,13.5814755 C11.2530483,13.5814755 10.5814755,12.9099026 10.5814755,12.0814755 C10.5814755,11.2530483 11.2530483,10.5814755 12.0814755,10.5814755 Z"
+                ></path>
+              </svg>
+            </div>
+          </div>
         </div>
       </div>
+
+      <!-- live DVRs -->
+      <div class="mt-8">
+          <h3 class="text-lg font-semibold text-slate-800 dark:text-white mb-4">
+            Live DVRs
+          </h3>
+
+          <div class="bg-white dark:bg-slate-800/50 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-700 p-4">
+            <div class="flow-root">
+              <ul role="list" class="-mb-4">
+
+                <% if (activeDvrs.length > 0) { %>
+                  <% activeDvrs.forEach(dvr => { %>
+                    <li>
+                      <a href="/public/dvr/<%= dvr.id %>" target="_blank" class="relative flex items-center space-x-4 py-4 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg px-2 transition-colors">
+                        <span class="relative flex h-3 w-3">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                        </span>
+                        
+                        <div class="min-w-0 flex-auto">
+                          <p class="text-sm font-semibold text-slate-900 dark:text-white">
+                            <%= dvr.dvr_name %> is live
+                          </p>
+                          <p class="text-sm text-slate-500 dark:text-slate-400">
+                            <span class="font-medium"><%= dvr.location_name %></span> - 
+                            <%= dvr.activeCameraCount %> <%= dvr.activeCameraCount > 1 ? 'cameras' : 'camera' %> streaming
+                          </p>
+                        </div>
+                      </a>
+                    </li>
+                  <% }); %>
+
+                <% } else { %>
+                  <li class="py-4 text-center text-sm text-slate-500 dark:text-slate-400">
+                    No DVRs are currently streaming.
+                  </li>
+                <% } %>
+
+              </ul>
+            </div>
+          </div>
+      </div>
+      
     </div>
 
     <script>

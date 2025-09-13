@@ -35,7 +35,7 @@ router.get('/public/dvr/:id', async (req, res) => {
 
       const camKey = `${dvr.id}_${cam.id}`;
       if (!isStreamActive(camKey)) {
-        startStream(camKey, cam.rtsp_url, camPath);
+        startStream(camKey, cam.rtsp_url, camPath, cam);
       }
     }
 
