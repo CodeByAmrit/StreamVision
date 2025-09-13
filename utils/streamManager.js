@@ -10,7 +10,7 @@ const activeStreams = {}; // cameraId -> { worker, lastAccess, outputPath }
  * @param {string} rtspUrl - RTSP stream source URL.
  * @param {string} outputPath - Local HLS output path.
  */
-function startStream(cameraId, rtspUrl, outputPath) {
+function startStream(cameraId, rtspUrl, outputPath, camera_details) {
     if (activeStreams[cameraId]) return;
 
     const worker = new Worker(path.join(__dirname, 'streamWorker.js'), {
@@ -20,7 +20,8 @@ function startStream(cameraId, rtspUrl, outputPath) {
     activeStreams[cameraId] = {
         worker,
         lastAccess: Date.now(),
-        outputPath
+        outputPath,
+        camera_details
     };
 
     worker.on('message', msg => {
