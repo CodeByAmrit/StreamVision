@@ -12,29 +12,6 @@ document.getElementById('login-form').onsubmit = async function (e) {
     document.getElementById("login_spinner").style.display = "inline";
 
     try {
-        // Get reCAPTCHA token
-        // const captchaToken = await new Promise((resolve, reject) => {
-        //     grecaptcha.enterprise.ready(async () => {
-        //         try {
-        //             const token = await grecaptcha.enterprise.execute('6LfB29QqAAAAAHo2JKtWWZx24MoRn75EMb0NKg3s', { action: 'LOGIN' });
-        //             resolve(token);
-        //         } catch (error) {
-        //             reject(error);
-        //         }
-        //     });
-        // });
-
-        // if (!captchaToken) {
-        //     throw new Error("CAPTCHA token not generated");
-        // }
-
-        // Hide previous errors
-        // document.getElementById('email-error').classList.add('hidden');
-        // document.getElementById('password-error').classList.add('hidden');
-        // document.getElementById('email').classList.remove('border-red-500');
-        // document.getElementById('password').classList.remove('border-red-500');
-
-        // Disable button to prevent multiple requests
         loginBtn.disabled = true;
 
         const res = await fetch('/login', {
