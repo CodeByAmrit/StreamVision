@@ -6,7 +6,6 @@ const crypto = require('crypto');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const favicon = require('serve-favicon');
-const status = require('express-status-monitor');
 const fs = require('fs');
 const { spawn } = require('child_process');
 
