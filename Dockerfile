@@ -1,24 +1,23 @@
-FROM node:slim
+# Use a slim, secure, and up-to-date base image
+FROM node:18-slim
 
+# Install ffmpeg and clean up in a single layer
+RUN apt-get update && \
+    apt-get install -y ffmpeg --no-install-recommends && \
+    rm -rf /var/lib/apt/lists/*
 
-# Setting up the work directory
-WORKDIR /express-docker
+# Set the working directory
+WORKDIR /usr/src/app
 
-# Copying all the files in our project
+# Copy package files and install dependencies first to leverage caching
+COPY package*.json ./
+RUN npm install --production
+
+# Copy the rest of your application code
 COPY . .
 
-# Installing dependencies
-RUN npm install
-
-RUN apt-get update && \
-    apt-get install -y \
-    git \
-    ffmpeg \
-    libnginx-mod-rtmp \
-    build-essential 
-
-# Starting our application
-CMD [ "node", "app.js" ]
-
-# Exposing server port
+# Expose the port the app runs on
 EXPOSE 3000
+
+# Define the command to run your app
+CMD [ "node", "app.js" ]
