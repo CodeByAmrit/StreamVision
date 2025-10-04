@@ -8,7 +8,10 @@
       name="description"
       content="StreamVision - View your RTSP camera feeds live with a powerful, modern, and secure web viewer."
     />
-    <meta name="keywords" content="live cctv camera feed, watch security camera online, ip camera live stream, remote video surveillance viewer, public webcams, real-time monitoring, rtsp hls stream player" />
+    <meta
+      name="keywords"
+      content="live cctv camera feed, watch security camera online, ip camera live stream, remote video surveillance viewer, public webcams, real-time monitoring, rtsp hls stream player"
+    />
     <meta name="author" content="Amrit, Developer of StreamVision" />
 
     <link rel="canonical" href="https://cctvcameralive.in/" />
@@ -104,22 +107,21 @@
   <body
     class="dark:bg-black font-sans text-slate-800 dark:text-slate-200 antialiased overflow-x-hidden"
   >
-    <header class="sticky top-0 z-50 w-full bg-[#100f12]/80 backdrop-blur-md border-b border-[#4A4654]/40">
+    <header
+      class="sticky top-0 z-50 w-full bg-[#100f12]/80 backdrop-blur-md border-b border-[#4A4654]/40"
+    >
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
-          
           <a href="/" class="flex items-center space-x-3">
-            <img src="/images/favicon.png" class="h-8" alt="StreamVision Logo" />
+            <img src="/images/old.svg" class="h-8" alt="StreamVision Logo" />
             <span
               class="text-2xl font-bold bg-gradient-to-r from-cyan-300 to-purple-400 bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(115,251,253,0.4)]"
             >
-              StreamVision
+              Netwon Team
             </span>
           </a>
 
           <div class="flex items-center space-x-4">
-            
-            
             <button
               id="theme-toggle"
               type="button"
@@ -131,7 +133,9 @@
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
-                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                <path
+                  d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
+                ></path>
               </svg>
 
               <svg
@@ -155,7 +159,6 @@
               Support
             </a>
 
-
             <a
               href="/login"
               class="px-4 py-2 text-sm font-semibold text-[#100f12] bg-cyan-300 rounded-xl shadow-[0_0_12px_#73FBFD70] hover:shadow-[0_0_18px_#73FBFD] hover:scale-105 transition-all focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:ring-offset-2 focus:ring-offset-[#100f12]"
@@ -168,14 +171,17 @@
     </header>
 
     <main>
-      <section class="relative py-20 h-screen bg-[url('/images/background.jpg')]  bg-cover bg-center">
+      <section
+        class="relative py-20 h-screen bg-[url('/images/background.jpg')] bg-cover bg-center"
+      >
         <!-- Strong Dark Overlay -->
         <div class="absolute inset-0"></div>
 
         <div class="flex justify-center relative z-10 xl:h-screen">
           <div class="w-full md:w-1/2 flex gap-10">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center font-[Inter] 2xl:mt-48 scale-110">
-
+            <div
+              class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center font-[Inter] 2xl:mt-48 scale-110"
+            >
               <!-- Update Banner -->
               <a
                 href="/updates"
@@ -193,16 +199,17 @@
 
               <!-- Main Heading with Tailwind Gradient -->
               <h1
-                class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight 
-                      bg-gradient-to-bl to-cyan-200  from-cyan-500 
-                      bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(34,211,238,0.5)]"
+                class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight bg-gradient-to-bl to-cyan-200 from-cyan-500 bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(34,211,238,0.5)]"
               >
                 Live RTSP Stream Viewer
               </h1>
 
               <!-- Subtitle -->
-              <p class="mt-6 max-w-2xl mx-auto text-lg text-gray-200 drop-shadow-md">
-                Simply paste your camera's RTSP URL below to start viewing the live feed securely in your browser.
+              <p
+                class="mt-6 max-w-2xl mx-auto text-lg text-gray-200 drop-shadow-md"
+              >
+                Simply paste your camera's RTSP URL below to start viewing the
+                live feed securely in your browser.
               </p>
 
               <!-- Input + Buttons (No border now) -->
@@ -240,111 +247,226 @@
 
           <div class="hidden md:block w-1/2">
             <!-- Video Container -->
-                <div id="videoContainer" class="hidden mt-6 aspect-video bg-transparent rounded-lg overflow-hidden mx-6 backdrop-blur-sm">
-                  <div id="loader" class="hidden absolute inset-0 flex items-center justify-center">
-                    <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-400 h-12 w-12"></div>
-                  </div>
-                  <video id="videoPlayer" width="100%" controls class="w-full h-full hidden"></video>
-                </div>
+            <div
+              id="videoContainer"
+              class="hidden mt-6 aspect-video bg-transparent rounded-lg overflow-hidden mx-6 backdrop-blur-sm"
+            >
+              <div
+                id="loader"
+                class="hidden absolute inset-0 flex items-center justify-center"
+              >
+                <div
+                  class="loader ease-linear rounded-full border-4 border-t-4 border-gray-400 h-12 w-12"
+                ></div>
+              </div>
+              <video
+                id="videoPlayer"
+                width="100%"
+                controls
+                class="w-full h-full hidden"
+              ></video>
+            </div>
           </div>
         </div>
       </section>
 
-      <section id="tech-stack" class="w-full py-16 sm:py-20 lg:py-24 bg-dark-300 rounded-2xl shadow-2xl">
-              <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                  <!-- Section Heading -->
-                  <div class="mb-2">
-                      <span class="inline-flex items-center rounded-full bg-gradient-to-r from-accent-blue to-accent-cyan px-3 py-1 text-sm font-medium text-white shadow-lg">
-                          <span class="h-2 w-2 rounded-full bg-white mr-2 animate-pulse"></span>
-                          Technology Stack
-                      </span>
-                  </div>
-                  
-                  <h2 class="text-4xl font-bold text-white sm:text-5xl">
-                      Powered by Cutting-Edge <span class="bg-gradient-to-r from-accent-blue to-accent-cyan bg-clip-text text-transparent">Technology</span>
-                  </h2>
-                  
-                  <p class="mt-6 max-w-2xl mx-auto text-lg leading-8 text-gray-300">
-                      StreamVision leverages powerful open-source technologies for exceptional speed, scalability, and security.
-                  </p>
+      <section
+        id="tech-stack"
+        class="w-full py-16 sm:py-20 lg:py-24 bg-dark-300 rounded-2xl shadow-2xl"
+      >
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <!-- Section Heading -->
+          <div class="mb-2">
+            <span
+              class="inline-flex items-center rounded-full bg-gradient-to-r from-accent-blue to-accent-cyan px-3 py-1 text-sm font-medium text-white shadow-lg"
+            >
+              <span
+                class="h-2 w-2 rounded-full bg-white mr-2 animate-pulse"
+              ></span>
+              Technology Stack
+            </span>
+          </div>
 
-                  <!-- Tech Cards Grid -->
-                  <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                      <div class="tech-card gradient-border rounded-xl p-6 bg-dark-200 flex flex-col items-center">
-                          <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 p-3 flex items-center justify-center mb-4 shadow-lg">
-                              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"></path>
-                              </svg>
-                          </div>
-                          <h3 class="text-xl font-semibold text-white">FFmpeg</h3>
-                          <p class="mt-2 text-sm text-gray-400">Video processing backbone</p>
-                      </div>
-                      
-                      <div class="tech-card gradient-border rounded-xl p-6 bg-dark-200 flex flex-col items-center">
-                          <div class="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-pink-400 p-3 flex items-center justify-center mb-4 shadow-lg">
-                              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                              </svg>
-                          </div>
-                          <h3 class="text-xl font-semibold text-white">HLS</h3>
-                          <p class="mt-2 text-sm text-gray-400">Adaptive streaming protocol</p>
-                      </div>
-                      
-                      <div class="tech-card gradient-border rounded-xl p-6 bg-dark-200 flex flex-col items-center">
-                          <div class="w-16 h-16 rounded-full bg-gradient-to-br from-green-500 to-emerald-400 p-3 flex items-center justify-center mb-4 shadow-lg">
-                              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"></path>
-                              </svg>
-                          </div>
-                          <h3 class="text-xl font-semibold text-white">Node.js</h3>
-                          <p class="mt-2 text-sm text-gray-400">Runtime environment</p>
-                      </div>
-                      
-                      <div class="tech-card gradient-border rounded-xl p-6 bg-dark-200 flex flex-col items-center">
-                          <div class="w-16 h-16 rounded-full bg-gradient-to-br from-orange-500 to-amber-400 p-3 flex items-center justify-center mb-4 shadow-lg">
-                              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                              </svg>
-                          </div>
-                          <h3 class="text-xl font-semibold text-white">Express.js</h3>
-                          <p class="mt-2 text-sm text-gray-400">Web application framework</p>
-                      </div>
-                  </div>
+          <h2 class="text-4xl font-bold text-white sm:text-5xl">
+            Powered by Cutting-Edge
+            <span
+              class="bg-gradient-to-r from-accent-blue to-accent-cyan bg-clip-text text-transparent"
+              >Technology</span
+            >
+          </h2>
 
-                  <!-- Additional Info -->
-                  <div class="mt-12 gradient-border rounded-2xl p-6 bg-dark-200">
-                      <div class="flex flex-col md:flex-row items-center justify-between">
-                        <div class="text-left">
-                          <h3 class="text-xl font-semibold text-white">Contribute to StreamVision</h3>
-                          <p class="mt-2 text-gray-300 max-w-xl">
-                            StreamVision is an open-source project — and we welcome contributions from developers, designers, and enthusiasts! 
-                            Help us improve performance, add new features, or fix bugs while being part of a growing community.
-                          </p>
-                        </div>
-                        <a href="https://github.com/codebyamrit/StreamVision" 
-                          class="mt-4 md:mt-0 px-6 py-3 bg-gradient-to-r from-accent-blue to-accent-cyan text-white font-medium rounded-lg hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
-                          Contribute on GitHub
-                        </a>
-                      </div>
-                    </div>
+          <p class="mt-6 max-w-2xl mx-auto text-lg leading-8 text-gray-300">
+            StreamVision leverages powerful open-source technologies for
+            exceptional speed, scalability, and security.
+          </p>
 
-                  <!-- NetwonTeam Branding -->
-                  <div class="mt-12 flex flex-col items-center">
-                      <div class="relative">
-                          <div class="absolute -inset-3 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200 animate-pulse-slow"></div>
-                          <div class="relative gradient-border rounded-2xl p-4 bg-dark-200 flex items-center space-x-4">
-                              <div class="w-14 h-14 rounded-xl bg-gray-800 flex items-center justify-center shadow-inner">
-                                  <img src="/images/netwonteam.jpg" class="text-2xl font-bold bg-gradient-to-r rounded-md from-accent-blue to-accent-cyan bg-clip-text text-transparent">
-                              </div>
-                              <div class="text-left">
-                                  <p class="text-sm font-medium text-gray-300">Specially Designed for</p>
-                                  <p class="text-lg font-bold text-white">NetwonTeam</p>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
+          <!-- Tech Cards Grid -->
+          <div
+            class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+          >
+            <div
+              class="tech-card gradient-border rounded-xl p-6 bg-dark-200 flex flex-col items-center"
+            >
+              <div
+                class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 p-3 flex items-center justify-center mb-4 shadow-lg"
+              >
+                <svg
+                  class="w-8 h-8 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"
+                  ></path>
+                </svg>
               </div>
+              <h3 class="text-xl font-semibold text-white">FFmpeg</h3>
+              <p class="mt-2 text-sm text-gray-400">
+                Video processing backbone
+              </p>
+            </div>
+
+            <div
+              class="tech-card gradient-border rounded-xl p-6 bg-dark-200 flex flex-col items-center"
+            >
+              <div
+                class="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-pink-400 p-3 flex items-center justify-center mb-4 shadow-lg"
+              >
+                <svg
+                  class="w-8 h-8 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
+                  ></path>
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-white">HLS</h3>
+              <p class="mt-2 text-sm text-gray-400">
+                Adaptive streaming protocol
+              </p>
+            </div>
+
+            <div
+              class="tech-card gradient-border rounded-xl p-6 bg-dark-200 flex flex-col items-center"
+            >
+              <div
+                class="w-16 h-16 rounded-full bg-gradient-to-br from-green-500 to-emerald-400 p-3 flex items-center justify-center mb-4 shadow-lg"
+              >
+                <svg
+                  class="w-8 h-8 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"
+                  ></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-white">Node.js</h3>
+              <p class="mt-2 text-sm text-gray-400">Runtime environment</p>
+            </div>
+
+            <div
+              class="tech-card gradient-border rounded-xl p-6 bg-dark-200 flex flex-col items-center"
+            >
+              <div
+                class="w-16 h-16 rounded-full bg-gradient-to-br from-orange-500 to-amber-400 p-3 flex items-center justify-center mb-4 shadow-lg"
+              >
+                <svg
+                  class="w-8 h-8 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
+                  ></path>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-white">Express.js</h3>
+              <p class="mt-2 text-sm text-gray-400">
+                Web application framework
+              </p>
+            </div>
+          </div>
+
+          <!-- Additional Info -->
+          <div class="mt-12 gradient-border rounded-2xl p-6 bg-dark-200">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+              <div class="text-left">
+                <h3 class="text-xl font-semibold text-white">
+                  Contribute to StreamVision
+                </h3>
+                <p class="mt-2 text-gray-300 max-w-xl">
+                  StreamVision is an open-source project — and we welcome
+                  contributions from developers, designers, and enthusiasts!
+                  Help us improve performance, add new features, or fix bugs
+                  while being part of a growing community.
+                </p>
+              </div>
+              <a
+                href="https://github.com/codebyamrit/StreamVision"
+                class="mt-4 md:mt-0 px-6 py-3 bg-gradient-to-r from-accent-blue to-accent-cyan text-white font-medium rounded-lg hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
+              >
+                Contribute on GitHub
+              </a>
+            </div>
+          </div>
+
+          <!-- NetwonTeam Branding -->
+          <div class="mt-12 flex flex-col items-center">
+            <div class="relative">
+              <div
+                class="absolute -inset-3 bg-gradient-to-r from-accent-blue to-accent-cyan rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200 animate-pulse-slow"
+              ></div>
+              <div
+                class="relative gradient-border rounded-2xl p-4 bg-dark-200 flex items-center space-x-4"
+              >
+                <div
+                  class="w-14 h-14 rounded-xl bg-gray-800 flex items-center justify-center shadow-inner"
+                >
+                  <img
+                    src="/images/netwonteam.jpg"
+                    class="text-2xl font-bold bg-gradient-to-r rounded-md from-accent-blue to-accent-cyan bg-clip-text text-transparent"
+                  />
+                </div>
+                <div class="text-left">
+                  <p class="text-sm font-medium text-gray-300">
+                    Specially Designed for
+                  </p>
+                  <p class="text-lg font-bold text-white">NetwonTeam</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section
@@ -366,8 +488,8 @@
             <p
               class="mt-6 max-w-2xl mx-auto text-lg leading-8 text-sky-200/80 gsap-reveal"
             >
-              From low-latency viewing to secure sharing, we provide a robust platform
-              for all your streaming needs.
+              From low-latency viewing to secure sharing, we provide a robust
+              platform for all your streaming needs.
             </p>
           </div>
 
@@ -399,8 +521,8 @@
                 Low-Latency Streaming
               </h3>
               <p class="mt-2 text-base text-sky-300/80">
-                Monitor multiple RTSP streams in real-time with ultra-low latency,
-                powered by HLS and FFmpeg.
+                Monitor multiple RTSP streams in real-time with ultra-low
+                latency, powered by HLS and FFmpeg.
               </p>
             </div>
 
@@ -459,14 +581,13 @@
                 Secure and Encrypted
               </h3>
               <p class="mt-2 text-base text-sky-300/80">
-                All data and video streams are protected with SSL/HTTPS encryption and
-                robust security policies like CSP and Helmet.
+                All data and video streams are protected with SSL/HTTPS
+                encryption and robust security policies like CSP and Helmet.
               </p>
             </div>
           </div>
         </div>
       </section>
-
 
       <section class="py-20 sm:py-24">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -724,7 +845,10 @@
       // --- GSAP Scroll Animations ---
       document.addEventListener("DOMContentLoaded", () => {
         // Wait for GSAP and ScrollTrigger to be available
-        if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+        if (
+          typeof gsap !== "undefined" &&
+          typeof ScrollTrigger !== "undefined"
+        ) {
           gsap.registerPlugin(ScrollTrigger);
 
           // Find all elements with the 'gsap-reveal' class and animate them
