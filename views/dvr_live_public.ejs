@@ -26,15 +26,47 @@
     <meta http-equiv="Expires" content="0" />
   </head>
 
-  <body class="bg-gray-950 text-white min-h-screen flex flex-col">
+  <body class="text-white min-h-screen flex flex-col">
     <!-- Header -->
-    <header class="bg-gray-900 shadow-md py-4 px-6 text-center">
-      <h1 class="text-2xl font-bold text-white">
-        <%= dvr.dvr_name %> - Live Camera Streams
-      </h1>
-      <p class="text-sm text-gray-400 mt-1">
-        📍 Location: <%= dvr.location_name %>
-      </p>
+    <header
+      class="flex items-center justify-between px-8 py-4 bg-gradient-to-r from-blue-600 via-blue-700 to-cyan-600 shadow-lg"
+    >
+      <!-- Left: Logo -->
+      <div class="flex items-center space-x-3">
+        <img
+          src="/images/fci.png"
+          alt="Logo"
+          class="h-10 w-10 rounded-lg shadow-md"
+        />
+        <div>
+          <h1 class="text-xl font-bold text-white">
+            <%= dvr.dvr_name %> - Live Camera Streams
+          </h1>
+          <p class="text-xs text-blue-100">📍 <%= dvr.location_name %></p>
+        </div>
+      </div>
+
+      <!-- Right: Support Button -->
+      <a
+        href="https://service.cctvcameralive.in/"
+        class="bg-white/10 hover:bg-white/20 text-white font-medium px-5 py-2 rounded-xl border border-white/20 backdrop-blur-md transition-all duration-300 flex items-center space-x-2"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5 text-cyan-200"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M18.364 5.636a9 9 0 11-12.728 0m6.364 4.364v4m0 4h.01"
+          />
+        </svg>
+        <span>Support</span>
+      </a>
     </header>
 
     <!-- Video Grid -->
@@ -82,7 +114,8 @@
 
     <!-- Footer -->
     <footer class="bg-gray-900 text-center py-3 text-sm text-gray-500">
-      &copy; <%= new Date().getFullYear() %> StreamVision. All rights reserved.
+      &copy; <%= new Date().getFullYear() %> Netwon Technologies. All rights
+      reserved.
     </footer>
 
     <!-- Client-side JS -->
