@@ -2,12 +2,22 @@ version: "3.9"
 
 services:
   streamvision:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: codebyamrit/streamvision:latest
     container_name: streamvision_app
     ports:
       - "3000:3000"
     env_file:
       - .env
     restart: unless-stopped
+
+    tmpfs:
+      - /tmp
+
+    security_opt:
+      - no-new-privileges:true
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"

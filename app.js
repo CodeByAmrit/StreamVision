@@ -17,6 +17,8 @@ const userRouter = require("./routes/userRouters");
 const dvrRoutes = require("./routes/dvrs");
 const publicRoute = require("./routes/publicRoutes");
 const { cleanupInactiveStreams } = require("./utils/streamManager");
+const logger = require("./utils/logger");
+const morgan = require("morgan");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -27,6 +29,16 @@ app.use((req, res, next) => {
   res.locals.nonce = crypto.randomBytes(16).toString("base64");
   next();
 });
+
+app.use(
+  morgan("combined", {
+    stream: {
+      write: (message) => logger.info(message.trim()),
+    },
+  })
+);
+
+app.disable('x-powered-by');
 
 app.use(
   helmet({
