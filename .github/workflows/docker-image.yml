@@ -2,9 +2,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches: ["master"]
   pull_request:
-    branches: [ "master" ]
+    branches: ["master"]
 
 jobs:
   build:
@@ -39,7 +39,3 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/streamvision:${{ github.run_number }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-      # (Optional) Step 5 — Output final image tag
-      - name: Show Image Tag
-        run: echo "Pushed version: ${{ secrets.DOCKERHUB_USERNAME }}/streamvision:${{ github.run_number }}"
