@@ -1,36 +1,38 @@
-# Use a slim, up-to-date base image
-FROM node:20-slim
-
-# Create a non-root user (security best practice)
-RUN useradd --user-group --create-home --shell /bin/false appuser
-
-# Install ffmpeg only
-RUN apt-get update && \
-    apt-get install -y ffmpeg --no-install-recommends && \
-    apt-get purge -y --auto-remove && \
-    rm -rf /var/lib/apt/lists/*
-
-# Set working directory
+# ------------ BASE STAGE ------------
+FROM node:20-slim AS base
 WORKDIR /usr/src/app
 
-# Copy package files
+# Install only required runtime packages (ffmpeg minimal)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends ffmpeg && \
+    rm -rf /var/lib/apt/lists/*
+
 COPY package*.json ./
 
 # Install only production dependencies
 RUN npm install --omit=dev
 
-# Copy application
+# ------------ FINAL STAGE ------------
+FROM node:20-slim
+
+WORKDIR /usr/src/app
+
+# Copy ffmpeg binary from base image (much smaller)
+COPY --from=base /usr/bin/ffmpeg /usr/bin/
+COPY --from=base /usr/lib/ /usr/lib/
+
+# Copy node_modules from base stage
+COPY --from=base /usr/src/app/node_modules ./node_modules
+
+# Copy application code
 COPY . .
 
-# Create log directory BEFORE switching user
-RUN mkdir -p /usr/src/app/logs && \
+# Create non-root user
+RUN useradd --user-group --create-home --shell /bin/false appuser && \
+    mkdir -p /usr/src/app/logs && \
     chown -R appuser:appuser /usr/src/app
 
-# Switch to non-root user
 USER appuser
-
-# Expose app port
 EXPOSE 3000
 
-# Run app
 CMD ["node", "app.js"]
