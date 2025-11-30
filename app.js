@@ -30,8 +30,13 @@ app.use((req, res, next) => {
   next();
 });
 
+const skipVideo = (req, res) => {
+  return req.url.endsWith(".ts") || req.url.includes("/streams/");
+};
+
 app.use(
   morgan("combined", {
+    skip: skipVideo,
     stream: {
       write: (message) => logger.info(message.trim()),
     },
