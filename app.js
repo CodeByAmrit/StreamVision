@@ -286,7 +286,7 @@ app.get("/debug/streams", (req, res) => {
 });
 
 // Periodic Cleanup (if needed, extend later)
-setInterval(() => cleanupInactiveStreams(5 * 60 * 1000), 5 * 60 * 1000);
+// setInterval(() => cleanupInactiveStreams(5 * 60 * 1000), 5 * 60 * 1000);
 
 // clear old streams on startup
 if (fs.existsSync("./streams")) {
