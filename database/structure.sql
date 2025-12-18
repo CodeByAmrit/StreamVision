@@ -33,8 +33,10 @@ CREATE TABLE cameras (
     dvr_id INT NOT NULL,
     camera_name VARCHAR(100) NOT NULL,
     rtsp_url VARCHAR(255) NOT NULL,
+    enabled TINYINT(1) DEFAULT 1,
     FOREIGN KEY (dvr_id) REFERENCES dvrs (id) ON DELETE CASCADE
 );
+-- ALTER TABLE cameras ADD COLUMN enabled TINYINT(1) DEFAULT 1;
 
 -- Insert Sample Data for Testing
 INSERT INTO
