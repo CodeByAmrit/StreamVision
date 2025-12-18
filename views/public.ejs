@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>
+    <%= dvr.dvr_name %> - Live Stream
+  </title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+
+  <!-- Tailwind / Flowbite -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4" nonce="<%= nonce %>"></script>
+
+  <style>
+    video {
+      background: black;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-950 text-white min-h-screen flex flex-col">
+
+  <!-- ================= HEADER ================= -->
+  <!-- Header -->
+  <header class="flex items-center justify-between px-4 sm:px-8 py-3 sm:py-4 bg-gray-900 shadow-md">
+    <!-- Left: Logo + Title -->
+    <div class="flex items-center space-x-3">
+      <img src="/images/fci.png" alt="Logo" class="h-8 w-8 sm:h-10 sm:w-10 rounded-lg shadow-md" />
+      <div>
+        <h1 class="text-lg sm:text-xl font-bold text-white leading-tight">
+          <%= dvr.dvr_name %> - Live Camera Streams
+        </h1>
+        <p class="text-xs sm:text-sm text-gray-400">
+          📍 <%= dvr.location_name %>
+        </p>
+      </div>
+    </div>
+
+    <!-- Desktop: Support Button -->
+    <a href='https://service.cctvcameralive.in/'"
+        class=" hidden sm:flex bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold px-5 py-2 rounded-xl
+      shadow-md hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 items-center space-x-2 z-50">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M18.364 5.636a9 9 0 11-12.728 0m6.364 4.364v4m0 4h.01" />
+      </svg>
+      <span>Support</span>
+    </a>
+  </header>
+
+  <!-- Mobile: Fixed Support Button -->
+  <a href='https://service.cctvcameralive.in/' class=" sm:hidden fixed bottom-0 right-0 w-full py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white
+    font-semibold text-center shadow-[0_-2px_10px_rgba(0,0,0,0.3)] hover:from-blue-600 hover:to-cyan-600 transition-all
+    duration-300 z-50">
+    💬 Support
+  </a>
+
+  <!-- ================= GRID ================= -->
+  <main id="grid" class="flex-1 p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <!-- Cameras injected dynamically -->
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-gray-900 text-center py-3 text-xs text-gray-500">
+    © StreamVision
+  </footer>
+
+  <!-- ================= CLIENT JS ================= -->
+  <script nonce="<%= nonce %>">
+    /* =====================================================
+       CONFIG
+    ===================================================== */
+    const MIME = 'video/mp4; codecs="avc1.42c01e"';
+
+    /* =====================================================
+       HELPERS
+    ===================================================== */
+    function getDvrId() {
+      const parts = window.location.pathname.split('/');
+      return parts[parts.length - 1];
+    }
+
+    function log(...args) {
+      console.log('[DVR]', ...args);
+    }
+
+    /* =====================================================
+       WS VIDEO PLAYER
+    ===================================================== */
+    class WSPlayer {
+      constructor(video, spinner, cameraId) {
+        this.video = video;
+        this.spinner = spinner;
+        this.cameraId = cameraId;
+
+        this.mediaSource = null;
+        this.sourceBuffer = null;
+        this.queue = [];
+        this.ws = null;
+        this.started = false;
+      }
+
+      start() {
+        if (!window.MediaSource || !MediaSource.isTypeSupported(MIME)) {
+          this.spinner.innerHTML = `<p class="text-red-500 text-sm">Not supported</p>`;
+          return;
+        }
+
+        this.mediaSource = new MediaSource();
+        this.video.src = URL.createObjectURL(this.mediaSource);
+
+        this.mediaSource.addEventListener('sourceopen', () => {
+          this.sourceBuffer = this.mediaSource.addSourceBuffer(MIME);
+          this.sourceBuffer.mode = 'segments';
+
+          this.sourceBuffer.addEventListener('updateend', () => {
+            if (this.queue.length && !this.sourceBuffer.updating) {
+              this.sourceBuffer.appendBuffer(this.queue.shift());
+            }
+          });
+
+          this.connect();
+        });
+      }
+
+      connect() {
+        const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+        const wsUrl = `${proto}://${location.host}/ws?camera=${this.cameraId}`;
+
+        log('Connecting camera', this.cameraId);
+        this.ws = new WebSocket(wsUrl);
+        this.ws.binaryType = 'arraybuffer';
+
+        this.ws.onmessage = (e) => {
+          const data = new Uint8Array(e.data);
+
+          if (!this.started) {
+            this.spinner.classList.add('hidden');
+            this.video.classList.remove('hidden');
+            this.video.play().catch(() => { });
+            this.started = true;
+          }
+
+          if (this.sourceBuffer.updating || this.queue.length) {
+            this.queue.push(data);
+          } else {
+            this.sourceBuffer.appendBuffer(data);
+          }
+        };
+
+        this.ws.onerror = () => {
+          this.spinner.innerHTML = `<p class="text-red-500 text-sm">Stream error</p>`;
+        };
+      }
+    }
+
+    /* =====================================================
+       LOAD CAMERAS
+    ===================================================== */
+    async function loadCameras() {
+      const dvrId = getDvrId();
+      log('Loading DVR', dvrId);
+
+      const res = await fetch(`/api/dvr/${dvrId}/cameras`);
+      const cameras = await res.json();
+
+      const grid = document.getElementById('grid');
+
+      cameras.forEach((cam, i) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'relative bg-black rounded-lg overflow-hidden';
+
+        wrapper.innerHTML = `
+      <div class="absolute top-1 left-1 bg-black/60 px-2 py-1 text-xs rounded">
+        ${cam.camera_name}
+      </div>
+
+      <div class="flex items-center justify-center h-48 spinner">
+        <svg class="w-8 h-8 animate-spin text-blue-500" viewBox="0 0 100 101">
+          <path d="M100 50.5a50 50 0 1 1-50-50" fill="currentColor"/>
+        </svg>
+      </div>
+
+      <video class="hidden w-full h-full" muted autoplay playsinline></video>
+    `;
+
+        grid.appendChild(wrapper);
+
+        const video = wrapper.querySelector('video');
+        const spinner = wrapper.querySelector('.spinner');
+
+        const player = new WSPlayer(video, spinner, cam.id);
+        player.start();
+      });
+    }
+
+    /* =====================================================
+       INIT
+    ===================================================== */
+    document.addEventListener('DOMContentLoaded', loadCameras);
+  </script>
+
+</body>
+
+</html>

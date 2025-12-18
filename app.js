@@ -9,13 +9,17 @@ const favicon = require("serve-favicon");
 const fs = require("fs");
 const { spawn } = require("child_process");
 
+const http = require("http");
+const initWebSocketServer = require("./ws/wsServer");
+const wsRoutes = require("./routes/wsRoutes");
+
 // Local services and routes
 const checkAuth = require("./services/checkauth");
 const cameraRoutes = require("./routes/cameraRoutes");
 const cameraRoute = require("./routes/camera");
 const userRouter = require("./routes/userRouters");
 const dvrRoutes = require("./routes/dvrs");
-const publicRoute = require("./routes/publicRoutes");
+// const publicRoute = require("./routes/publicRoutes");
 const { cleanupInactiveStreams } = require("./utils/streamManager");
 const logger = require("./utils/logger");
 const morgan = require("morgan");
@@ -50,7 +54,7 @@ app.use(
     contentSecurityPolicy: {
       useDefaults: true,
       directives: {
-        "default-src": ["'self'"],
+        "default-src": ["'self'", "ws:", "wss:"],
         "script-src": [
           "'self'",
           "https://cdn.jsdelivr.net",
@@ -153,7 +157,10 @@ app.use(
 app.use("/", userRouter);
 app.use("/camera", checkAuth, cameraRoutes);
 app.use("/dvr", checkAuth, dvrRoutes);
-app.use("/", publicRoute);
+app.get("/public/dvr/:dvrId", (req, res) => {
+  res.render('public', { nonce: res.locals.nonce, dvr: {dvr_name:"PUBLIC"}});
+});
+app.use(wsRoutes);
 app.use("/camera/view", cameraRoute);
 
 // =================== HLS Streaming Endpoint for Extension ===================
@@ -287,6 +294,11 @@ if (fs.existsSync("./streams")) {
 }
 
 // =================== Start Server ===================
-app.listen(PORT, () => {
+const server = http.createServer(app);
+
+// init WebSocket
+initWebSocketServer(server);
+
+server.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
