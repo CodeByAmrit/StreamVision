@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require('../models/user');
 const checkAuth = require('../services/checkauth');
 const { getAllDvrs } = require("../controllers/dvrController");
-const { activeStreams } = require('../utils/streamManager');
+const dvrManager = require('../utils/streamManager');
 const bcrypt = require('bcrypt');
 require('dotenv').config();
 
@@ -23,55 +23,46 @@ router.get('/logout', checkAuth, (req, res) => {
 // routes/dashboard.js
 router.get('/dashboard', checkAuth, async (req, res) => {
     try {
-        // 1. Fetch all DVRs from your database
+        // 1. Fetch all DVRs from DB
         const dvrs = await getAllDvrs();
 
-        // 2. Group all currently active streams by their DVR ID
-        const activeDvrsSummary = Object.values(activeStreams).reduce((acc, stream) => {
-            const dvrId = stream.camera_details.dvr_id;
-            
-            if (!acc[dvrId]) {
-                // Initialize the entry if it's the first camera from this DVR
-                acc[dvrId] = {
-                    dvr_id: dvrId,
-                    activeCameraCount: 0,
-                    lastActivity: 0
-                };
-            }
+        // 2. Build active DVR summary from Map
+        const activeDvrsSummary = {};
 
-            acc[dvrId].activeCameraCount++;
-            if (stream.lastAccess > acc[dvrId].lastActivity) {
-                acc[dvrId].lastActivity = stream.lastAccess;
-            }
-            
-            return acc;
-        }, {});
+        for (const [dvrId, streamInstance] of dvrManager.streams.entries()) {
+            activeDvrsSummary[dvrId] = {
+                dvr_id: dvrId,
+                activeCameraCount: streamInstance.activeCameraCount || 1,
+                lastActivity: streamInstance.lastAccess || Date.now(),
+            };
+        }
 
-        // 3. Create a new array containing ONLY active DVRs, but with their FULL details
+        // 3. Merge active DVRs with full DVR details
         const activeDvrsWithDetails = dvrs
-            .filter(dvr => activeDvrsSummary[dvr.id]) // Keep only DVRs that have an entry in the summary
-            .map(dvr => {
-                // Merge the full DVR object with its corresponding activity summary
-                return {
-                    ...dvr, // e.g., { id, dvr_name, location_name, ... }
-                    ...activeDvrsSummary[dvr.id] // e.g., { activeCameraCount, lastActivity }
-                };
-            });
+            .filter(dvr => activeDvrsSummary[dvr.id])
+            .map(dvr => ({
+                ...dvr,
+                ...activeDvrsSummary[dvr.id],
+            }));
 
-        // 4. Calculate final statistics for the dashboard cards
+        // 4. Dashboard statistics
         const total_dvrs = dvrs.length;
-        const total_cameras = dvrs.reduce((count, dvr) => count + (dvr.total_cameras || 0), 0);
-        const active_streams_count = Object.keys(activeStreams).length;
+        const total_cameras = dvrs.reduce(
+            (count, dvr) => count + (dvr.total_cameras || 0),
+            0
+        );
 
-        // 5. Render the EJS template with all the necessary data
+        const active_streams = dvrManager.streams.size;
+
+        // 5. Render dashboard
         res.render("dashboard", {
             title: "Dashboard",
             user: req.user,
-            total_dvrs: total_dvrs,
-            dvrs: dvrs, // Full list of all DVRs
-            total_cameras: total_cameras,
-            active_streams: active_streams_count,
-            activeDvrs: activeDvrsWithDetails, // The final, detailed list of active DVRs
+            total_dvrs,
+            total_cameras,
+            active_streams,
+            dvrs,
+            activeDvrs: activeDvrsWithDetails,
         });
 
     } catch (error) {
