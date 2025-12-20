@@ -5,14 +5,9 @@
   "scripts": {
     "start": "node app",
     "dev": "nodemon app",
-    "test:hls": "k6 run test/test-hls.js",
-    "build:css": "npx tailwindcss -i ./src/input.css -o ./public/css/style.css --watch",
-    "vercel-build": "npm install",
-    "start:pm2": "pm2 start ./bin/www --name studenttracker --env production",
-    "restart:nginx": "sudo systemctl restart nginx",
-    "start:nginx": "sudo systemctl start nginx",
-    "stop:nginx": "sudo systemctl stop nginx",
-    "setup:linux": "sudo apt update && sudo apt install -y  nginx  nodejs  npm  ffmpeg  libnginx-mod-rtmp  build-essential  git"
+    "test:health": "k6 run -e SERVICE_URL_STREAMVISION=http://localhost ./test/api-health-rps.test.js",
+    "test:routes": "k6 run ./test/api-routes.test.js",
+    "build:css": "npx tailwindcss -i ./src/input.css -o ./public/css/style.css --watch"
   },
   "author": "Amrit",
   "license": "ISC",
