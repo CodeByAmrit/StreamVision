@@ -293,6 +293,10 @@ if (fs.existsSync("./streams")) {
   fs.rmSync("./streams", { recursive: true, force: true });
 }
 
+app.get("/api/health", (req, res) => {
+  res.json({ status: "ok" });
+});
+
 // =================== Start Server ===================
 const server = http.createServer(app);
 
