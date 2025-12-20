@@ -21,20 +21,22 @@ class StreamInstance {
 
             "-an",
             "-c:v", "libx264",
-            "-preset", "ultrafast",
+            "-preset", "veryfast",
             "-tune", "zerolatency",
             "-pix_fmt", "yuv420p",
             "-profile:v", "baseline",
             "-level", "3.1",
 
-            "-g", "30",
-            "-keyint_min", "30",
+            "-r", "25",                 // 👈 force FPS
+            "-g", "60",
+            "-keyint_min", "60",
             "-sc_threshold", "0",
 
             "-movflags", "frag_keyframe+empty_moov+default_base_moof",
             "-f", "mp4",
             "pipe:1",
         ]);
+
 
         this.ffmpeg.stdout.on("data", (chunk) => {
             for (const ws of this.clients) {

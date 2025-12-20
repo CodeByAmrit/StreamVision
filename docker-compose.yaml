@@ -1,21 +1,29 @@
 services:
   streamvision:
-    image: codebyamrit/streamvision:latest
+    image: streamvision:latest
     container_name: streamvision_app
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     env_file:
       - .env
     restart: unless-stopped
-
     tmpfs:
       - /tmp
-
     security_opt:
       - no-new-privileges:true
-
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "5"
+
+  nginx:
+    image: nginx:alpine
+    container_name: streamvision_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./config.nginx:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - streamvision
+    restart: unless-stopped
