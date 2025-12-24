@@ -38,13 +38,28 @@ const skipVideo = (req, res) => {
   return req.url.endsWith(".ts") || req.url.includes("/streams/");
 };
 
+
 app.use(
-  morgan("combined", {
-    skip: skipVideo,
-    stream: {
-      write: (message) => logger.info(message.trim()),
+  morgan(
+    (tokens, req, res) => {
+      return JSON.stringify({
+        method: tokens.method(req, res),
+        url: tokens.url(req, res),
+        status: tokens.status(req, res),
+        "response-time": tokens["response-time"](req, res, "ms"),
+        "user-agent": tokens["user-agent"](req, res),
+      });
     },
-  })
+    {
+      skip: skipVideo,
+      stream: {
+        write: (message) => {
+          const data = JSON.parse(message);
+          logger.info("HTTP Request", data);
+        },
+      },
+    }
+  )
 );
 
 app.disable('x-powered-by');
@@ -229,19 +244,19 @@ app.post("/api/start-stream", (req, res) => {
   );
 
   ffmpeg.on("error", (err) => {
-    console.error(`[FFmpeg Error]:`, err);
+    logger.error(`[FFmpeg Error]: ${err.message}`);
     return res.status(500).json({ error: "Failed to start stream" });
   });
 
   ffmpeg.on("close", (code) => {
-    console.log(`FFmpeg stream for ${rtspUrl} exited with code ${code}`);
+    logger.info(`FFmpeg stream for ${rtspUrl} exited with code ${code}`);
     delete activeStreams[streamId];
     fs.rmSync(outputPath, { recursive: true, force: true });
   });
 
   // Auto stop stream after 10 minutes
   const timeout = setTimeout(() => {
-    console.log(`Auto-stopping stream ${streamId} after 10 minutes`);
+    logger.info(`Auto-stopping stream ${streamId} after 10 minutes`);
     ffmpeg.kill("SIGINT");
   }, STREAM_DURATION_LIMIT);
 
@@ -304,5 +319,5 @@ const server = http.createServer(app);
 initWebSocketServer(server);
 
 server.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
+  logger.info(`🚀 Server running at http://localhost:${PORT}`);
 });
