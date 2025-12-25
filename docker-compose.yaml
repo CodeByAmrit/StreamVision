@@ -16,6 +16,8 @@ services:
       options:
         max-size: "10m"
         max-file: "5"
+    networks:
+      - streamvision-net
 
   nginx:
     image: nginx:alpine
@@ -27,3 +29,8 @@ services:
     depends_on:
       - streamvision
     restart: unless-stopped
+    networks:
+      - streamvision-net
+
+networks:
+  streamvision-net:
