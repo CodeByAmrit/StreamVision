@@ -14,7 +14,7 @@ router.get("/edit/:id", async (req, res) => {
   const dvr = await dvrController.getDvrWithCamerasById(dvrId); // Custom function you define
   if (!dvr) return res.status(404).send("DVR not found");
 
-  res.render("dvr_view", { dvr, user:req.user });
+  res.render("dvr_view", { dvr, user: req.user });
 });
 
 router.get("/add", dvrController.renderAddDvrForm);
