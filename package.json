@@ -7,7 +7,8 @@
     "dev": "nodemon app",
     "test:health": "k6 run -e SERVICE_URL_STREAMVISION=http://localhost ./test/api-health-rps.test.js",
     "test:routes": "k6 run ./test/api-routes.test.js",
-    "build:css": "npx tailwindcss -i ./src/input.css -o ./public/css/style.css --watch"
+    "build:css": "npx @tailwindcss/cli -i ./src/input.css -o ./public/css/style.css --watch",
+    "format": "prettier --write \"**/*.{js,ts,json,ejs,html,css,md}\""
   },
   "author": "Amrit",
   "license": "ISC",
@@ -44,6 +45,8 @@
   },
   "devDependencies": {
     "flowbite": "^4.0.1",
-    "tailwindcss": "^3"
+    "prettier": "^3.7.4",
+    "prettier-plugin-ejs": "^1.0.3",
+    "tailwindcss": "^4"
   }
 }
