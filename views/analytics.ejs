@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
-  <%- include('./partials/header.ejs', { title: "Analytics Dashboard |
-  StreamVision", keywords: "stream analytics, CCTV statistics, surveillance
-  metrics, live stream monitoring", description: "Comprehensive analytics and
-  monitoring dashboard for your StreamVision surveillance system" }) %>
+  <%- include('./partials/header.ejs', {
+  title: "Analytics Dashboard | StreamVision",
+  keywords: "stream analytics, CCTV statistics, surveillance metrics, live stream monitoring",
+  description: "Comprehensive analytics and monitoring dashboard for your StreamVision surveillance system"
+  }) %>
+
 
   <body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
     <!-- Loading Screen -->
@@ -34,8 +36,11 @@
     <%- include('./partials/navbar.ejs', {activePage: 'analytics'}) %>
 
     <!-- Top Navigation Bar -->
-    <%- include('./partials/topMenu.ejs', { title: "Analytics Dashboard", user:
-    user }) %>
+    <%- include('./partials/topMenu.ejs', {
+      title: "Analytics Dashboard",
+      user: user
+    }) %>
+
 
     <!-- Main Content -->
     <main
@@ -89,7 +94,7 @@
                 Total DVRs
               </p>
               <h3 class="text-3xl font-bold text-gray-900 dark:text-white">
-                <%= total_dvrs %>
+                <%= typeof total_dvrs !== "undefined" ? total_dvrs : 0 %>
               </h3>
               <p class="text-xs text-blue-600 dark:text-blue-400 mt-1">
                 <i class="fas fa-building mr-1"></i>
@@ -109,7 +114,7 @@
               <span class="text-gray-600 dark:text-gray-400"
                 >Online:
                 <span class="font-semibold text-green-600 dark:text-green-400"
-                  ><%= activeDvrs.length %></span
+                  ><%= activeDvrs?.length || 0 %></span
                 ></span
               >
               <span class="text-gray-600 dark:text-gray-400"
@@ -158,7 +163,7 @@
               <span class="text-gray-600 dark:text-gray-400"
                 >Inactive:
                 <span class="font-semibold text-gray-600 dark:text-gray-400"
-                  ><%= total_cameras - active_streams %></span
+                  ><%= (total_cameras || 0) - (active_streams || 0) %></span
                 ></span
               >
             </div>
@@ -304,7 +309,7 @@
                 <div
                   class="text-2xl font-bold text-gray-600 dark:text-gray-400"
                 >
-                  <%= total_cameras - active_streams %>
+                  <%= (total_cameras || 0) - (active_streams || 0) %>
                 </div>
                 <div class="text-sm text-gray-600 dark:text-gray-400">
                   Inactive Cameras
@@ -564,16 +569,41 @@
             </p>
           </div>
           <div class="divide-y divide-blue-50 dark:divide-gray-700">
-            <% // Simulated recent activity - you can replace with real data
-            const recentActivities = [ { type: 'success', icon: 'fa-play',
-            message: 'DVR "Main Building" started streaming', time: '2 minutes
-            ago' }, { type: 'info', icon: 'fa-user', message: 'Admin user logged
-            in', time: '15 minutes ago' }, { type: 'warning', icon:
-            'fa-exclamation', message: 'Camera "Entrance" connection unstable',
-            time: '1 hour ago' }, { type: 'success', icon: 'fa-stop', message:
-            'Stream "Parking Lot" stopped', time: '2 hours ago' }, { type:
-            'info', icon: 'fa-sync', message: 'System health check completed',
-            time: '3 hours ago' } ]; %> <% recentActivities.forEach(activity =>
+            <%
+            const recentActivities = [
+              {
+                type: 'success',
+                icon: 'fa-play',
+                message: 'DVR "Main Building" started streaming',
+                time: '2 minutes ago'
+              },
+              {
+                type: 'info',
+                icon: 'fa-user',
+                message: 'Admin user logged in',
+                time: '15 minutes ago'
+              },
+              {
+                type: 'warning',
+                icon: 'fa-exclamation',
+                message: 'Camera "Entrance" connection unstable',
+                time: '1 hour ago'
+              },
+              {
+                type: 'success',
+                icon: 'fa-stop',
+                message: 'Stream "Parking Lot" stopped',
+                time: '2 hours ago'
+              },
+              {
+                type: 'info',
+                icon: 'fa-sync',
+                message: 'System health check completed',
+                time: '3 hours ago'
+              }
+            ];
+            %>
+             <% recentActivities.forEach(activity =>
             { %>
             <div
               class="px-6 py-4 hover:bg-blue-50/30 dark:hover:bg-gray-700/30 transition-colors"
@@ -620,7 +650,7 @@
               >
               active streams across
               <span class="font-bold text-blue-600 dark:text-blue-400"
-                ><%= activeDvrs.length %></span
+                ><%= activeDvrs?.length || 0 %></span
               >
               DVR locations.
             </p>
@@ -661,8 +691,8 @@
           dvrs: <%- JSON.stringify(dvrs) %>,
           totalCameras: <%= total_cameras %>,
           activeCameras: <%= active_streams %>,
-          totalDvrs: <%= total_dvrs %>,
-          activeDvrsCount: <%= activeDvrs.length %>
+          totalDvrs: <%= typeof total_dvrs !== "undefined" ? total_dvrs : 0 %>,
+          activeDvrsCount: <%= activeDvrs?.length || 0 %>
       };
     </script>
 
