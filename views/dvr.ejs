@@ -5,8 +5,6 @@
   "Manage your DVRs and surveillance locations in StreamVision dashboard" }) %>
 
   <body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
-
-
     <!-- Sidebar Navigation -->
     <%- include('./partials/navbar.ejs', {activePage: 'dvr'}) %>
 
@@ -18,5 +16,6 @@
 
     <!-- Integrated JavaScript -->
     <script src="/js/dvr.js" nonce="<%= nonce %>"></script>
+    <script src="/js/topMenu.js" nonce="<%= nonce %>"></script>
   </body>
 </html>

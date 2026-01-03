@@ -230,10 +230,11 @@ const getAllDvrsPaginated = async (req, res) => {
       totalPages: Math.ceil(total / limit),
       limit: limit,
       search: search,
-      status: status, // ADD THIS LINE - pass status to template
+      status: status,
       totalDvrs: total,
       onlineCount: onlineCount,
       totalCameras: totalCameras,
+      user: req.user,
     });
   } catch (error) {
     console.error("Error fetching DVRs:", error);
