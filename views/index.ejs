@@ -53,23 +53,23 @@
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-      nonce="<% nonce %>"
+      nonce="<%= nonce %>"
     />
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
       defer
-      nonce="<% nonce %>"
+      nonce="<%= nonce %>"
     ></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
       defer
-      nonce="<% nonce %>"
+      nonce="<%= nonce %>"
     ></script>
 
     <script
       src="https://cdn.jsdelivr.net/npm/hls.js@latest"
       defer
-      nonce="<% nonce %>"
+      nonce="<%= nonce %>"
     ></script>
 
     <meta
@@ -79,7 +79,7 @@
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
 
-    <style nonce="<% nonce %>">
+    <style nonce="<%= nonce %>">
       @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 
       * {
@@ -978,7 +978,7 @@
     </footer>
 
     <!-- Integrated JavaScript -->
-    <script nonce="<% nonce %>">
+    <script nonce="<%= nonce %>">
       // Theme Toggle
       const themeToggle = document.getElementById("theme-toggle");
       const htmlElement = document.documentElement;

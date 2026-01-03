@@ -22,7 +22,7 @@
     </div>
 
     <!-- Sidebar Navigation -->
-    <%- include('./partials/navbar.ejs')%>
+    <%- include('./partials/navbar.ejs', {activePage: 'dashboard'}) %>
 
     <!-- Top Navigation Bar -->
     <%- include('./partials/topMenu.ejs')%>
@@ -31,6 +31,6 @@
     <%- include('./partials/dashboardContent.ejs')%>
 
     <!-- Integrated JavaScript -->
-    <script src="/js/dashboard.js" nonce="<% nonce %>"></script>
+    <script src="/js/dashboard.js" nonce="<%= nonce %>"></script>
 </body>
 </html>

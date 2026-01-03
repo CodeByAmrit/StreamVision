@@ -396,7 +396,7 @@
     </div>
 
     <!-- Integrated JavaScript -->
-    <script>
+    <script nonce="<%= nonce %>">
       // Hide loading screen
       document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
@@ -532,7 +532,8 @@
             "An error occurred during login. Please try again.",
             "error"
           );
-        } finally {
+        }
+        finally {
           // Reset button state
           if (submitBtn && btnText && btnLoading) {
             btnText.classList.remove("hidden");
@@ -546,7 +547,7 @@
       function handleUrlParameters() {
         const urlParams = new URLSearchParams(window.location.search);
         const error = urlParams.get("error");
-        const message = urlParams.get("message");
+        const message = url.get("message");
 
         if (error || message) {
           showFlashMessage(
@@ -582,6 +583,6 @@
       });
 
     </script>
-1    <script src="/js/login.js" nonce="<% nonce %>"></script>
+    <script src="/js/login.js" nonce="<%= nonce %>"></script>
   </body>
 </html>

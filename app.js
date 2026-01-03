@@ -80,22 +80,24 @@ app.use(
         "style-src": [
           "'self'",
           "https://fonts.googleapis.com",
+          "https://cdnjs.cloudflare.com",
           "'unsafe-inline'",
         ],
-        "font-src": ["'self'", "https://fonts.gstatic.com"],
+        "font-src": ["'self'", "https://fonts.gstatic.com", "https://cdnjs.cloudflare.com"],
         "media-src": ["'self'", "blob:"],
         "img-src": [
           "'self'",
           "data:",
           "blob:",
           "https://avatars.githubusercontent.com",
+          "https://images.unsplash.com",
         ],
         "object-src": ["'self'"],
         "frame-src": ["'self'"],
-        "connect-src": ["'self'"],
+        "connect-src": ["'self'", "https://cdnjs.cloudflare.com"],
       },
     },
-    referrerPolicy: { policy: "no-referrer-when-downgrade" },
+    referrerPolicy: { policy: "strict-origin-when-cross-origin" },
   })
 );
 

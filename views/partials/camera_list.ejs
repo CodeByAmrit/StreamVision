@@ -81,7 +81,7 @@
 </section>
 
 <!-- Add HLS.js -->
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest" nonce="<%= nonce %>"></script>
 
 <script nonce="<%= nonce %>">
   const cameras = <%- JSON.stringify(dvr.cameras) %>;
