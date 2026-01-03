@@ -295,6 +295,7 @@ const renderAddDvrForm = async (req, res) => {
     res.render("add_dvr", {
       title: "Add DVR",
       locations: locations,
+      user: req.user,
     });
   } catch (error) {
     console.error("Error rendering Add DVR form:", error);
