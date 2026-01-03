@@ -36,7 +36,13 @@ CREATE TABLE cameras (
     enabled TINYINT(1) DEFAULT 1,
     FOREIGN KEY (dvr_id) REFERENCES dvrs (id) ON DELETE CASCADE
 );
--- ALTER TABLE cameras ADD COLUMN enabled TINYINT(1) DEFAULT 1;
+
+-- Settings Table
+CREATE TABLE settings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    setting_key VARCHAR(100) UNIQUE NOT NULL,
+    setting_value VARCHAR(255) NOT NULL
+);
 
 -- Insert Sample Data for Testing
 INSERT INTO
@@ -75,6 +81,8 @@ VALUES (
         'rtsp://example.com/camera3'
     );
 
+INSERT INTO settings (setting_key, setting_value) VALUES ('app_name', 'StreamVision');
+
 Explanation:
 
                                                         Users Table: Stores login credentials.
@@ -84,8 +92,8 @@ Explanation:
                                                         DVRs Table: Associates DVRs with locations.
 
                                                         Cameras Table: Stores 16 cameras per DVR with RTSP URLs.
-
-                                                        Foreign Keys: Maintain relationships between tables.
+                                                        
+                                                        Settings Table: Stores application settings.
 
 
                                                         Let me know if you need modifications or additional features!

@@ -12,10 +12,6 @@ router.get('/login', (req, res) => {
     res.render("login");
 });
 
-router.get('/change-password', (req, res) => {
-    res.render("change-password");
-});
-
 router.get('/logout', checkAuth, (req, res) => {
     User.logout(req, res);
 });

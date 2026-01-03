@@ -21,7 +21,7 @@
             <%= title ? title : 'Dashboard Overview' %>
           </h1>
           <p class="text-sm text-gray-600 dark:text-gray-400 hidden sm:block">
-            Welcome back, Admin! Here's your streaming overview.
+            Welcome back, <%= user.name %>! Here's your streaming overview.
           </p>
         </div>
       </div>
@@ -61,14 +61,14 @@
             <div
               class="w-9 h-9 rounded-xl bg-gradient-to-br from-[#63b3ed] to-[#3182ce] flex items-center justify-center text-white font-bold"
             >
-              A
+              <%= user.name.charAt(0).toUpperCase() %>
             </div>
             <div class="hidden md:block text-left">
               <div class="text-sm font-medium text-gray-900 dark:text-white">
-                Admin User
+                <%= user.name %>
               </div>
               <div class="text-xs text-gray-500 dark:text-gray-400">
-                admin@streamvision.com
+                <%= user.email %>
               </div>
             </div>
             <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
@@ -84,7 +84,7 @@
                 Signed in as
               </div>
               <div class="text-sm text-gray-500 dark:text-gray-400 truncate">
-                admin@streamvision.com
+                <%= user.email %>
               </div>
             </div>
             <a
@@ -95,7 +95,7 @@
               Your Profile
             </a>
             <a
-              href="/change-password"
+              href="/settings"
               class="flex items-center px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors"
             >
               <i class="fas fa-cog mr-3 text-gray-500"></i>

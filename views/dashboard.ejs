@@ -25,7 +25,7 @@
     <%- include('./partials/navbar.ejs', {activePage: 'dashboard'}) %>
 
     <!-- Top Navigation Bar -->
-    <%- include('./partials/topMenu.ejs')%>
+    <%- include('./partials/topMenu.ejs', {user: user})%>
 
     <!-- Main Content -->
     <%- include('./partials/dashboardContent.ejs')%>

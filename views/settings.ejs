@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<%- include('./partials/header.ejs', { title: "Settings | StreamVision", keywords: "settings, configuration, streamvision", description: "Manage your StreamVision settings" }) %>
+
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
+
+    <!-- Sidebar Navigation -->
+    <%- include('./partials/navbar.ejs', {activePage: 'settings'}) %>
+
+    <!-- Top Navigation Bar -->
+    <%- include('./partials/topMenu.ejs', { title: "Settings", user: user }) %>
+
+    <!-- Main Content -->
+    <section class="p-4 sm:ml-64 dark:bg-gray-900 dark:text-white">
+        <div class="w-full h-full mt-16">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- General Settings Card -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                    <h2 class="text-xl font-bold mb-4">General Settings</h2>
+                    <form action="/settings" method="POST">
+                        <div class="mb-4">
+                            <label for="app_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Application Name</label>
+                            <input type="text" id="app_name" name="app_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="<%= settings.app_name %>" required>
+                        </div>
+                        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save Settings</button>
+                    </form>
+                </div>
+
+                <!-- Change Password Card -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                    <h2 class="text-xl font-bold mb-4">Change Password</h2>
+                    <form action="/settings" method="POST">
+                        <div class="mb-4">
+                            <label for="current_password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Current Password</label>
+                            <input type="password" id="current_password" name="current_password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="new_password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">New Password</label>
+                            <input type="password" id="new_password" name="new_password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="confirm_password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm New Password</label>
+                            <input type="password" id="confirm_password" name="confirm_password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                        </div>
+                        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Change Password</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

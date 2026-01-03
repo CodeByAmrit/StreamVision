@@ -19,6 +19,7 @@ const cameraRoutes = require("./routes/cameraRoutes");
 const cameraRoute = require("./routes/camera");
 const userRouter = require("./routes/userRouters");
 const dvrRoutes = require("./routes/dvrs");
+const settingsRoutes = require("./routes/settingsRoutes");
 // const publicRoute = require("./routes/publicRoutes");
 const { cleanupInactiveStreams } = require("./utils/streamManager");
 const logger = require("./utils/logger");
@@ -179,6 +180,7 @@ app.get("/public/dvr/:dvrId", (req, res) => {
 });
 app.use(wsRoutes);
 app.use("/camera/view", cameraRoute);
+app.use(settingsRoutes);
 
 // =================== HLS Streaming Endpoint for Extension ===================
 const activeStreams = {};
