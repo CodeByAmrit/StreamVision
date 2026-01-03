@@ -1,4 +1,5 @@
 const db = require('../config/getConnection'); // Your DB connection
+const dvrManager = require("../utils/streamManager");
 
 /**
  * Get all DVRs with location name and total cameras count
@@ -146,47 +147,101 @@ const getDvrsWithCameras = async (req, res) => {
 };
 
 const getAllDvrsPaginated = async (req, res) => {
+  try {
     let connection = await db.getConnection();
-    if (!connection) return res.status(500).json({ error: "Database connection failed" });
+    if (!connection)
+      return res.status(500).json({ error: "Database connection failed" });
+
     const page = parseInt(req.query.page) || 1;
     const limit = 10;
     const offset = (page - 1) * limit;
-    const search = req.query.search || '';
+    const search = req.query.search || "";
+    const status = req.query.status || "all"; // ADD THIS LINE
 
-    let whereClause = '';
+    let whereClause = "";
     let params = [];
 
     if (search) {
-        whereClause = 'WHERE d.dvr_name LIKE ? OR l.location_name LIKE ?';
-        params.push(`%${search}%`, `%${search}%`);
+      whereClause = "WHERE d.dvr_name LIKE ? OR l.location_name LIKE ?";
+      params.push(`%${search}%`, `%${search}%`);
     }
 
-    // Fetch paginated DVRs
-    const [dvrs] = await connection.query(`
-        SELECT d.*, l.location_name 
-        FROM dvrs d 
-        JOIN locations l ON d.location_id = l.id 
-        ${whereClause}
-        LIMIT ? OFFSET ?
-    `, [...params, limit, offset]);
+    // Single query to get DVRs with camera counts
+    const [dvrs] = await connection.query(
+      `
+            SELECT 
+                d.*, 
+                l.location_name,
+                COUNT(c.id) as totalCameras
+            FROM dvrs d 
+            JOIN locations l ON d.location_id = l.id 
+            LEFT JOIN cameras c ON d.id = c.dvr_id AND c.enabled = 1
+            ${whereClause}
+            GROUP BY d.id
+            ORDER BY d.id DESC
+            LIMIT ? OFFSET ?
+        `,
+      [...params, limit, offset]
+    );
 
     // Get total count for pagination
-    const [[{ total }]] = await connection.query(`
-        SELECT COUNT(*) as total 
-        FROM dvrs d 
-        JOIN locations l ON d.location_id = l.id 
-        ${whereClause}
-    `, params);
+    const [[{ total }]] = await connection.query(
+      `
+            SELECT COUNT(DISTINCT d.id) as total 
+            FROM dvrs d 
+            JOIN locations l ON d.location_id = l.id 
+            ${whereClause}
+        `,
+      params
+    );
+
+    // REAL STATUS CHECK: Use dvrManager
+    const activeDvrIds = new Set();
+    if (dvrManager && dvrManager.streams) {
+      for (const [dvrId, streamInstance] of dvrManager.streams.entries()) {
+        activeDvrIds.add(dvrId);
+      }
+    }
+
+    // Add online status and active camera count
+    for (let dvr of dvrs) {
+      dvr.isOnline = activeDvrIds.has(dvr.id);
+
+      if (dvr.isOnline && dvrManager.streams.get(dvr.id)) {
+        dvr.activeCameras =
+          dvrManager.streams.get(dvr.id).activeCameraCount || 1;
+      } else {
+        dvr.activeCameras = 0;
+      }
+
+      // Convert totalCameras from string to number
+      dvr.totalCameras = parseInt(dvr.totalCameras) || 0;
+    }
+
+    // Calculate statistics (on all DVRs, not filtered)
+    const onlineCount = dvrs.filter((dvr) => dvr.isOnline === true).length;
+    const totalCameras = dvrs.reduce((sum, dvr) => sum + dvr.totalCameras, 0);
 
     connection.end();
 
-    res.render('dvr', {
-        dvrsWithCameras: dvrs,
-        currentPage: page,
-        totalPages: Math.ceil(total / limit),
-        limit: limit,
-        search: search
+    res.render("dvr", {
+      dvrsWithCameras: dvrs,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      limit: limit,
+      search: search,
+      status: status, // ADD THIS LINE - pass status to template
+      totalDvrs: total,
+      onlineCount: onlineCount,
+      totalCameras: totalCameras,
     });
+  } catch (error) {
+    console.error("Error fetching DVRs:", error);
+    res.status(500).render("error", {
+      message: "Failed to load DVRs",
+      error: process.env.NODE_ENV === "development" ? error : {},
+    });
+  }
 };
 
 async function getDvrWithCamerasById(dvrId) {
