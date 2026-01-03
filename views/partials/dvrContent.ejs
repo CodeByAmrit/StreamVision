@@ -12,7 +12,7 @@
         </div>
         <div>
           <p class="text-sm text-gray-500 dark:text-gray-400">Total DVRs</p>
-          <p class="text-2xl font-bold text-gray-900 dark:text-white"><%= totalDvrs || 0 %></p>
+          <%= typeof totalDvrs !== "undefined" ? totalDvrs : 0 %>
         </div>
       </div>
     </div>
@@ -174,12 +174,16 @@
 
           <!-- Status - FIXED: Use real isOnline data -->
           <div class="col-span-2">
-            <% // REAL DATA: Use isOnline from backend (set by dvrManager check) const isOnline =
-            dvr.isOnline === true; const statusClass = isOnline ? 'bg-green-100 dark:bg-green-900/30
-            text-green-800 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/30 text-red-800
-            dark:text-red-400'; const statusIcon = isOnline ? 'fa-circle-check' :
-            'fa-circle-exclamation'; const statusText = isOnline ? 'Online' : 'Offline'; // Show
-            active cameras count if available const activeCameras = dvr.activeCameras || 0; %>
+            <%
+              const isOnline = dvr.isOnline === true;
+              const statusClass = isOnline
+                ? "bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400"
+                : "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400";
+              const statusIcon = isOnline ? "fa-circle-check" : "fa-circle-exclamation";
+              const statusText = isOnline ? "Online" : "Offline";
+              const activeCameras = dvr.activeCameras || 0;
+            %>
+
             <div
               class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium <%= statusClass %>"
             >
@@ -230,8 +234,11 @@
             <div>
               <p class="text-gray-500 dark:text-gray-400 mb-1">Cameras</p>
               <p class="font-medium text-gray-900 dark:text-white">
-                <% const totalCams = dvr.totalCameras || 0; const activeCams = dvr.activeCameras ||
-                0; %> <%= totalCams %> Total <% if (activeCams > 0) { %>
+                <%
+                  const totalCams = dvr.totalCameras || 0;
+                  const activeCams = dvr.activeCameras || 0;
+                %>
+                <%= totalCams %> Total <% if (activeCams > 0) { %>
                 <span class="text-green-600 dark:text-green-400 ml-1">
                   (<%= activeCams %> Active)
                 </span>

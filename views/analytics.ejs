@@ -1,31 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
-  <%- include('./partials/header.ejs', { title: "Analytics Dashboard | StreamVision", keywords:
-  "stream analytics, CCTV statistics, surveillance metrics, live stream monitoring", description:
-  "Comprehensive analytics and monitoring dashboard for your StreamVision surveillance system" }) %>
+  <head>
+    <%- include('./partials/header.ejs', { title: "Analytics Dashboard | StreamVision", keywords: "stream analytics, CCTV statistics, surveillance metrics, live stream monitoring", description: "Comprehensive analytics and monitoring dashboard for your StreamVision surveillance system" }) %>
+  </head>
 
   <body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
-    <!-- Loading Screen -->
-    <div
-      id="introScreen"
-      class="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-800"
-    >
-      <div class="text-center">
-        <div class="relative w-64 h-64">
-          <div
-            class="absolute inset-0 bg-gradient-to-r from-[#63b3ed] to-[#3182ce] rounded-full opacity-20 animate-pulse"
-          ></div>
-          <div class="relative w-full h-full flex items-center justify-center">
-            <div class="text-center">
-              <div class="text-4xl font-bold gradient-text mb-4">StreamVision</div>
-              <div class="text-blue-600 dark:text-blue-400 text-sm font-medium">
-                Loading analytics dashboard...
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- Sidebar Navigation -->
     <%- include('./partials/navbar.ejs', {activePage: 'analytics'}) %>
@@ -35,34 +14,6 @@
 
     <!-- Main Content -->
     <main class="p-6 sm:ml-64 mt-16 min-h-screen bg-gray-50/50 dark:bg-gray-900/50">
-      <!-- Page Header -->
-      <div class="mb-8">
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
-              Analytics
-              <span class="gradient-text">Dashboard</span>
-            </h1>
-            <p class="text-gray-600 dark:text-gray-400 mt-2">
-              Comprehensive insights and performance metrics for your streaming infrastructure
-            </p>
-          </div>
-          <div class="flex items-center space-x-3">
-            <div class="hidden md:block text-right">
-              <p class="text-sm text-gray-500 dark:text-gray-400">Last Updated</p>
-              <p class="text-lg font-bold text-blue-600 dark:text-blue-400" id="last-updated">
-                Just now
-              </p>
-            </div>
-            <button
-              id="refresh-analytics"
-              class="p-3 rounded-xl bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/50 transition-colors"
-            >
-              <i class="fas fa-sync-alt"></i>
-            </button>
-          </div>
-        </div>
-      </div>
 
       <!-- Stats Overview -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -457,13 +408,7 @@
             </p>
           </div>
           <div class="divide-y divide-blue-50 dark:divide-gray-700">
-            <% const recentActivities = [ { type: 'success', icon: 'fa-play', message: 'DVR "Main
-            Building" started streaming', time: '2 minutes ago' }, { type: 'info', icon: 'fa-user',
-            message: 'Admin user logged in', time: '15 minutes ago' }, { type: 'warning', icon:
-            'fa-exclamation', message: 'Camera "Entrance" connection unstable', time: '1 hour ago'
-            }, { type: 'success', icon: 'fa-stop', message: 'Stream "Parking Lot" stopped', time: '2
-            hours ago' }, { type: 'info', icon: 'fa-sync', message: 'System health check completed',
-            time: '3 hours ago' } ]; %> <% recentActivities.forEach(activity => { %>
+            <% const recentActivities = [ { type: 'success', icon: 'fa-play', message: 'DVR "Main Building" started streaming', time: '2 minutes ago' }, { type: 'info', icon: 'fa-user', message: 'Admin user logged in', time: '15 minutes ago' }, { type: 'warning', icon: 'fa-exclamation', message: 'Camera "Entrance" connection unstable', time: '1 hour ago' }, { type: 'success', icon: 'fa-stop', message: 'Stream "Parking Lot" stopped', time: '2 hours ago' }, { type: 'info', icon: 'fa-sync', message: 'System health check completed', time: '3 hours ago' } ]; %> <% recentActivities.forEach(activity => { %>
             <div class="px-6 py-4 hover:bg-blue-50/30 dark:hover:bg-gray-700/30 transition-colors">
               <div class="flex items-start">
                 <div
@@ -531,16 +476,13 @@
               return activeDvr ? activeDvr.activeCameraCount || 0 : 0;
           })) %>,
           dvrs: <%- JSON.stringify(dvrs) %>,
-          totalCameras: <%= total_cameras %>,
-          activeCameras: <%= active_streams %>,
+          totalCameras: <%= total_cameras || 0 %>,
+          activeCameras: <%= active_streams || 0 %>,
           totalDvrs: <%= typeof total_dvrs !== "undefined" ? total_dvrs : 0 %>,
           activeDvrsCount: <%= activeDvrs?.length || 0 %>
       };
     </script>
 
-    <!-- Include the analytics.js file -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js" nonce="<%= nonce %>"></script>
-    <script src="/js/analytics.js" nonce="<%= nonce %>"></script>
-    <script src="/js/topMenu.js" nonce="<%= nonce %>"></script>
+    <%- include('./partials/footer.ejs') %>
   </body>
 </html>

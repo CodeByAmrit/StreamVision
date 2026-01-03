@@ -133,7 +133,8 @@ const renderAddCameraPage = async (req, res) => {
 
     res.render("add_camera", {
       title: "Add Camera",
-      dvr: dvr, // Pass DVR object to EJS
+      dvr: dvr,
+      user:req.user
     });
   } catch (error) {
     console.error("Error loading add camera page:", error);

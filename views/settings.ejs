@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
-  <%- include('./partials/header.ejs', { title: "Settings | StreamVision", keywords: "settings,
-  configuration, streamvision", description: "Manage your StreamVision settings" }) %>
-
+  <head>
+    <%- include('./partials/header.ejs', { title: "Settings | StreamVision", keywords: "settings, configuration, streamvision", description: "Manage your StreamVision settings" }) %>
+  </head>
   <body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
     <!-- Sidebar Navigation -->
     <%- include('./partials/navbar.ejs', {activePage: 'settings'}) %>
@@ -30,7 +30,7 @@
                   id="app_name"
                   name="app_name"
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  value="<%= settings?.app_name || '' %>"
+                  value="<%= settings.app_name || '' %>"
                   required
                 />
               </div>
@@ -104,6 +104,6 @@
       </div>
     </section>
     <script src="/js/settings.js" nonce="<%= nonce %>"></script>
-    <script src="/js/topMenu.js" nonce="<%= nonce %>"></script>
+    <%- include('./partials/footer.ejs') %>
   </body>
 </html>
