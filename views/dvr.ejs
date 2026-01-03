@@ -1,10 +1,22 @@
-<%- include('./partials/header.ejs',{title: " DVR (Digital Video Recorder)"}) %>
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <%- include('./partials/header.ejs', { title: "DVR Management | StreamVision",
+  keywords: "DVR management, CCTV locations, surveillance sites", description:
+  "Manage your DVRs and surveillance locations in StreamVision dashboard" }) %>
 
-<%- include('./partials/topMenu.ejs',{title: " DVR (Digital Video Recorder)"}) %>
-
-<%- include('./partials/navbar.ejs') %>
+  <body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
 
 
-<%- include('./partials/dvr.ejs') %>
+    <!-- Sidebar Navigation -->
+    <%- include('./partials/navbar.ejs') %>
 
-<%- include('./partials/footer.ejs') %>
+    <!-- Top Navigation Bar -->
+    <%- include('./partials/topMenu.ejs', { title: "DVR Management" }) %>
+
+    <!-- Main Content -->
+    <%- include('./partials/dvrContent.ejs') %>
+
+    <!-- Integrated JavaScript -->
+    <script src="/js/dvr.js" nonce="<%= nonce %>"></script>
+  </body>
+</html>

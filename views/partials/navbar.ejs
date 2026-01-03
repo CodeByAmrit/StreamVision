@@ -1,81 +1,137 @@
+<!-- Sidebar Navigation -->
 <aside
   id="logo-sidebar"
-  class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800"
+  class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-white dark:bg-gray-800 border-r border-blue-100 dark:border-gray-700"
   aria-label="Sidebar"
 >
   <div class="h-full flex flex-col">
+    <!-- Logo Section -->
     <a
       href="/dashboard"
-      class="flex items-center justify-center h-22 px-6"
+      class="flex items-center justify-center h-24 px-6 border-b border-blue-50 dark:border-gray-700"
     >
-      <img src="/images/stream.png" alt="StreamVision Logo" class="h-18" />
+      <div class="text-center">
+        <div
+          class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#63b3ed] to-[#3182ce] flex items-center justify-center mx-auto mb-3 shadow-lg"
+        >
+          <i class="fas fa-video text-white text-2xl"></i>
+        </div>
+        <div class="text-xl font-bold gradient-text">StreamVision</div>
+        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+          Admin Dashboard
+        </p>
+      </div>
     </a>
+
+    <!-- Navigation Menu -->
     <div class="flex-grow overflow-y-auto px-4 py-6">
+      <!-- Quick Action Button -->
+      <a
+        href="/camera/new"
+        class="w-full mb-6 btn-gradient text-white font-medium rounded-xl px-4 py-3.5 text-center inline-flex items-center justify-center shadow-sm"
+      >
+        <i class="fas fa-plus mr-2"></i>
+        Add Camera
+      </a>
+
+      <!-- Navigation Links -->
       <ul class="space-y-2 font-medium">
         <li>
           <a
-            href="/camera/new"
-            class="w-full mb-4 inline-flex items-center justify-center px-4 py-3 text-sm font-semibold text-white bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900 transition-colors"
-          >
-            <svg
-              class="w-5 h-5 mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-              ></path>
-            </svg>
-            Add Camera
-          </a>
-        </li>
-        <li>
-          <a
             href="/dashboard"
-            class="flex items-center p-3 rounded-lg text-blue-600 bg-blue-50 dark:bg-slate-800 dark:text-blue-400 group"
+            class="flex items-center p-3.5 rounded-xl text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 group"
           >
-            <svg
-              class="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+            <div
+              class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/40 dark:to-blue-800/20 flex items-center justify-center mr-3"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-              ></path>
-            </svg>
-            <span class="ml-3">Dashboard</span>
+              <i class="fas fa-home text-blue-600 dark:text-blue-400"></i>
+            </div>
+            <span class="font-medium">Dashboard</span>
           </a>
         </li>
+
         <li>
           <a
             href="/dvr"
-            class="flex items-center p-3 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 group"
+            class="flex items-center p-3.5 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700/50 group transition-colors"
           >
-            <svg
-              class="w-5 h-5 text-slate-500 dark:text-slate-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+            <div
+              class="w-8 h-8 rounded-lg bg-gradient-to-br from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center mr-3"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
-              ></path>
-            </svg>
-            <span class="ml-3">DVRs / Locations</span>
+              <i class="fas fa-server text-gray-600 dark:text-gray-400"></i>
+            </div>
+            <span class="font-medium">DVRs / Locations</span>
+          </a>
+        </li>
+
+        <li>
+          <a
+            href="/cameras"
+            class="flex items-center p-3.5 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700/50 group transition-colors"
+          >
+            <div
+              class="w-8 h-8 rounded-lg bg-gradient-to-br from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center mr-3"
+            >
+              <i class="fas fa-camera text-gray-600 dark:text-gray-400"></i>
+            </div>
+            <span class="font-medium">All Cameras</span>
+          </a>
+        </li>
+
+        <li>
+          <a
+            href="/change-password"
+            class="flex items-center p-3.5 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700/50 group transition-colors"
+          >
+            <div
+              class="w-8 h-8 rounded-lg bg-gradient-to-br from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center mr-3"
+            >
+              <i class="fas fa-cog text-gray-600 dark:text-gray-400"></i>
+            </div>
+            <span class="font-medium">Settings</span>
+          </a>
+        </li>
+
+        <li>
+          <a
+            href="/analytics"
+            class="flex items-center p-3.5 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700/50 group transition-colors"
+          >
+            <div
+              class="w-8 h-8 rounded-lg bg-gradient-to-br from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600 flex items-center justify-center mr-3"
+            >
+              <i class="fas fa-chart-line text-gray-600 dark:text-gray-400"></i>
+            </div>
+            <span class="font-medium">Analytics</span>
           </a>
         </li>
       </ul>
+
+      <!-- Recent Activity Section -->
+      <div class="mt-8 pt-6 border-t border-blue-100 dark:border-gray-700">
+        <h3
+          class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4"
+        >
+          Recent Activity
+        </h3>
+        <div class="space-y-3">
+          <div class="flex items-center text-sm">
+            <div class="w-2 h-2 rounded-full bg-green-500 mr-3"></div>
+            <span class="text-gray-700 dark:text-gray-300">System updated</span>
+          </div>
+          <div class="flex items-center text-sm">
+            <div class="w-2 h-2 rounded-full bg-blue-500 mr-3"></div>
+            <span class="text-gray-700 dark:text-gray-3">New camera added</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="p-4 border-t border-blue-100 dark:border-gray-700">
+      <div class="text-xs text-gray-500 dark:text-gray-400 text-center">
+        StreamVision v2.0
+      </div>
     </div>
   </div>
 </aside>
