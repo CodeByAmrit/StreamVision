@@ -90,8 +90,8 @@ router.post('/login', async (req, res) => {
 router.post('/change-password', checkAuth, async (req, res) => {
     try {
         const id = req.user.id;
-        const { currentPassword, newPassword, confirmPassword } = req.body;
-
+      const { currentPassword, newPassword, confirmPassword } = req.body;
+      
         // Check if new passwords match
         if (newPassword !== confirmPassword) {
             return res.status(400).json({ status: 'error', message: 'New passwords do not match.' });
@@ -109,9 +109,7 @@ router.post('/change-password', checkAuth, async (req, res) => {
             return res.status(401).json({ status: 'error', message: 'Current password is incorrect.' });
         }
 
-        // Hash new password and update
-        const hashedPassword = bcrypt.hashSync(newPassword, 10);
-        await User.updatePassword(id, hashedPassword);
+        await User.updatePassword(id, newPassword);
 
         return res.status(200).json({ status: 'success', message: 'Password changed successfully.' });
 
