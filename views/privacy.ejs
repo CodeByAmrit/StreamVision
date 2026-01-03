@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <%- include('./partials/header.ejs', {title: "Privacy Policy"})%>
+  </head>
+  <body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
+    <!-- Header -->
+    <header
+      class="sticky top-0 z-40 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-blue-100 dark:border-gray-800"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <a href="/" class="flex items-center space-x-3">
+            <div
+              class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#63b3ed] to-[#3182ce] flex items-center justify-center"
+            >
+              <i class="fas fa-video text-white"></i>
+            </div>
+            <div>
+              <span class="text-xl font-bold gradient-text">StreamVision</span>
+              <p class="text-xs text-gray-500 dark:text-gray-400">by Netwon Team</p>
+            </div>
+          </a>
+
+          <nav class="hidden md:flex items-center space-x-8">
+            <a
+              href="/"
+              class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
+            >
+              Dashboard
+            </a>
+            <a
+              href="/cameras"
+              class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
+            >
+              Cameras
+            </a>
+            <a
+              href="/analytics"
+              class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
+            >
+              Analytics
+            </a>
+            <a
+              href="/documentation"
+              class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
+            >
+              Docs
+            </a>
+            <a
+              href="/privacy"
+              class="text-blue-600 dark:text-blue-400 font-medium border-b-2 border-blue-500 pb-1"
+            >
+              Privacy
+            </a>
+          </nav>
+
+          <div class="flex items-center space-x-4">
+            <!-- Theme Toggle -->
+            <button
+              id="theme-toggle"
+              class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+              <i class="fas fa-moon dark:hidden"></i>
+              <i class="fas fa-sun hidden dark:inline"></i>
+            </button>
+
+            <!-- Support Link -->
+            <a
+              href="https://service.cctvcameralive.in/"
+              class="hidden sm:inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+              <i class="fas fa-life-ring mr-2"></i>
+              Support
+            </a>
+
+            <!-- Admin Login Button -->
+            <a
+              href="/login"
+              class="btn-gradient text-white font-medium rounded-xl px-5 py-2.5 text-sm inline-flex items-center shadow-sm"
+            >
+              <i class="fas fa-sign-in-alt mr-2"></i>
+              Admin Login
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 md:py-12">
+      <!-- Page Header -->
+      <div class="text-center mb-12 md:mb-16">
+        <div
+          class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 mb-6"
+        >
+          <i class="fas fa-shield-alt text-blue-600 dark:text-blue-400 text-2xl"></i>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+          Privacy
+          <span class="gradient-text">Policy</span>
+        </h1>
+        <p class="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+          Your security and privacy are fundamental to StreamVision. Learn how we protect your RTSP
+          streams and data.
+        </p>
+        <div class="mt-6 text-sm text-gray-500 dark:text-gray-400">
+          Last Updated:
+          <span class="font-medium text-blue-600 dark:text-blue-400">December 15, 2023</span>
+        </div>
+      </div>
+
+      <!-- Policy Content Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+        <!-- Side Navigation -->
+        <div class="lg:col-span-1">
+          <div class="sticky top-24 glass-panel rounded-2xl p-6 shadow-glass dark:shadow-glass-dark">
+            <h3 class="font-bold text-gray-900 dark:text-white text-lg mb-4">Policy Sections</h3>
+            <nav class="space-y-2">
+              <a
+                href="#introduction"
+                class="flex items-center space-x-3 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800/50 section-transition text-blue-600 dark:text-blue-400 border-l-4 border-blue-500 pl-4"
+              >
+                <i class="fas fa-info-circle text-sm"></i>
+                <span class="font-medium">Introduction</span>
+              </a>
+              <a
+                href="#rtsp-processing"
+                class="flex items-center space-x-3 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800/50 section-transition text-gray-700 dark:text-gray-300"
+              >
+                <i class="fas fa-video text-sm"></i>
+                <span class="font-medium">RT Stream Processing</span>
+              </a>
+              <a
+                href="#data-usage"
+                class="flex items-center space-x-3 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800/50 section-transition text-gray-700 dark:text-gray-300"
+              >
+                <i class="fas fa-database text-sm"></i>
+                <span class="font-medium">Data Usage</span>
+              </a>
+              <a
+                href="#security"
+                class="flex items-center space-x-3 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800/50 section-transition text-gray-700 dark:text-gray-300"
+              >
+                <i class="fas fa-lock text-sm"></i>
+                <span class="font-medium">Security Practices</span>
+              </a>
+              <a
+                href="#cookies"
+                class="flex items-center space-x-3 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800/50 section-transition text-gray-700 dark:text-gray-300"
+              >
+                <i class="fas fa-cookie-bite text-sm"></i>
+                <span class="font-medium">Cookies & Storage</span>
+              </a>
+              <a
+                href="#rights"
+                class="flex items-center space-x-3 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800/50 section-transition text-gray-700 dark:text-gray-300"
+              >
+                <i class="fas fa-user-shield text-sm"></i>
+                <span class="font-medium">Your Rights</span>
+              </a>
+              <a
+                href="#contact"
+                class="flex items-center space-x-3 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800/50 section-transition text-gray-700 dark:text-gray-300"
+              >
+                <i class="fas fa-envelope text-sm"></i>
+                <span class="font-medium">Contact Us</span>
+              </a>
+            </nav>
+
+            <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+              <div class="flex items-center space-x-3 text-sm text-gray-600 dark:text-gray-400">
+                <i class="fas fa-clock"></i>
+                <span>Reading time: 5-7 minutes</span>
+              </div>
+              <button
+                onclick="window.print()"
+                class="mt-4 w-full flex items-center justify-center space-x-2 px-4 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-gray-700 dark:text-gray-300"
+              >
+                <i class="fas fa-print"></i>
+                <span>Print Policy</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Policy Content -->
+        <div class="lg:col-span-2 space-y-8">
+          <!-- Introduction -->
+          <section
+            id="introduction"
+            class="glass-panel rounded-2xl p-6 md:p-8 shadow-glass dark:shadow-glass-dark section-transition hover-lift"
+          >
+            <div class="flex items-start space-x-4 mb-6">
+              <div
+                class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center flex-shrink-0"
+              >
+                <i class="fas fa-info-circle text-blue-600 dark:text-blue-400 text-lg"></i>
+              </div>
+              <div>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                  Introduction & Purpose
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400">
+                  StreamVision is a professional RTSP and CCTV live viewing platform designed for
+                  secure, real-time surveillance monitoring. We provide enterprise-grade stream
+                  management without compromising your privacy.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/10 rounded-xl p-5 border border-blue-200 dark:border-blue-800"
+            >
+              <div class="flex items-start">
+                <i
+                  class="fas fa-exclamation-circle text-blue-600 dark:text-blue-400 text-xl mt-1 mr-3"
+                ></i>
+                <div>
+                  <h4 class="font-bold text-gray-900 dark:text-white mb-1">Core Privacy Principle</h4>
+                  <p class="text-gray-700 dark:text-gray-300">
+                    We believe in
+                    <span class="font-bold text-blue-600 dark:text-blue-400">
+                      transparent data handling
+                    </span>
+                    . Your RTSP streams are processed in real-time and never stored permanently on our
+                    servers.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- RTSP Processing -->
+          <section
+            id="rtsp-processing"
+            class="glass-panel rounded-2xl p-6 md:p-8 shadow-glass dark:shadow-glass-dark section-transition hover-lift"
+          >
+            <div class="flex items-start space-x-4 mb-6">
+              <div
+                class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-100 to-green-50 dark:from-green-900/30 dark:to-green-800/20 flex items-center justify-center flex-shrink-0"
+              >
+                <i class="fas fa-video text-green-600 dark:text-green-400 text-lg"></i>
+              </div>
+              <div>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                  RTSP Stream Processing
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400">
+                  Understanding how we handle your live video streams is crucial for your privacy.
+                </p>
+              </div>
+            </div>
+
+            <div class="space-y-6">
+              <div
+                class="p-5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50"
+              >
+                <h4 class="font-bold text-gray-900 dark:text-white mb-3 flex items-center">
+                  <i class="fas fa-ban text-red-500 mr-2"></i>
+                  No Permanent Storage
+                </h4>
+                <p class="text-gray-700 dark:text-gray-300">
+                  StreamVision
+                  <span class="font-bold text-red-600 dark:text-red-400">
+                    does not store, record, or archive
+                  </span>
+                  your RTSP video streams. All video processing occurs in real-time memory only and is
+                  discarded immediately after viewing.
+                </p>
+              </div>
+
+              <div
+                class="p-5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50"
+              >
+                <h4 class="font-bold text-gray-900 dark:text-white mb-3 flex items-center">
+                  <i class="fas fa-memory text-blue-500 mr-2"></i>
+                  In-Memory Processing
+                </h4>
+                <p class="text-gray-700 dark:text-gray-300">
+                  RTSP URLs and stream data are processed exclusively in volatile memory. When you
+                  disconnect or close your session, all stream-related data is automatically purged from
+                  our systems.
+                </p>
+              </div>
+
+              <div
+                class="p-5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50"
+              >
+                <h4 class="font-bold text-gray-900 dark:text-white mb-3 flex items-center">
+                  <i class="fas fa-eye-slash text-purple-500 mr-2"></i>
+                  No Monitoring or Analysis
+                </h4>
+                <p class="text-gray-700 dark:text-gray-300">
+                  We do not monitor, analyze, or extract metadata from your video streams. StreamVision
+                  functions as a secure passthrough, delivering your RTSP streams directly to your
+                  authenticated sessions.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Data Usage -->
+          <section
+            id="data-usage"
+            class="glass-panel rounded-2xl p-6 md:p-8 shadow-glass dark:shadow-glass-dark section-transition hover-lift"
+          >
+            <div class="flex items-start space-x-4 mb-6">
+              <div
+                class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 dark:from-purple-900/30 dark:to-purple-800/20 flex items-center justify-center flex-shrink-0"
+              >
+                <i class="fas fa-database text-purple-600 dark:text-purple-400 text-lg"></i>
+              </div>
+              <div>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                  Data Collection & Usage
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400">
+                  We collect minimal data necessary for authentication and support.
+                </p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div
+                class="p-5 rounded-xl border border-blue-200 dark:border-blue-800 bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-900/20 dark:to-blue-800/10"
+              >
+                <div class="flex items-center mb-3">
+                  <div
+                    class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mr-3"
+                  >
+                    <i class="fas fa-envelope text-blue-600 dark:text-blue-400"></i>
+                  </div>
+                  <h4 class="font-bold text-gray-900 dark:text-white">Authentication Data</h4>
+                </div>
+                <p class="text-gray-700 dark:text-gray-300 text-sm">
+                  We store only your email address for authentication purposes. All authentication is
+                  OAuth-based, meaning we never store or have access to your passwords.
+                </p>
+              </div>
+
+              <div
+                class="p-5 rounded-xl border border-green-200 dark:border-green-800 bg-gradient-to-br from-green-50 to-green-100/50 dark:from-green-900/20 dark:to-green-800/10"
+              >
+                <div class="flex items-center mb-3">
+                  <div
+                    class="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center mr-3"
+                  >
+                    <i class="fas fa-headset text-green-600 dark:text-green-400"></i>
+                  </div>
+                  <h4 class="font-bold text-gray-900 dark:text-white">Support Data</h4>
+                </div>
+                <p class="text-gray-700 dark:text-gray-300 text-sm">
+                  When you contact support, we retain conversation history to provide better service.
+                  You can request deletion of support tickets at any time.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="mt-6 p-5 rounded-xl border border-red-200 dark:border-red-800 bg-gradient-to-br from-red-50 to-red-100/50 dark:from-red-900/20 dark:to-red-800/10"
+            >
+              <div class="flex items-start">
+                <i class="fas fa-exclamation-triangle text-red-500 text-xl mt-1 mr-3"></i>
+                <div>
+                  <h4 class="font-bold text-gray-900 dark:text-white mb-2">Data We Never Collect</h4>
+                  <ul class="text-gray-700 dark:text-gray-300 space-y-1">
+                    <li class="flex items-center">
+                      <i class="fas fa-times text-red-500 mr-2 text-xs"></i>
+                      Video or audio recordings from RTSP streams
+                    </li>
+                    <li class="flex items-center">
+                      <i class="fas fa-times text-red-500 mr-2 text-xs"></i>
+                      Personal metadata from surveillance feeds
+                    </li>
+                    <li class="flex items-center">
+                      <i class="fas fa-times text-red-500 mr-2 text-xs"></i>
+                      Location tracking data
+                    </li>
+                    <li class="flex items-center">
+                      <i class="fas fa-times text-red-500 mr-2 text-xs"></i>
+                      Usage patterns for advertising purposes
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Security Practices -->
+          <section
+            id="security"
+            class="glass-panel rounded-2xl p-6 md:p-8 shadow-glass dark:shadow-glass-dark section-transition hover-lift"
+          >
+            <div class="flex items-start space-x-4 mb-6">
+              <div
+                class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-100 to-orange-50 dark:from-orange-900/30 dark:to-orange-800/20 flex items-center justify-center flex-shrink-0"
+              >
+                <i class="fas fa-lock text-orange-600 dark:text-orange-400 text-lg"></i>
+              </div>
+              <div>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                  Security Practices
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400">
+                  Enterprise-grade security measures protecting your data and streams.
+                </p>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              <div class="flex items-start p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50">
+                <div
+                  class="w-8 h-8 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center mr-3 flex-shrink-0"
+                >
+                  <i class="fas fa-lock text-green-600 dark:text-green-400"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-gray-900 dark:text-white mb-1">HTTPS Encryption</h4>
+                  <p class="text-gray-700 dark:text-gray-300 text-sm">
+                    All data transmission is encrypted via TLS 1.3. Your RTSP streams are tunneled
+                    through secure WebSocket connections.
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-start p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50">
+                <div
+                  class="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mr-3 flex-shrink-0"
+                >
+                  <i class="fas fa-shield-alt text-blue-600 dark:text-blue-400"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-gray-900 dark:text-white mb-1">Security Headers</h4>
+                  <p class="text-gray-700 dark:text-gray-300 text-sm">
+                    We implement comprehensive security headers including CSP, HSTS, X-Frame-Options,
+                    and X-Content-Type-Options.
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-start p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50">
+                <div
+                  class="w-8 h-8 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center mr-3 flex-shrink-0"
+                >
+                  <i class="fas fa-server text-purple-600 dark:text-purple-400"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-gray-900 dark:text-white mb-1">Server Hardening</h4>
+                  <p class="text-gray-700 dark:text-gray-300 text-sm">
+                    Regular security updates, intrusion detection systems, and minimal service exposure
+                    following zero-trust principles.
+                  </p>
+                </div>
+              </div>
+
+              <div class="flex items-start p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50">
+                <div
+                  class="w-8 h-8 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center mr-3 flex-shrink-0"
+                >
+                  <i class="fas fa-user-check text-red-600 dark:text-red-400"></i>
+                </div>
+                <div>
+                  <h4 class="font-bold text-gray-900 dark:text-white mb-1">Access Controls</h4>
+                  <p class="text-gray-700 dark:text-gray-300 text-sm">
+                    Strict role-based access controls with multi-factor authentication options and
+                    session management.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Cookies & Storage -->
+          <section
+            id="cookies"
+            class="glass-panel rounded-2xl p-6 md:p-8 shadow-glass dark:shadow-glass-dark section-transition hover-lift"
+          >
+            <div class="flex items-start space-x-4 mb-6">
+              <div
+                class="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-100 to-yellow-50 dark:from-yellow-900/30 dark:to-yellow-800/20 flex items-center justify-center flex-shrink-0"
+              >
+                <i class="fas fa-cookie-bite text-yellow-600 dark:text-yellow-400 text-lg"></i>
+              </div>
+              <div>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                  Cookies & Local Storage
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400">
+                  Minimal local data storage for essential functionality.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="p-5 rounded-xl border border-yellow-200 dark:border-yellow-800 bg-gradient-to-br from-yellow-50 to-yellow-100/50 dark:from-yellow-900/20 dark:to-yellow-800/10"
+            >
+              <h4 class="font-bold text-gray-900 dark:text-white mb-3">Essential Cookies Only</h4>
+              <p class="text-gray-700 dark:text-gray-300 mb-4">
+                StreamVision uses only essential cookies required for authentication and session
+                management. We do not use tracking cookies, advertising cookies, or any third-party
+                analytics cookies.
+              </p>
+
+              <div class="space-y-3">
+                <div
+                  class="flex items-center justify-between p-3 rounded-lg bg-white/50 dark:bg-gray-800/50"
+                >
+                  <div class="flex items-center">
+                    <div
+                      class="w-8 h-8 rounded-md bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mr-3"
+                    >
+                      <i class="fas fa-key text-blue-600 dark:text-blue-400 text-sm"></i>
+                    </div>
+                    <span class="font-medium text-gray-900 dark:text-white">Session Cookies</span>
+                  </div>
+                  <span class="text-sm text-gray-600 dark:text-gray-400">Required for login</span>
+                </div>
+
+                <div
+                  class="flex items-center justify-between p-3 rounded-lg bg-white/50 dark:bg-gray-800/50"
+                >
+                  <div class="flex items-center">
+                    <div
+                      class="w-8 h-8 rounded-md bg-green-100 dark:bg-green-900/30 flex items-center justify-center mr-3"
+                    >
+                      <i class="fas fa-palette text-green-600 dark:text-green-400 text-sm"></i>
+                    </div>
+                    <span class="font-medium text-gray-900 dark:text-white">Theme Preference</span>
+                  </div>
+                  <span class="text-sm text-gray-600 dark:text-gray-400">Dark/light mode</span>
+                </div>
+
+                <div
+                  class="flex items-center justify-between p-3 rounded-lg bg-white/50 dark:bg-gray-800/50"
+                >
+                  <div class="flex items-center">
+                    <div
+                      class="w-8 h-8 rounded-md bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center mr-3"
+                    >
+                      <i class="fas fa-columns text-purple-600 dark:text-purple-400 text-sm"></i>
+                    </div>
+                    <span class="font-medium text-gray-900 dark:text-white">Layout Settings</span>
+                  </div>
+                  <span class="text-sm text-gray-600 dark:text-gray-400">Optional, local storage</span>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="mt-6 text-sm text-gray-600 dark:text-gray-400 p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50"
+            >
+              <i class="fas fa-info-circle text-blue-500 mr-2"></i>
+              You can clear all local data at any time via your browser settings. Essential cookies are
+              automatically removed when you log out.
+            </div>
+          </section>
+
+          <!-- User Rights -->
+          <section
+            id="rights"
+            class="glass-panel rounded-2xl p-6 md:p-8 shadow-glass dark:shadow-glass-dark section-transition hover-lift"
+          >
+            <div class="flex items-start space-x-4 mb-6">
+              <div
+                class="w-12 h-12 rounded-xl bg-gradient-to-br from-red-100 to-red-50 dark:from-red-900/30 dark:to-red-800/20 flex items-center justify-center flex-shrink-0"
+              >
+                <i class="fas fa-user-shield text-red-600 dark:text-red-400 text-lg"></i>
+              </div>
+              <div>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                  Your Rights & Control
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400">
+                  You have full control over your data and privacy.
+                </p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div
+                class="p-5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50"
+              >
+                <h4 class="font-bold text-gray-900 dark:text-white mb-3 flex items-center">
+                  <i class="fas fa-download text-blue-500 mr-2"></i>
+                  Data Access
+                </h4>
+                <p class="text-gray-700 dark:text-gray-300 text-sm">
+                  Request a copy of all personal data we store about you. We'll provide it in a
+                  structured, commonly used format.
+                </p>
+              </div>
+
+              <div
+                class="p-5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50"
+              >
+                <h4 class="font-bold text-gray-900 dark:text-white mb-3 flex items-center">
+                  <i class="fas fa-trash-alt text-red-500 mr-2"></i>
+                  Data Deletion
+                </h4>
+                <p class="text-gray-700 dark:text-gray-300 text-sm">
+                  Request permanent deletion of your account and all associated data. Processed within
+                  30 days of verification.
+                </p>
+              </div>
+
+              <div
+                class="p-5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50"
+              >
+                <h4 class="font-bold text-gray-900 dark:text-white mb-3 flex items-center">
+                  <i class="fas fa-edit text-green-500 mr-2"></i>
+                  Data Correction
+                </h4>
+                <p class="text-gray-700 dark:text-gray-300 text-sm">
+                  Update or correct inaccurate personal information directly through your account
+                  settings or by contacting support.
+                </p>
+              </div>
+
+              <div
+                class="p-5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50"
+              >
+                <h4 class="font-bold text-gray-900 dark:text-white mb-3 flex items-center">
+                  <i class="fas fa-ban text-purple-500 mr-2"></i>
+                  Object to Processing
+                </h4>
+                <p class="text-gray-700 dark:text-gray-300 text-sm">
+                  Object to specific data processing activities. We'll review your request and comply
+                  unless we have legitimate grounds.
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="mt-6 p-5 rounded-xl border border-blue-200 dark:border-blue-800 bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-900/20 dark:to-blue-800/10"
+            >
+              <div class="flex items-center">
+                <i class="fas fa-external-link-alt text-blue-600 dark:text-blue-400 text-xl mr-3"></i>
+                <div>
+                  <h4 class="font-bold text-gray-900 dark:text-white mb-1">Third-Party Services</h4>
+                  <p class="text-gray-700 dark:text-gray-300 text-sm">
+                    We use minimal third-party services (hosting, authentication providers) that comply
+                    with privacy regulations. We never sell, rent, or trade your data.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Policy Updates & Contact -->
+          <section
+            id="contact"
+            class="glass-panel rounded-2xl p-6 md:p-8 shadow-glass dark:shadow-glass-dark section-transition hover-lift"
+          >
+            <div class="flex items-start space-x-4 mb-6">
+              <div
+                class="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-100 to-indigo-50 dark:from-indigo-900/30 dark:to-indigo-800/20 flex items-center justify-center flex-shrink-0"
+              >
+                <i class="fas fa-envelope text-indigo-600 dark:text-indigo-400 text-lg"></i>
+              </div>
+              <div>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                  Policy Updates & Contact
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400">
+                  How we update this policy and how to contact us.
+                </p>
+              </div>
+            </div>
+
+            <div class="space-y-6">
+              <div
+                class="p-5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50"
+              >
+                <h4 class="font-bold text-gray-900 dark:text-white mb-3">Policy Updates</h4>
+                <p class="text-gray-700 dark:text-gray-300 mb-3">
+                  We may update this Privacy Policy periodically to reflect changes in our practices or
+                  legal requirements. We will notify you of significant changes via email or through the
+                  StreamVision dashboard.
+                </p>
+                <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                  <i class="fas fa-history mr-2"></i>
+                  <span>
+                    You can review the "Last Updated" date at the top of this page to see when changes
+                    were made.
+                  </span>
+                </div>
+              </div>
+
+              <div
+                class="p-5 rounded-xl border border-blue-200 dark:border-blue-800 bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-900/20 dark:to-blue-800/10"
+              >
+                <h4 class="font-bold text-gray-900 dark:text-white mb-4">Contact Our Privacy Team</h4>
+                <div class="space-y-4">
+                  <div class="flex items-center">
+                    <div
+                      class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mr-3"
+                    >
+                      <i class="fas fa-envelope text-blue-600 dark:text-blue-400"></i>
+                    </div>
+                    <div>
+                      <div class="font-medium text-gray-900 dark:text-white">Email</div>
+                      <a
+                        href="mailto:privacy@streamvision.app"
+                        class="text-blue-600 dark:text-blue-400 hover:underline"
+                      >
+                        privacy@streamvision.app
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center">
+                    <div
+                      class="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center mr-3"
+                    >
+                      <i class="fas fa-headset text-green-600 dark:text-green-400"></i>
+                    </div>
+                    <div>
+                      <div class="font-medium text-gray-900 dark:text-white">Support Portal</div>
+                      <a href="/support" class="text-blue-600 dark:text-blue-400 hover:underline">
+                        Visit Support Center
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center">
+                    <div
+                      class="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center mr-3"
+                    >
+                      <i class="fas fa-file-contract text-purple-600 dark:text-purple-400"></i>
+                    </div>
+                    <div>
+                      <div class="font-medium text-gray-900 dark:text-white">DPO Contact</div>
+                      <div class="text-gray-600 dark:text-gray-400 text-sm">
+                        Data Protection Officer available for regulatory inquiries
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
+                <p>
+                  Thank you for trusting StreamVision with your RTSP streaming needs. We're committed to
+                  protecting your privacy while delivering enterprise-grade surveillance management.
+                </p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Back to Top -->
+      <div class="text-center mt-12">
+        <button
+          onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+          class="inline-flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-gray-700 dark:text-gray-300"
+        >
+          <i class="fas fa-arrow-up"></i>
+          <span>Back to Top</span>
+        </button>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-16 border-t border-gray-200 dark:border-gray-800">
+      <div class="container mx-auto px-4 py-8">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <div class="mb-6 md:mb-0">
+            <div class="flex items-center space-x-2 mb-3">
+              <div
+                class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center"
+              >
+                <i class="fas fa-video text-white text-sm"></i>
+              </div>
+              <span class="text-xl font-bold text-gray-900 dark:text-white">
+                Stream
+                <span class="gradient-text">Vision</span>
+              </span>
+            </div>
+            <p class="text-gray-600 dark:text-gray-400 text-sm">
+              Enterprise RTSP & CCTV Live Viewing Platform
+            </p>
+          </div>
+
+          <div class="flex flex-wrap justify-center gap-8">
+            <div>
+              <h4 class="font-bold text-gray-900 dark:text-white mb-3 text-sm">Product</h4>
+              <ul class="space-y-2 text-sm">
+                <li>
+                  <a
+                    href="/features"
+                    class="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  >
+                    Features
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/pricing"
+                    class="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  >
+                    Pricing
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/documentation"
+                    class="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  >
+                    Documentation
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 class="font-bold text-gray-900 dark:text-white mb-3 text-sm">Legal</h4>
+              <ul class="space-y-2 text-sm">
+                <li>
+                  <a href="/privacy" class="text-blue-600 dark:text-blue-400 font-medium">
+                    Privacy Policy
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/terms"
+                    class="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  >
+                    Terms of Service
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/security"
+                    class="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  >
+                    Security
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 class="font-bold text-gray-900 dark:text-white mb-3 text-sm">Company</h4>
+              <ul class="space-y-2 text-sm">
+                <li>
+                  <a
+                    href="/about"
+                    class="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  >
+                    About
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/contact"
+                    class="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  >
+                    Contact
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/support"
+                    class="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  >
+                    Support
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8 pt-8 border-t border-gray-200 dark:border-gray-800 text-center">
+          <p class="text-gray-600 dark:text-gray-400 text-sm">
+            © 2023 StreamVision. All rights reserved. StreamVision is a trademark of StreamVision
+            Technologies.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script nonce="<%= nonce %>">
+      // Theme Toggle
+      document.getElementById("theme-toggle").addEventListener("click", function () {
+        if (document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.remove("dark");
+          localStorage.setItem("theme", "light");
+        } else {
+          document.documentElement.classList.add("dark");
+          localStorage.setItem("theme", "dark");
+        }
+      });
+
+      // Check for saved theme preference
+      if (
+        localStorage.getItem("theme") === "dark" ||
+        (!localStorage.getItem("theme") && window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+
+      // Smooth scroll for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+
+            // Update active state in navigation
+            document
+              .querySelectorAll(
+                "#introduction, #rtsp-processing, #data-usage, #security, #cookies, #rights, #contact"
+              )
+              .forEach((section) => {
+                const link = document.querySelector(`a[href="#${section.id}"]`);
+                if (link) {
+                  link.className = link.className.replace(
+                    "text-blue-600 dark:text-blue-400 border-l-4 border-blue-500",
+                    "text-gray-700 dark:text-gray-300"
+                  );
+                  link.className = link.className.replace("border-l-4 border-blue-500", "");
+                }
+              });
+
+            const activeLink = document.querySelector(
+              `a[href="#${this.getAttribute("href").substring(1)}"]`
+            );
+            if (activeLink) {
+              activeLink.className = activeLink.className.replace(
+                "text-gray-700 dark:text-gray-300",
+                "text-blue-600 dark:text-blue-400"
+              );
+              activeLink.className += " border-l-4 border-blue-500 pl-4";
+            }
+          }
+        });
+      });
+
+      // Update active section on scroll
+      const sections = document.querySelectorAll(
+        "#introduction, #rtsp-processing, #data-usage, #security, #cookies, #rights, #contact"
+      );
+      const navLinks = document.querySelectorAll('nav a[href^="#"]');
+
+      window.addEventListener("scroll", () => {
+        let current = "";
+        sections.forEach((section) => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.clientHeight;
+          if (scrollY >= sectionTop - 100) {
+            current = section.getAttribute("id");
+          }
+        });
+
+        navLinks.forEach((link) => {
+          link.classList.remove(
+            "text-blue-600",
+            "dark:text-blue-400",
+            "border-l-4",
+            "border-blue-500",
+            "pl-4"
+          );
+          link.classList.add("text-gray-700", "dark:text-gray-300");
+          if (link.getAttribute("href") === `#${current}`) {
+            link.classList.remove("text-gray-700", "dark:text-gray-300");
+            link.classList.add(
+              "text-blue-600",
+              "dark:text-blue-400",
+              "border-l-4",
+              "border-blue-500",
+              "pl-4"
+            );
+          }
+        });
+      });
+
+      // Section hover effects
+      document.querySelectorAll(".section-transition").forEach((section) => {
+        section.addEventListener("mouseenter", () => {
+          section.classList.add("hover-lift");
+        });
+
+        section.addEventListener("mouseleave", () => {
+          section.classList.remove("hover-lift");
+        });
+      });
+    </script>
+    <%- include('./partials/footer.ejs') %>
+  </body>
+</html>

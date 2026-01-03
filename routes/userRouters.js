@@ -71,6 +71,10 @@ router.get("/updates", (req, res) => {
   res.render("updates");
 });
 
+router.get("/privacy",(req,res)=>{
+  res.render("privacy");
+});
+
 router.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;

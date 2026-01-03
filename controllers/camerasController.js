@@ -45,7 +45,7 @@ const getCameraById = async (req, res) => {
       rows[0].dvr_id,
     ]);
     // console.log(rows);
-    res.render("edit_camera", { dvr: dvr[0], cameraId, camera: rows[0] });
+    res.render("edit_camera", { dvr: dvr[0], cameraId, camera: rows[0], user: req.user });
   } catch (error) {
     console.error("Error fetching camera:", error);
     res.status(500).json({ error: "Failed to retrieve camera" });
@@ -230,6 +230,7 @@ const getCameraById_ejs = async (req, res) => {
 
     res.render("camera", {
       camera,
+      user: req.user,
     });
   } catch (err) {
     console.error("Error loading camera view:", err);

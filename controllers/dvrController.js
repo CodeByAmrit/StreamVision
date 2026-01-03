@@ -138,7 +138,7 @@ const getDvrsWithCameras = async (req, res) => {
       cameras: cameras.filter((cam) => cam.dvr_id === dvr.id),
     }));
 
-    res.render("dvr", { dvrsWithCameras });
+    res.render("dvr", { dvrsWithCameras, user: req.user });
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");

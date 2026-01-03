@@ -321,5 +321,4 @@ initWebSocketServer(server);
 
 server.listen(PORT, () => {
   logger.info(`🚀 Server running at http://localhost:${PORT}`);
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
 });

@@ -1,70 +1,190 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
-  <head>
-    <meta charset="UTF-8" />
-    <title>StreamVision Updates</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Updates & Changelog | StreamVision - RTSP Streaming Platform</title>
+    <meta name="description" content="Stay up-to-date with the latest StreamVision features, improvements, and security updates for your RTSP streaming platform.">
+    <meta name="keywords" content="StreamVision updates, RTSP platform changelog, streaming improvements, security updates, new features">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <style nonce="<%= nonce %>">
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+      * {
+        font-family: "Inter", sans-serif;
+      }
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+      .gradient-text {
+        background: linear-gradient(to right, #63b3ed, #3182ce);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
 
-    <link rel="stylesheet" href="/css/style.css" nonce="<%= nonce %>" />
+      .btn-gradient {
+        background: linear-gradient(to right, #63b3ed, #3182ce);
+        transition: all 0.3s ease;
+      }
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/flowbite@1.4.0/dist/flowbite.min.js"
-      defer
-      nonce="<%= nonce %>"
-    ></script>
-  </head>
+      .btn-gradient:hover {
+        background: linear-gradient(to right, #3182ce, #2c5282);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px -5px rgba(49, 130, 206, 0.3);
+      }
 
-  <body class="bg-[#100f12] font-sans text-[#EAE6F3] antialiased">
-    <!-- HEADER -->
+      .btn-gradient:active {
+        transform: translateY(0);
+      }
+
+      .card-hover {
+        transition: all 0.3s ease;
+      }
+
+      .card-hover:hover {
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+      }
+
+      .loader {
+        border-top-color: #3182ce;
+        -webkit-animation: spinner 1.5s linear infinite;
+        animation: spinner 1.5s linear infinite;
+      }
+
+      @-webkit-keyframes spinner {
+        0% {
+          -webkit-transform: rotate(0deg);
+        }
+        100% {
+          -webkit-transform: rotate(360deg);
+        }
+      }
+
+      @keyframes spinner {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .tech-icon {
+        transition: all 0.3s ease;
+      }
+
+      .tech-icon:hover {
+        transform: scale(1.1) rotate(5deg);
+      }
+
+      .shadow-glow {
+        box-shadow: 0 0 20px rgba(99, 179, 237, 0.2);
+      }
+
+      .shadow-glow:hover {
+        box-shadow: 0 0 30px rgba(99, 179, 237, 0.3);
+      }
+
+      .border-glow {
+        border-color: rgba(99, 179, 237, 0.3);
+      }
+
+      .border-glow:hover {
+        border-color: rgba(99, 179, 237, 0.6);
+      }
+
+      .bg-grid-pattern {
+        background-image:
+          linear-gradient(rgba(99, 179, 237, 0.1) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(99, 179, 237, 0.1) 1px, transparent 1px);
+        background-size: 50px 50px;
+      }
+
+      .hero-gradient {
+        background: linear-gradient(
+          135deg,
+          rgba(99, 179, 237, 0.1) 0%,
+          rgba(49, 130, 206, 0.05) 100%
+        );
+      }
+
+      .pulse-animation {
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(99, 179, 237, 0.7);
+        }
+        70% {
+          box-shadow: 0 0 0 10px rgba(99, 179, 237, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(99, 179, 237, 0);
+        }
+      }
+
+      .slide-down {
+        animation: slideDown 0.5s ease forwards;
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+</head>
+<body class="text-gray-800">
+    <!-- Header -->
     <header
-      class="sticky top-0 z-50 w-full bg-[#100f12]/70 backdrop-blur-md border-b border-[#4A4654]/30"
+      class="sticky top-0 z-40 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-blue-100 dark:border-gray-800"
     >
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
           <a href="/" class="flex items-center space-x-3">
-            <img src="/images/favicon.png" class="h-8" alt="StreamVision Logo" />
-            <span class="text-2xl font-bold text-[#EAE6F3]">Netwon Team</span>
+            <div
+              class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#63b3ed] to-[#3182ce] flex items-center justify-center"
+            >
+              <i class="fas fa-video text-white"></i>
+            </div>
+            <div>
+              <span class="text-xl font-bold gradient-text">StreamVision</span>
+              <p class="text-xs text-gray-500 dark:text-gray-400">by Netwon Team</p>
+            </div>
           </a>
+
           <div class="flex items-center space-x-4">
+            <!-- Theme Toggle -->
             <button
               id="theme-toggle"
-              type="button"
-              class="p-2 rounded-lg text-[#EAE6F3]/70 hover:bg-[#4A4654]/30 focus:outline-none focus:ring-2 focus:ring-[#73FBFD]/40"
+              class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
-              <!-- Theme Toggle Icons -->
-              <svg
-                id="theme-toggle-dark-icon"
-                class="hidden w-5 h-5"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
-              </svg>
-              <svg
-                id="theme-toggle-light-icon"
-                class="hidden w-5 h-5"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
+              <i class="fas fa-moon dark:hidden"></i>
+              <i class="fas fa-sun hidden dark:inline"></i>
             </button>
+
+            <!-- Support Link -->
+            <a
+              href="https://service.cctvcameralive.in/"
+              class="hidden sm:inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+              <i class="fas fa-life-ring mr-2"></i>
+              Support
+            </a>
+
+            <!-- Admin Login Button -->
             <a
               href="/login"
-              class="px-4 py-2 text-sm font-semibold bg-[#73FBFD] text-[#100f12] rounded-lg shadow-md hover:shadow-[#73FBFD]/40 hover:bg-[#73FBFD]/90 transition-all"
+              class="btn-gradient text-white font-medium rounded-xl px-5 py-2.5 text-sm inline-flex items-center shadow-sm"
             >
+              <i class="fas fa-sign-in-alt mr-2"></i>
               Admin Login
             </a>
           </div>
@@ -72,130 +192,470 @@
       </div>
     </header>
 
-    <!-- MAIN CONTENT -->
+    <!-- Main Content -->
     <main>
-      <div class="relative py-20 sm:py-24 lg:py-32">
-        <div
-          class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
-          aria-hidden="true"
-        >
-          <div
-            class="relative left-1/2 aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#73FBFD] to-[#C8A2FF] opacity-20 sm:w-[72.1875rem]"
-          ></div>
-        </div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="max-w-2xl mx-auto text-center">
-            <h1
-              class="text-4xl sm:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-[#73FBFD] to-[#C8A2FF] bg-clip-text text-transparent"
+        <!-- Hero Section -->
+        <div class="relative py-16 sm:py-20 lg:py-24">
+            <div
+                class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
+                aria-hidden="true"
             >
-              📢 StreamVision Updates
-            </h1>
-            <p class="mt-6 text-lg text-[#EAE6F3]/70">
-              Stay informed with the latest features, improvements, and fixes for the StreamVision
-              platform.
+                <div
+                    class="relative left-1/2 aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-primary-300 to-primary-400 opacity-20 sm:w-[72.1875rem]"
+                ></div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Page Header -->
+                <div class="max-w-3xl mx-auto text-center mb-12">
+                    <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-blue-50 border border-primary-100 mb-6 shadow-soft">
+                        <i class="fas fa-rocket text-3xl gradient-text"></i>
+                    </div>
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-4 text-gray-900">
+                        Platform <span class="gradient-text">Updates</span>
+                    </h1>
+                    <p class="text-lg sm:text-xl text-gray-600 mb-6">
+                        Stay informed with the latest features, improvements, and security updates for StreamVision
+                    </p>
+                    <div class="flex flex-wrap justify-center gap-3">
+                        <span class="px-3 py-1 rounded-full bg-primary-100 text-primary-700 text-sm font-medium border border-primary-200">
+                            <i class="fas fa-bolt mr-1"></i> Real-time Updates
+                        </span>
+                        <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-sm font-medium border border-blue-200">
+                            <i class="fas fa-shield-alt mr-1"></i> Security First
+                        </span>
+                        <span class="px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-sm font-medium">
+                            <i class="fas fa-calendar mr-1"></i> Regular Releases
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Latest Release Banner -->
+                <div class="max-w-4xl mx-auto mb-12">
+                    <div class="glass-panel rounded-2xl p-6 border border-primary-200 shadow-glow hover-lift">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                            <div>
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="px-3 py-1 rounded-full bg-gradient-primary text-white text-sm font-bold btn-gradient ">
+                                        LATEST RELEASE
+                                    </span>
+                                    <span class="px-3 py-1 rounded-full btn-gradient text-primary-700 text-sm font-medium">
+                                        v2.1.0
+                                    </span>
+                                </div>
+                                <h2 class="text-2xl font-bold text-gray-900">
+                                    Enhanced RTSP Processing & Analytics Dashboard
+                                </h2>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm text-gray-500 mb-1">Released</div>
+                                <div class="text-lg font-bold text-primary-600">April 27, 2025</div>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-6">
+                            Major performance improvements with new analytics capabilities and enhanced security features for enterprise RTSP streaming.
+                        </p>
+                        <a href="#v2-1-0" class="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium">
+                            <span>View Release Details</span>
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Updates Timeline -->
+                <div class="max-w-4xl mx-auto">
+                    <!-- Version 2.1.0 -->
+                    <div id="v2-1-0" class="relative timeline-line pl-8 md:pl-12 mb-16 pt-8">
+                        <div class="absolute left-0 top-8 z-10">
+                            <div class="w-4 h-4 rounded-full btn-gradient ring-8 ring-white pulse-ring"></div>
+                        </div>
+                        
+                        <div class="glass-panel rounded-2xl p-6 md:p-8 border border-primary-100 shadow-soft hover-lift mb-6">
+                            <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                                <div>
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <span class="px-3 py-1 rounded-full btn-gradient text-white text-sm font-bold">
+                                            v2.1.0
+                                        </span>
+                                        <span class="text-sm text-gray-500">
+                                            <i class="far fa-calendar mr-1"></i> April 27, 2025
+                                        </span>
+                                    </div>
+                                    <h2 class="text-2xl font-bold text-gray-900">
+                                        <i class="fas fa-rocket text-primary-500 mr-2"></i>Quick RTSP View Launched
+                                    </h2>
+                                </div>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 rounded-full bg-primary-100 text-primary-700 text-xs font-semibold border border-primary-200">
+                                        New Feature
+                                    </span>
+                                    <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold border border-blue-200">
+                                        Performance
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <p class="text-gray-600 mb-6">
+                                Instantly test your RTSP URL streams before adding them to your dashboard. Just paste the URL and see the live feed in seconds with enhanced preview capabilities.
+                            </p>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                <div class="p-4 rounded-xl bg-white border border-gray-200 shadow-soft">
+                                    <div class="flex items-center mb-2">
+                                        <div class="w-8 h-8 rounded-lg bg-primary-100 flex items-center justify-center mr-3">
+                                            <i class="fas fa-play text-primary-600"></i>
+                                        </div>
+                                        <h4 class="font-bold text-gray-900">Instant Preview</h4>
+                                    </div>
+                                    <p class="text-sm text-gray-600">
+                                        Test RTSP streams without dashboard configuration. Real-time validation and format detection.
+                                    </p>
+                                </div>
+                                
+                                <div class="p-4 rounded-xl bg-white border border-gray-200 shadow-soft">
+                                    <div class="flex items-center mb-2">
+                                        <div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center mr-3">
+                                            <i class="fas fa-chart-line text-blue-600"></i>
+                                        </div>
+                                        <h4 class="font-bold text-gray-900">Stream Analytics</h4>
+                                    </div>
+                                    <p class="text-sm text-gray-600">
+                                        New dashboard with performance metrics, bandwidth usage, and stream health monitoring.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 rounded-xl bg-gradient-light border border-primary-100">
+                                <h4 class="font-bold text-gray-900 mb-2 flex items-center">
+                                    <i class="fas fa-star text-yellow-500 mr-2"></i>
+                                    Key Improvements
+                                </h4>
+                                <ul class="space-y-2 text-sm text-gray-600">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check text-primary-600 text-xs mt-1 mr-2"></i>
+                                        <span>30% faster stream initialization with optimized FFmpeg processing</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check text-primary-600 text-xs mt-1 mr-2"></i>
+                                        <span>Enhanced stream format detection and compatibility handling</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check text-primary-600 text-xs mt-1 mr-2"></i>
+                                        <span>Improved error reporting for connection issues</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Version 2.0.5 -->
+                    <div class="relative timeline-line pl-8 md:pl-12 mb-16">
+                        <div class="absolute left-0 top-8 z-10">
+                            <div class="w-4 h-4 rounded-full bg-blue-500 ring-8 ring-white"></div>
+                        </div>
+                        
+                        <div class="glass-panel rounded-2xl p-6 md:p-8 border border-blue-100 shadow-soft hover-lift mb-6">
+                            <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                                <div>
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-sm font-bold">
+                                            v2.0.5
+                                        </span>
+                                        <span class="text-sm text-gray-500">
+                                            <i class="far fa-calendar mr-1"></i> April 20, 2025
+                                        </span>
+                                    </div>
+                                    <h2 class="text-2xl font-bold text-gray-900">
+                                        <i class="fas fa-bolt text-blue-500 mr-2"></i>Performance & Security Enhancements
+                                    </h2>
+                                </div>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold border border-blue-200">
+                                        Security
+                                    </span>
+                                    <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold border border-green-200">
+                                        Optimization
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                <div class="p-5 rounded-xl bg-white border border-gray-200 shadow-soft">
+                                    <h4 class="font-bold text-gray-900 mb-3 flex items-center">
+                                        <i class="fas fa-shield-alt text-primary-600 mr-2"></i>
+                                        Security Improvements
+                                    </h4>
+                                    <ul class="space-y-2 text-sm text-gray-600">
+                                        <li class="flex items-start">
+                                            <i class="fas fa-lock text-primary-600 text-xs mt-1 mr-2"></i>
+                                            <span>Token-based protection for all streaming endpoints</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-key text-primary-600 text-xs mt-1 mr-2"></i>
+                                            <span>Enhanced JWT implementation for admin authentication</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-user-shield text-primary-600 text-xs mt-1 mr-2"></i>
+                                            <span>Rate limiting and brute force protection</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="p-5 rounded-xl bg-white border border-gray-200 shadow-soft">
+                                    <h4 class="font-bold text-gray-900 mb-3 flex items-center">
+                                        <i class="fas fa-tachometer-alt text-green-600 mr-2"></i>
+                                        Performance Optimizations
+                                    </h4>
+                                    <ul class="space-y-2 text-sm text-gray-600">
+                                        <li class="flex items-start">
+                                            <i class="fas fa-bolt text-green-600 text-xs mt-1 mr-2"></i>
+                                            <span>Optimized FFmpeg processing pipeline</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-memory text-green-600 text-xs mt-1 mr-2"></i>
+                                            <span>Reduced memory usage by 25%</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-network-wired text-green-600 text-xs mt-1 mr-2"></i>
+                                            <span>Improved WebSocket connection stability</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 rounded-xl bg-gradient-light border border-blue-100">
+                                <div class="flex items-center">
+                                    <i class="fas fa-info-circle text-blue-600 text-xl mr-3"></i>
+                                    <div>
+                                        <h4 class="font-bold text-gray-900 mb-1">Backend Infrastructure</h4>
+                                        <p class="text-sm text-gray-600">
+                                            Upgraded to Node.js 20 with improved error handling and better resource management for high-concurrency streaming scenarios.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Version 2.0.0 -->
+                    <div class="relative timeline-line pl-8 md:pl-12 mb-16">
+                        <div class="absolute left-0 top-8 z-10">
+                            <div class="w-4 h-4 rounded-full bg-gray-400 ring-8 ring-white"></div>
+                        </div>
+                        
+                        <div class="glass-panel rounded-2xl p-6 md:p-8 border border-gray-200 shadow-soft hover-lift">
+                            <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                                <div>
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <span class="px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-sm font-bold">
+                                            v2.0.0
+                                        </span>
+                                        <span class="text-sm text-gray-500">
+                                            <i class="far fa-calendar mr-1"></i> March 15, 2025
+                                        </span>
+                                    </div>
+                                    <h2 class="text-2xl font-bold text-gray-900">
+                                        <i class="fas fa-star text-yellow-500 mr-2"></i>StreamVision 2.0 Launch
+                                    </h2>
+                                </div>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 text-xs font-semibold border border-indigo-200">
+                                        Major Release
+                                    </span>
+                                    <span class="px-3 py-1 rounded-full bg-purple-100 text-purple-700 text-xs font-semibold border border-purple-200">
+                                        Redesign
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <p class="text-gray-600 mb-6">
+                                Complete platform redesign with new UI, enhanced RTSP streaming engine, and multi-camera dashboard management.
+                            </p>
+                            
+                            <div class="space-y-4 mb-6">
+                                <div class="flex items-start p-4 rounded-xl bg-white border border-gray-200 shadow-soft">
+                                    <div class="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center mr-4 flex-shrink-0">
+                                        <i class="fas fa-layer-group gradient-text"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-gray-900 mb-1">New Dashboard Interface</h4>
+                                        <p class="text-sm text-gray-600">
+                                            Completely redesigned interface with modern design, drag-and-drop camera organization, and real-time monitoring panels.
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-start p-4 rounded-xl bg-white border border-gray-200 shadow-soft">
+                                    <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mr-4 flex-shrink-0">
+                                        <i class="fas fa-video text-blue-600"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-gray-900 mb-1">Enhanced Streaming Engine</h4>
+                                        <p class="text-sm text-gray-600">
+                                            New RTSP processing pipeline with H.265 support, adaptive bitrate streaming, and improved connection recovery.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4 rounded-xl bg-gray-50 border border-gray-200">
+                                <h4 class="font-bold text-gray-900 mb-3">Legacy System Migration</h4>
+                                <p class="text-sm text-gray-600 mb-3">
+                                    Seamless migration path from StreamVision 1.x with automatic camera configuration import and preserved user settings.
+                                </p>
+                                <div class="flex items-center text-xs text-gray-500">
+                                    <i class="fas fa-exclamation-triangle text-yellow-500 mr-2"></i>
+                                    <span>StreamVision 1.x reached end-of-life on June 30, 2025</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coming Soon -->
+                <div class="max-w-4xl mx-auto mt-16">
+                    <div class="glass-panel rounded-2xl p-8 border border-dashed border-primary-200 shadow-soft">
+                        <div class="flex items-center mb-6">
+                            <div class="w-12 h-12 rounded-xl bg-primary-50 flex items-center justify-center mr-4">
+                                <i class="fas fa-clock text-primary-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-2xl font-bold text-gray-900">Upcoming Features</h2>
+                                <p class="text-gray-600">What's coming next to StreamVision</p>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="p-5 rounded-xl bg-white border border-gray-200 shadow-soft opacity-90">
+                                <div class="flex items-center mb-3">
+                                    <div class="w-8 h-8 rounded-lg bg-primary-50 flex items-center justify-center mr-3">
+                                        <i class="fas fa-mobile-alt text-primary-600"></i>
+                                    </div>
+                                    <h4 class="font-bold text-gray-900">Mobile Application</h4>
+                                </div>
+                                <p class="text-sm text-gray-600">
+                                    Native iOS and Android apps for remote monitoring with push notifications and offline viewing.
+                                </p>
+                                <div class="mt-3 text-xs text-gray-500">
+                                    <i class="far fa-calendar mr-1"></i> Planned: Q3 2025
+                                </div>
+                            </div>
+                            
+                            <div class="p-5 rounded-xl bg-white border border-gray-200 shadow-soft opacity-90">
+                                <div class="flex items-center mb-3">
+                                    <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center mr-3">
+                                        <i class="fas fa-robot text-blue-600"></i>
+                                    </div>
+                                    <h4 class="font-bold text-gray-900">AI Analytics</h4>
+                                </div>
+                                <p class="text-sm text-gray-600">
+                                    Object detection, motion analysis, and intelligent alerting powered by machine learning.
+                                </p>
+                                <div class="mt-3 text-xs text-gray-500">
+                                    <i class="far fa-calendar mr-1"></i> Planned: Q4 2025
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Back Button -->
+                <div class="text-center mt-12">
+                    <a
+                        href="/"
+                        class="inline-flex items-center justify-center px-6 py-3 text-base font-semibold btn-gradient  text-white rounded-lg shadow-md hover:shadow-glow transition-all hover-lift"
+                    >
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 dark:bg-gray-900 border-t border-blue-100 dark:border-gray-800">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <div class="mb-6 md:mb-0">
+            <div class="flex items-center mb-4">
+              <div
+                class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#63b3ed] to-[#3182ce] flex items-center justify-center mr-3"
+              >
+                <i class="fas fa-video text-white"></i>
+              </div>
+              <div>
+                <div class="text-xl font-bold gradient-text">StreamVision</div>
+                <p class="text-sm text-gray-600 dark:text-gray-400">by Netwon Team</p>
+              </div>
+            </div>
+            <p class="text-sm text-gray-600 dark:text-gray-400">
+              © 2025 StreamVision. All rights reserved.
             </p>
           </div>
 
-          <!-- UPDATES LIST -->
-          <div class="mt-16 max-w-3xl mx-auto space-y-10">
-            <!-- Update Card -->
-            <div class="relative border-l-2 border-[#C8A2FF]/40 pl-6 space-y-12">
-              <div
-                class="absolute -left-[34px] top-1 h-4 w-4 rounded-full bg-[#73FBFD] ring-8 ring-[#100f12]"
-              ></div>
-              <div
-                class="p-6 bg-[#1A1920]/60 rounded-2xl shadow-lg border border-[#4A4654]/50 backdrop-blur-md"
-              >
-                <div class="flex items-center justify-between mb-2">
-                  <h2
-                    class="text-xl font-bold bg-gradient-to-r from-[#73FBFD] to-[#C8A2FF] bg-clip-text text-transparent"
-                  >
-                    🚀 Quick RTSP View Launched
-                  </h2>
-                  <span
-                    class="bg-[#73FBFD]/20 text-[#73FBFD] text-xs font-semibold px-3 py-1 rounded-full border border-[#73FBFD]/40"
-                  >
-                    New
-                  </span>
-                </div>
-                <p class="text-[#EAE6F3]/80 mb-4">
-                  You can now instantly test your RTSP URL streams before adding them to your
-                  dashboard. Just paste the URL on the homepage and see the live feed in seconds!
-                </p>
-                <div class="text-sm text-[#4A4654]">Released on: April 27, 2025</div>
-              </div>
-            </div>
-
-            <!-- Another Update -->
-            <div class="relative border-l-2 border-[#C8A2FF]/40 pl-6">
-              <div
-                class="absolute -left-[34px] top-1 h-4 w-4 rounded-full bg-[#C8A2FF] ring-8 ring-[#100f12]"
-              ></div>
-              <div
-                class="p-6 bg-[#1A1920]/60 rounded-2xl shadow-lg border border-[#4A4654]/50 backdrop-blur-md"
-              >
-                <div class="flex items-center justify-between mb-2">
-                  <h2
-                    class="text-xl font-bold bg-gradient-to-r from-[#C8A2FF] to-[#73FBFD] bg-clip-text text-transparent"
-                  >
-                    ⚡ Performance and Security
-                  </h2>
-                  <span
-                    class="bg-[#C8A2FF]/20 text-[#C8A2FF] text-xs font-semibold px-3 py-1 rounded-full border border-[#C8A2FF]/40"
-                  >
-                    Improvement
-                  </span>
-                </div>
-                <ul class="list-disc list-inside text-[#EAE6F3]/80 mb-4 space-y-1 pl-2">
-                  <li>Optimized FFmpeg processing for 30% faster stream startup times.</li>
-                  <li>
-                    Enhanced security with token-based protection for all streaming endpoints.
-                  </li>
-                  <li>Strengthened JWT implementation for the admin login process.</li>
-                </ul>
-                <div class="text-sm text-[#4A4654]">Released on: April 20, 2025</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- BACK BUTTON -->
-          <div class="text-center mt-12">
+          <div class="flex space-x-6">
             <a
-              href="/"
-              class="inline-flex items-center justify-center px-6 py-3 text-base font-semibold bg-[#73FBFD] text-[#100f12] rounded-lg shadow-md hover:shadow-[#73FBFD]/40 hover:bg-[#73FBFD]/90 transition-all"
+              href="/privacy"
+              class="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
-              ← Back to Viewer
+              Privacy Policy
+            </a>
+            <a
+              href="/terms.html"
+              class="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+              Terms of Service
+            </a>
+            <a
+              href="mailto:support@cctvcameralive.in"
+              class="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+            >
+              Contact Support
             </a>
           </div>
         </div>
       </div>
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="bg-[#1A1920]/40 border-t border-[#4A4654]/50">
-      <div
-        class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 md:flex md:items-center md:justify-between"
-      >
-        <div class="text-center text-sm text-[#EAE6F3]/60 md:text-left">
-          &copy; 2025
-          <a href="/" class="hover:underline text-[#73FBFD]">StreamVision™</a>
-          . All Rights Reserved.
-        </div>
-        <ul class="flex justify-center mt-4 space-x-6 md:mt-0 md:order-2">
-          <li>
-            <a href="#" class="text-sm text-[#EAE6F3]/60 hover:text-[#73FBFD]">About</a>
-          </li>
-          <li>
-            <a href="#" class="text-sm text-[#EAE6F3]/60 hover:text-[#73FBFD]">Privacy</a>
-          </li>
-          <li>
-            <a href="#" class="text-sm text-[#EAE6F3]/60 hover:text-[#73FBFD]">Contact</a>
-          </li>
-        </ul>
-      </div>
     </footer>
 
-    <script src="/js/theme.js" nonce="<%= nonce %>"></script>
-  </body>
+    <!-- JavaScript -->
+    <script nonce="<%= nonce %>">
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add hover effects to update cards
+        document.querySelectorAll('.hover-lift').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-4px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Add subtle animation to latest release card
+        const latestReleaseCard = document.querySelector('.glass-panel.shadow-glow');
+        if (latestReleaseCard) {
+            latestReleaseCard.addEventListener('mouseenter', function() {
+                this.style.boxShadow = '0 0 25px rgba(59, 130, 246, 0.2)';
+            });
+            
+            latestReleaseCard.addEventListener('mouseleave', function() {
+                this.style.boxShadow = '0 0 20px rgba(59, 130, 246, 0.15)';
+            });
+        }
+    </script>
+</body>
 </html>
