@@ -12,10 +12,7 @@ const devFormat = format.combine(
   })
 );
 
-const prodFormat = format.combine(
-  format.timestamp(),
-  format.json()
-);
+const prodFormat = format.combine(format.timestamp(), format.json());
 
 const logger = createLogger({
   level: "info",

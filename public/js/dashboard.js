@@ -127,15 +127,12 @@ function initializeDashboard() {
 
 // Tooltip initialization
 function initializeTooltips() {
-  const tooltipElements = document.querySelectorAll(
-    "[data-tooltip-target], [data-tooltip]"
-  );
+  const tooltipElements = document.querySelectorAll("[data-tooltip-target], [data-tooltip]");
 
   tooltipElements.forEach((element) => {
     element.addEventListener("mouseenter", function (e) {
       const tooltipText =
-        this.getAttribute("data-tooltip") ||
-        this.getAttribute("data-tooltip-target");
+        this.getAttribute("data-tooltip") || this.getAttribute("data-tooltip-target");
 
       if (tooltipText) {
         const tooltip = document.createElement("div");

@@ -95,6 +95,5 @@ function initializeDashboard() {
 
 // Initialize dashboard when DOM is loaded
 document.addEventListener("DOMContentLoaded", function () {
-
   initializeDashboard();
 });

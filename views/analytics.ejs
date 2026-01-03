@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
-  <%- include('./partials/header.ejs', {
-  title: "Analytics Dashboard | StreamVision",
-  keywords: "stream analytics, CCTV statistics, surveillance metrics, live stream monitoring",
-  description: "Comprehensive analytics and monitoring dashboard for your StreamVision surveillance system"
-  }) %>
-
+  <%- include('./partials/header.ejs', { title: "Analytics Dashboard | StreamVision", keywords:
+  "stream analytics, CCTV statistics, surveillance metrics, live stream monitoring", description:
+  "Comprehensive analytics and monitoring dashboard for your StreamVision surveillance system" }) %>
 
   <body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
     <!-- Loading Screen -->
@@ -20,9 +17,7 @@
           ></div>
           <div class="relative w-full h-full flex items-center justify-center">
             <div class="text-center">
-              <div class="text-4xl font-bold gradient-text mb-4">
-                StreamVision
-              </div>
+              <div class="text-4xl font-bold gradient-text mb-4">StreamVision</div>
               <div class="text-blue-600 dark:text-blue-400 text-sm font-medium">
                 Loading analytics dashboard...
               </div>
@@ -36,39 +31,26 @@
     <%- include('./partials/navbar.ejs', {activePage: 'analytics'}) %>
 
     <!-- Top Navigation Bar -->
-    <%- include('./partials/topMenu.ejs', {
-      title: "Analytics Dashboard",
-      user: user
-    }) %>
-
+    <%- include('./partials/topMenu.ejs', { title: "Analytics Dashboard", user: user }) %>
 
     <!-- Main Content -->
-    <main
-      class="p-6 sm:ml-64 mt-16 min-h-screen bg-gray-50/50 dark:bg-gray-900/50"
-    >
+    <main class="p-6 sm:ml-64 mt-16 min-h-screen bg-gray-50/50 dark:bg-gray-900/50">
       <!-- Page Header -->
       <div class="mb-8">
-        <div
-          class="flex flex-col md:flex-row md:items-center justify-between gap-4"
-        >
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
-              Analytics <span class="gradient-text">Dashboard</span>
+              Analytics
+              <span class="gradient-text">Dashboard</span>
             </h1>
             <p class="text-gray-600 dark:text-gray-400 mt-2">
-              Comprehensive insights and performance metrics for your streaming
-              infrastructure
+              Comprehensive insights and performance metrics for your streaming infrastructure
             </p>
           </div>
           <div class="flex items-center space-x-3">
             <div class="hidden md:block text-right">
-              <p class="text-sm text-gray-500 dark:text-gray-400">
-                Last Updated
-              </p>
-              <p
-                class="text-lg font-bold text-blue-600 dark:text-blue-400"
-                id="last-updated"
-              >
+              <p class="text-sm text-gray-500 dark:text-gray-400">Last Updated</p>
+              <p class="text-lg font-bold text-blue-600 dark:text-blue-400" id="last-updated">
                 Just now
               </p>
             </div>
@@ -90,9 +72,7 @@
         >
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                Total DVRs
-              </p>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">Total DVRs</p>
               <h3 class="text-3xl font-bold text-gray-900 dark:text-white">
                 <%= typeof total_dvrs !== "undefined" ? total_dvrs : 0 %>
               </h3>
@@ -104,25 +84,23 @@
             <div
               class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center"
             >
-              <i
-                class="fas fa-server text-blue-600 dark:text-blue-400 text-xl"
-              ></i>
+              <i class="fas fa-server text-blue-600 dark:text-blue-400 text-xl"></i>
             </div>
           </div>
           <div class="mt-4 pt-4 border-t border-blue-50 dark:border-gray-700">
             <div class="flex items-center justify-between text-sm">
-              <span class="text-gray-600 dark:text-gray-400"
-                >Online:
-                <span class="font-semibold text-green-600 dark:text-green-400"
-                  ><%= activeDvrs?.length || 0 %></span
-                ></span
-              >
-              <span class="text-gray-600 dark:text-gray-400"
-                >Offline:
-                <span class="font-semibold text-red-600 dark:text-red-400"
-                  ><%= total_dvrs - activeDvrs.length %></span
-                ></span
-              >
+              <span class="text-gray-600 dark:text-gray-400">
+                Online:
+                <span class="font-semibold text-green-600 dark:text-green-400">
+                  <%= activeDvrs?.length || 0 %>
+                </span>
+              </span>
+              <span class="text-gray-600 dark:text-gray-400">
+                Offline:
+                <span class="font-semibold text-red-600 dark:text-red-400">
+                  <%= total_dvrs - activeDvrs.length %>
+                </span>
+              </span>
             </div>
           </div>
         </div>
@@ -133,12 +111,8 @@
         >
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                Total Cameras
-              </p>
-              <h3 class="text-3xl font-bold text-gray-900 dark:text-white">
-                <%= total_cameras %>
-              </h3>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">Total Cameras</p>
+              <h3 class="text-3xl font-bold text-gray-900 dark:text-white"><%= total_cameras %></h3>
               <p class="text-xs text-blue-600 dark:text-blue-400 mt-1">
                 <i class="fas fa-video mr-1"></i>
                 Connected devices
@@ -147,25 +121,23 @@
             <div
               class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 dark:from-purple-900/30 dark:to-purple-800/20 flex items-center justify-center"
             >
-              <i
-                class="fas fa-camera text-purple-600 dark:text-purple-400 text-xl"
-              ></i>
+              <i class="fas fa-camera text-purple-600 dark:text-purple-400 text-xl"></i>
             </div>
           </div>
           <div class="mt-4 pt-4 border-t border-blue-50 dark:border-gray-700">
             <div class="flex items-center justify-between text-sm">
-              <span class="text-gray-600 dark:text-gray-400"
-                >Active:
-                <span class="font-semibold text-green-600 dark:text-green-400"
-                  ><%= active_streams %></span
-                ></span
-              >
-              <span class="text-gray-600 dark:text-gray-400"
-                >Inactive:
-                <span class="font-semibold text-gray-600 dark:text-gray-400"
-                  ><%= (total_cameras || 0) - (active_streams || 0) %></span
-                ></span
-              >
+              <span class="text-gray-600 dark:text-gray-400">
+                Active:
+                <span class="font-semibold text-green-600 dark:text-green-400">
+                  <%= active_streams %>
+                </span>
+              </span>
+              <span class="text-gray-600 dark:text-gray-400">
+                Inactive:
+                <span class="font-semibold text-gray-600 dark:text-gray-400">
+                  <%= (total_cameras || 0) - (active_streams || 0) %>
+                </span>
+              </span>
             </div>
           </div>
         </div>
@@ -176,9 +148,7 @@
         >
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                Active Streams
-              </p>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">Active Streams</p>
               <h3 class="text-3xl font-bold text-gray-900 dark:text-white">
                 <%= active_streams %>
               </h3>
@@ -190,9 +160,7 @@
             <div
               class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-100 to-green-50 dark:from-green-900/30 dark:to-green-800/20 flex items-center justify-center"
             >
-              <i
-                class="fas fa-wifi text-green-600 dark:text-green-400 text-xl"
-              ></i>
+              <i class="fas fa-wifi text-green-600 dark:text-green-400 text-xl"></i>
             </div>
           </div>
           <div class="mt-4 pt-4 border-t border-blue-50 dark:border-gray-700">
@@ -209,12 +177,8 @@
         >
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                System Uptime
-              </p>
-              <h3 class="text-3xl font-bold text-gray-900 dark:text-white">
-                99.8%
-              </h3>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">System Uptime</p>
+              <h3 class="text-3xl font-bold text-gray-900 dark:text-white">99.8%</h3>
               <p class="text-xs text-blue-600 dark:text-blue-400 mt-1">
                 <i class="fas fa-clock mr-1"></i>
                 Last 30 days
@@ -223,9 +187,7 @@
             <div
               class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-100 to-orange-50 dark:from-orange-900/30 dark:to-orange-800/20 flex items-center justify-center"
             >
-              <i
-                class="fas fa-chart-pie text-orange-600 dark:text-orange-400 text-xl"
-              ></i>
+              <i class="fas fa-chart-pie text-orange-600 dark:text-orange-400 text-xl"></i>
             </div>
           </div>
           <div class="mt-4 pt-4 border-t border-blue-50 dark:border-gray-700">
@@ -268,7 +230,8 @@
                 <button
                   class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium"
                 >
-                  <i class="fas fa-download mr-1"></i> Export
+                  <i class="fas fa-download mr-1"></i>
+                  Export
                 </button>
               </div>
             </div>
@@ -283,9 +246,7 @@
           class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-blue-100 dark:border-gray-700 p-6"
         >
           <div class="mb-6">
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white">
-              Camera Status
-            </h3>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white">Camera Status</h3>
             <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
               Distribution of active vs inactive cameras
             </p>
@@ -296,24 +257,16 @@
           <div class="mt-6 pt-6 border-t border-blue-50 dark:border-gray-700">
             <div class="grid grid-cols-2 gap-4">
               <div class="text-center">
-                <div
-                  class="text-2xl font-bold text-green-600 dark:text-green-400"
-                >
+                <div class="text-2xl font-bold text-green-600 dark:text-green-400">
                   <%= active_streams %>
                 </div>
-                <div class="text-sm text-gray-600 dark:text-gray-400">
-                  Active Cameras
-                </div>
+                <div class="text-sm text-gray-600 dark:text-gray-400">Active Cameras</div>
               </div>
               <div class="text-center">
-                <div
-                  class="text-2xl font-bold text-gray-600 dark:text-gray-400"
-                >
+                <div class="text-2xl font-bold text-gray-600 dark:text-gray-400">
                   <%= (total_cameras || 0) - (active_streams || 0) %>
                 </div>
-                <div class="text-sm text-gray-600 dark:text-gray-400">
-                  Inactive Cameras
-                </div>
+                <div class="text-sm text-gray-600 dark:text-gray-400">Inactive Cameras</div>
               </div>
             </div>
           </div>
@@ -324,9 +277,7 @@
           class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-blue-100 dark:border-gray-700 p-6"
         >
           <div class="mb-6">
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white">
-              Streaming Performance
-            </h3>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white">Streaming Performance</h3>
             <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
               Bandwidth usage and stream quality metrics
             </p>
@@ -334,13 +285,10 @@
           <div class="space-y-4">
             <div>
               <div class="flex items-center justify-between mb-2">
-                <span
-                  class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                  >Bandwidth Usage</span
-                >
-                <span class="text-sm font-bold text-blue-600 dark:text-blue-400"
-                  >2.4 Gbps</span
-                >
+                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Bandwidth Usage
+                </span>
+                <span class="text-sm font-bold text-blue-600 dark:text-blue-400">2.4 Gbps</span>
               </div>
               <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
                 <div
@@ -351,14 +299,10 @@
             </div>
             <div>
               <div class="flex items-center justify-between mb-2">
-                <span
-                  class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                  >Stream Quality</span
-                >
-                <span
-                  class="text-sm font-bold text-green-600 dark:text-green-400"
-                  >92% HD</span
-                >
+                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  Stream Quality
+                </span>
+                <span class="text-sm font-bold text-green-600 dark:text-green-400">92% HD</span>
               </div>
               <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
                 <div
@@ -369,14 +313,8 @@
             </div>
             <div>
               <div class="flex items-center justify-between mb-2">
-                <span
-                  class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                  >Latency</span
-                >
-                <span
-                  class="text-sm font-bold text-green-600 dark:text-green-400"
-                  >120ms</span
-                >
+                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Latency</span>
+                <span class="text-sm font-bold text-green-600 dark:text-green-400">120ms</span>
               </div>
               <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
                 <div
@@ -402,46 +340,32 @@
           class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-blue-100 dark:border-gray-700 overflow-hidden"
         >
           <div class="px-6 py-4 border-b border-blue-50 dark:border-gray-700">
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white">
-              Top Active DVRs
-            </h3>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white">Top Active DVRs</h3>
             <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
               DVRs with highest streaming activity
             </p>
           </div>
           <div class="divide-y divide-blue-50 dark:divide-gray-700">
-            <% if (activeDvrs && activeDvrs.length > 0) { %> <%
-            activeDvrs.slice(0, 5).forEach((dvr, index) => { %>
-            <div
-              class="px-6 py-4 hover:bg-blue-50/30 dark:hover:bg-gray-700/30 transition-colors"
-            >
+            <% if (activeDvrs && activeDvrs.length > 0) { %> <% activeDvrs.slice(0, 5).forEach((dvr,
+            index) => { %>
+            <div class="px-6 py-4 hover:bg-blue-50/30 dark:hover:bg-gray-700/30 transition-colors">
               <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3">
                   <div
                     class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center"
                   >
-                    <span class="text-blue-600 dark:text-blue-400 font-bold"
-                      ><%= index + 1 %></span
-                    >
+                    <span class="text-blue-600 dark:text-blue-400 font-bold"><%= index + 1 %></span>
                   </div>
                   <div>
-                    <h4 class="font-bold text-gray-900 dark:text-white">
-                      <%= dvr.dvr_name %>
-                    </h4>
-                    <p class="text-sm text-gray-600 dark:text-gray-400">
-                      <%= dvr.location_name %>
-                    </p>
+                    <h4 class="font-bold text-gray-900 dark:text-white"><%= dvr.dvr_name %></h4>
+                    <p class="text-sm text-gray-600 dark:text-gray-400"><%= dvr.location_name %></p>
                   </div>
                 </div>
                 <div class="text-right">
-                  <div
-                    class="text-lg font-bold text-green-600 dark:text-green-400"
-                  >
+                  <div class="text-lg font-bold text-green-600 dark:text-green-400">
                     <%= dvr.activeCameraCount || 0 %> streams
                   </div>
-                  <div class="text-xs text-gray-500 dark:text-gray-400">
-                    Active now
-                  </div>
+                  <div class="text-xs text-gray-500 dark:text-gray-400">Active now</div>
                 </div>
               </div>
             </div>
@@ -452,9 +376,7 @@
               >
                 <i class="fas fa-chart-line text-gray-400"></i>
               </div>
-              <p class="text-gray-600 dark:text-gray-400">
-                No active streaming data available
-              </p>
+              <p class="text-gray-600 dark:text-gray-400">No active streaming data available</p>
             </div>
             <% } %>
           </div>
@@ -465,9 +387,7 @@
           class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-blue-100 dark:border-gray-700 p-6"
         >
           <div class="mb-6">
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white">
-              System Health
-            </h3>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white">System Health</h3>
             <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
               Current system performance metrics
             </p>
@@ -480,24 +400,14 @@
                 <div
                   class="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center mr-3"
                 >
-                  <i
-                    class="fas fa-check text-green-600 dark:text-green-400"
-                  ></i>
+                  <i class="fas fa-check text-green-600 dark:text-green-400"></i>
                 </div>
                 <div>
-                  <div class="font-medium text-gray-900 dark:text-white">
-                    Server Load
-                  </div>
-                  <div class="text-sm text-gray-600 dark:text-gray-400">
-                    Normal (42%)
-                  </div>
+                  <div class="font-medium text-gray-900 dark:text-white">Server Load</div>
+                  <div class="text-sm text-gray-600 dark:text-gray-400">Normal (42%)</div>
                 </div>
               </div>
-              <div
-                class="text-2xl font-bold text-green-600 dark:text-green-400"
-              >
-                ✓
-              </div>
+              <div class="text-2xl font-bold text-green-600 dark:text-green-400">✓</div>
             </div>
 
             <div
@@ -507,24 +417,14 @@
                 <div
                   class="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center mr-3"
                 >
-                  <i
-                    class="fas fa-database text-green-600 dark:text-green-400"
-                  ></i>
+                  <i class="fas fa-database text-green-600 dark:text-green-400"></i>
                 </div>
                 <div>
-                  <div class="font-medium text-gray-900 dark:text-white">
-                    Database
-                  </div>
-                  <div class="text-sm text-gray-600 dark:text-gray-400">
-                    Connected
-                  </div>
+                  <div class="font-medium text-gray-900 dark:text-white">Database</div>
+                  <div class="text-sm text-gray-600 dark:text-gray-400">Connected</div>
                 </div>
               </div>
-              <div
-                class="text-2xl font-bold text-green-600 dark:text-green-400"
-              >
-                ✓
-              </div>
+              <div class="text-2xl font-bold text-green-600 dark:text-green-400">✓</div>
             </div>
 
             <div
@@ -534,24 +434,14 @@
                 <div
                   class="w-10 h-10 rounded-lg bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center mr-3"
                 >
-                  <i
-                    class="fas fa-hdd text-yellow-600 dark:text-yellow-400"
-                  ></i>
+                  <i class="fas fa-hdd text-yellow-600 dark:text-yellow-400"></i>
                 </div>
                 <div>
-                  <div class="font-medium text-gray-900 dark:text-white">
-                    Storage
-                  </div>
-                  <div class="text-sm text-gray-600 dark:text-gray-400">
-                    78% used
-                  </div>
+                  <div class="font-medium text-gray-900 dark:text-white">Storage</div>
+                  <div class="text-sm text-gray-600 dark:text-gray-400">78% used</div>
                 </div>
               </div>
-              <div
-                class="text-2xl font-bold text-yellow-600 dark:text-yellow-400"
-              >
-                ⚠
-              </div>
+              <div class="text-2xl font-bold text-yellow-600 dark:text-yellow-400">⚠</div>
             </div>
           </div>
         </div>
@@ -561,53 +451,20 @@
           class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-blue-100 dark:border-gray-700 overflow-hidden"
         >
           <div class="px-6 py-4 border-b border-blue-50 dark:border-gray-700">
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white">
-              Recent Activity
-            </h3>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white">Recent Activity</h3>
             <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
               Latest system events and alerts
             </p>
           </div>
           <div class="divide-y divide-blue-50 dark:divide-gray-700">
-            <%
-            const recentActivities = [
-              {
-                type: 'success',
-                icon: 'fa-play',
-                message: 'DVR "Main Building" started streaming',
-                time: '2 minutes ago'
-              },
-              {
-                type: 'info',
-                icon: 'fa-user',
-                message: 'Admin user logged in',
-                time: '15 minutes ago'
-              },
-              {
-                type: 'warning',
-                icon: 'fa-exclamation',
-                message: 'Camera "Entrance" connection unstable',
-                time: '1 hour ago'
-              },
-              {
-                type: 'success',
-                icon: 'fa-stop',
-                message: 'Stream "Parking Lot" stopped',
-                time: '2 hours ago'
-              },
-              {
-                type: 'info',
-                icon: 'fa-sync',
-                message: 'System health check completed',
-                time: '3 hours ago'
-              }
-            ];
-            %>
-             <% recentActivities.forEach(activity =>
-            { %>
-            <div
-              class="px-6 py-4 hover:bg-blue-50/30 dark:hover:bg-gray-700/30 transition-colors"
-            >
+            <% const recentActivities = [ { type: 'success', icon: 'fa-play', message: 'DVR "Main
+            Building" started streaming', time: '2 minutes ago' }, { type: 'info', icon: 'fa-user',
+            message: 'Admin user logged in', time: '15 minutes ago' }, { type: 'warning', icon:
+            'fa-exclamation', message: 'Camera "Entrance" connection unstable', time: '1 hour ago'
+            }, { type: 'success', icon: 'fa-stop', message: 'Stream "Parking Lot" stopped', time: '2
+            hours ago' }, { type: 'info', icon: 'fa-sync', message: 'System health check completed',
+            time: '3 hours ago' } ]; %> <% recentActivities.forEach(activity => { %>
+            <div class="px-6 py-4 hover:bg-blue-50/30 dark:hover:bg-gray-700/30 transition-colors">
               <div class="flex items-start">
                 <div
                   class="w-8 h-8 rounded-lg <%= activity.type === 'success' ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400' : activity.type === 'warning' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400' : 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' %> flex items-center justify-center mr-3 mt-1"
@@ -615,12 +472,8 @@
                   <i class="fas <%= activity.icon %> text-xs"></i>
                 </div>
                 <div class="flex-1">
-                  <p class="text-sm text-gray-900 dark:text-white">
-                    <%= activity.message %>
-                  </p>
-                  <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                    <%= activity.time %>
-                  </p>
+                  <p class="text-sm text-gray-900 dark:text-white"><%= activity.message %></p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400 mt-1"><%= activity.time %></p>
                 </div>
               </div>
             </div>
@@ -633,38 +486,27 @@
       <div
         class="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/10 rounded-2xl p-6 border border-blue-200 dark:border-blue-800"
       >
-        <div
-          class="flex flex-col md:flex-row md:items-center justify-between gap-4"
-        >
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
-              Analytics Summary
-            </h3>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Analytics Summary</h3>
             <p class="text-gray-700 dark:text-gray-300">
               Your streaming infrastructure is operating at
-              <span class="font-bold text-green-600 dark:text-green-400"
-                >optimal performance</span
-              >. All systems are functional with
-              <span class="font-bold text-blue-600 dark:text-blue-400"
-                ><%= active_streams %></span
-              >
+              <span class="font-bold text-green-600 dark:text-green-400">optimal performance</span>
+              . All systems are functional with
+              <span class="font-bold text-blue-600 dark:text-blue-400"><%= active_streams %></span>
               active streams across
-              <span class="font-bold text-blue-600 dark:text-blue-400"
-                ><%= activeDvrs?.length || 0 %></span
-              >
+              <span class="font-bold text-blue-600 dark:text-blue-400">
+                <%= activeDvrs?.length || 0 %>
+              </span>
               DVR locations.
             </p>
           </div>
           <div class="flex items-center space-x-3">
             <div class="text-center">
-              <div
-                class="text-3xl font-bold text-green-600 dark:text-green-400"
-              >
+              <div class="text-3xl font-bold text-green-600 dark:text-green-400">
                 <%= Math.round((active_streams / total_cameras) * 100) || 0 %>%
               </div>
-              <div class="text-sm text-gray-600 dark:text-gray-400">
-                Utilization Rate
-              </div>
+              <div class="text-sm text-gray-600 dark:text-gray-400">Utilization Rate</div>
             </div>
             <button
               id="generate-report"
@@ -697,10 +539,7 @@
     </script>
 
     <!-- Include the analytics.js file -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/chart.js"
-      nonce="<%= nonce %>"
-    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" nonce="<%= nonce %>"></script>
     <script src="/js/analytics.js" nonce="<%= nonce %>"></script>
     <script src="/js/topMenu.js" nonce="<%= nonce %>"></script>
   </body>

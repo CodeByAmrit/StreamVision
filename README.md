@@ -4,31 +4,31 @@
 
 **StreamVision** is a Node.js-based real-time DVR camera streaming platform that allows users to stream multiple RTSP camera feeds directly in the browser. It's now fully containerized with Docker, making deployment easier than ever. It supports dynamic DVR configurations, lazy loading of streams, and a responsive public viewer page.
 
------
+---
 
 ## ✨ Features
 
-  - 🔒 Dynamic DVR login with username/password/IP
-  - 🐳 **Containerized Deployment:** Run the entire application with a single command using Docker Compose. No need to install FFmpeg or manage dependencies manually.
-  - 💨 Stream up to 16 RTSP camera channels per DVR
-  - ⚙️ FFmpeg-based RTSP to HLS conversion (one worker per DVR)
-  - 🌐 Public view for each DVR's live streams
-  - 🧠 Lazy loading of video players using Intersection Observer
-  - 🖥️ EJS templating with Tailwind CSS
-  - 📁 Organized and scalable architecture (routes, controllers, workers, views)
+- 🔒 Dynamic DVR login with username/password/IP
+- 🐳 **Containerized Deployment:** Run the entire application with a single command using Docker Compose. No need to install FFmpeg or manage dependencies manually.
+- 💨 Stream up to 16 RTSP camera channels per DVR
+- ⚙️ FFmpeg-based RTSP to HLS conversion (one worker per DVR)
+- 🌐 Public view for each DVR's live streams
+- 🧠 Lazy loading of video players using Intersection Observer
+- 🖥️ EJS templating with Tailwind CSS
+- 📁 Organized and scalable architecture (routes, controllers, workers, views)
 
------
+---
 
 ## 🛠 Tech Stack
 
-  - **Backend:** Node.js, Express
-  - **Frontend:** EJS, Tailwind CSS, HLS.js
-  - **Streaming Engine:** FFmpeg (Containerized, RTSP → HLS)
-  - **Database:** MySQL (for DVRs, Cameras, Locations)
-  - **Containerization:** Docker, Docker Compose
-  - **Worker Management:** `worker_threads` (Node.js)
+- **Backend:** Node.js, Express
+- **Frontend:** EJS, Tailwind CSS, HLS.js
+- **Streaming Engine:** FFmpeg (Containerized, RTSP → HLS)
+- **Database:** MySQL (for DVRs, Cameras, Locations)
+- **Containerization:** Docker, Docker Compose
+- **Worker Management:** `worker_threads` (Node.js)
 
------
+---
 
 ## 📁 Project Structure
 
@@ -56,14 +56,14 @@ StreamVision/
 └── views/                 # EJS templates
 ```
 
------
+---
 
 ## 🚀 Getting Started with Docker (Recommended)
 
 ### Prerequisites
 
-  - Docker
-  - Docker Compose
+- Docker
+- Docker Compose
 
 ### 1\. Clone the Repository
 
@@ -125,18 +125,18 @@ The application will now be running on the port you specified in your `.env` fil
 
 ### Managing the Container
 
-  - **View logs:** `docker-compose logs -f`
-  - **Stop the container:** `docker-compose down`
+- **View logs:** `docker-compose logs -f`
+- **Stop the container:** `docker-compose down`
 
------
+---
 
 ## ⚙️ Manual Installation (Without Docker)
 
 ### Prerequisites
 
-  - Node.js (v14+ recommended)
-  - MySQL database
-  - **FFmpeg** installed on your system PATH
+- Node.js (v14+ recommended)
+- MySQL database
+- **FFmpeg** installed on your system PATH
 
 ### 1\. Install Dependencies
 
@@ -172,47 +172,47 @@ npm start
 npm run start:pm2
 ```
 
------
+---
 
 ## 🛠 Available Scripts
 
-| Command             | Description                                          |
-| ------------------- | ---------------------------------------------------- |
-| `npm start`         | Starts the production server using `node`.           |
-| `npm run dev`       | Starts the development server with nodemon.          |
-| `npm run build:css` | Builds and minifies CSS using Tailwind.              |
-| `npm run start:pm2` | Starts the app using the PM2 process manager.        |
+| Command               | Description                                       |
+| --------------------- | ------------------------------------------------- |
+| `npm start`           | Starts the production server using `node`.        |
+| `npm run dev`         | Starts the development server with nodemon.       |
+| `npm run build:css`   | Builds and minifies CSS using Tailwind.           |
+| `npm run start:pm2`   | Starts the app using the PM2 process manager.     |
 | `npm run setup:linux` | Installs required dependencies for Debian/Ubuntu. |
 
------
+---
 
 ## 📦 Dependencies
 
 ### Core Dependencies
 
-  - Express.js
-  - MySQL2
-  - FFmpeg-fluent
-  - Tailwind CSS
-  - Hls.js
-  - JWT for authentication
-  - Bcrypt for password hashing
+- Express.js
+- MySQL2
+- FFmpeg-fluent
+- Tailwind CSS
+- Hls.js
+- JWT for authentication
+- Bcrypt for password hashing
 
 ### Development Dependencies
 
-  - Nodemon
-  - Express Status Monitor
+- Nodemon
+- Express Status Monitor
 
------
+---
 
 ## 📄 License
 
 ISC © Amrit
 
------
+---
 
 ## 🙏 Acknowledgments
 
-  - FFmpeg team for powerful media processing
-  - Hls.js for excellent player implementation
-  - Tailwind CSS for utility-first styling
+- FFmpeg team for powerful media processing
+- Hls.js for excellent player implementation
+- Tailwind CSS for utility-first styling

@@ -5,27 +5,21 @@
     <div
       class="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/10 rounded-2xl p-6 border border-blue-200 dark:border-blue-800"
     >
-      <div
-        class="flex flex-col md:flex-row md:items-center justify-between gap-4"
-      >
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            Welcome back, <span class="gradient-text">Admin!</span>
+            Welcome back,
+            <span class="gradient-text">Admin!</span>
           </h2>
           <p class="text-gray-600 dark:text-gray-400">
-            Monitor all your live streams and manage your surveillance network
-            from one dashboard.
+            Monitor all your live streams and manage your surveillance network from one dashboard.
           </p>
         </div>
         <div class="flex items-center space-x-3">
           <div class="text-right hidden md:block">
-            <p class="text-sm text-gray-500 dark:text-gray-400">
-              System Status
-            </p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">System Status</p>
             <div class="flex items-center">
-              <div
-                class="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"
-              ></div>
+              <div class="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"></div>
               <p class="text-lg font-bold text-green-600 dark:text-green-400">
                 All Systems Operational
               </p>
@@ -50,38 +44,30 @@
     >
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
-            Total Locations
-          </p>
-          <h3 class="text-3xl font-bold text-gray-900 dark:text-white">
-            <%= total_dvrs || 0 %>
-          </h3>
-          <p class="text-xs text-blue-600 dark:text-blue-400 mt-1">
-            Active surveillance sites
-          </p>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">Total Locations</p>
+          <h3 class="text-3xl font-bold text-gray-900 dark:text-white"><%= total_dvrs || 0 %></h3>
+          <p class="text-xs text-blue-600 dark:text-blue-400 mt-1">Active surveillance sites</p>
         </div>
         <div
           class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center"
         >
-          <i
-            class="fas fa-building text-blue-600 dark:text-blue-400 text-xl"
-          ></i>
+          <i class="fas fa-building text-blue-600 dark:text-blue-400 text-xl"></i>
         </div>
       </div>
       <div class="mt-4 pt-4 border-t border-blue-50 dark:border-gray-700">
         <div class="flex items-center justify-between text-sm">
-          <span class="text-gray-600 dark:text-gray-400"
-            >Online:
-            <span class="font-semibold text-green-600 dark:text-green-400"
-              ><%= activeDvrs.length %></span
-            ></span
-          >
-          <span class="text-gray-600 dark:text-gray-400"
-            >Offline:
-            <span class="font-semibold text-red-600 dark:text-red-400"
-              ><%= total_dvrs - activeDvrs.length %></span
-            ></span
-          >
+          <span class="text-gray-600 dark:text-gray-400">
+            Online:
+            <span class="font-semibold text-green-600 dark:text-green-400">
+              <%= activeDvrs.length %>
+            </span>
+          </span>
+          <span class="text-gray-600 dark:text-gray-400">
+            Offline:
+            <span class="font-semibold text-red-600 dark:text-red-400">
+              <%= total_dvrs - activeDvrs.length %>
+            </span>
+          </span>
         </div>
       </div>
     </div>
@@ -92,22 +78,16 @@
     >
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
-            Total Cameras
-          </p>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">Total Cameras</p>
           <h3 class="text-3xl font-bold text-gray-900 dark:text-white">
             <%= total_cameras || 0 %>
           </h3>
-          <p class="text-xs text-blue-600 dark:text-blue-400 mt-1">
-            Connected devices
-          </p>
+          <p class="text-xs text-blue-600 dark:text-blue-400 mt-1">Connected devices</p>
         </div>
         <div
           class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 dark:from-purple-900/30 dark:to-purple-800/20 flex items-center justify-center"
         >
-          <i
-            class="fas fa-video text-purple-600 dark:text-purple-400 text-xl"
-          ></i>
+          <i class="fas fa-video text-purple-600 dark:text-purple-400 text-xl"></i>
         </div>
       </div>
       <div class="mt-4 pt-4 border-t border-blue-50 dark:border-gray-700">
@@ -124,32 +104,24 @@
     >
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
-            Live Streams
-          </p>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">Live Streams</p>
           <h3 class="text-3xl font-bold text-gray-900 dark:text-white">
             <%= active_streams || 0 %>
           </h3>
-          <p class="text-xs text-blue-600 dark:text-blue-400 mt-1">
-            Currently streaming
-          </p>
+          <p class="text-xs text-blue-600 dark:text-blue-400 mt-1">Currently streaming</p>
         </div>
         <div
           class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-100 to-green-50 dark:from-green-900/30 dark:to-green-800/20 flex items-center justify-center"
         >
-          <i
-            class="fas fa-broadcast-tower text-green-600 dark:text-green-400 text-xl"
-          ></i>
+          <i class="fas fa-broadcast-tower text-green-600 dark:text-green-400 text-xl"></i>
         </div>
       </div>
       <div class="mt-4 pt-4 border-t border-blue-50 dark:border-gray-700">
         <div class="text-sm">
-          <span class="text-gray-600 dark:text-gray-400"
-            >Bandwidth:
-            <span class="font-semibold text-green-600 dark:text-green-400"
-              >2.4 Gbps</span
-            ></span
-          >
+          <span class="text-gray-600 dark:text-gray-400">
+            Bandwidth:
+            <span class="font-semibold text-green-600 dark:text-green-400">2.4 Gbps</span>
+          </span>
         </div>
       </div>
     </div>
@@ -160,20 +132,14 @@
     >
       <div class="flex items-center justify-between">
         <div>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">
-            Storage Used
-          </p>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">Storage Used</p>
           <h3 class="text-3xl font-bold text-gray-900 dark:text-white">78%</h3>
-          <p class="text-xs text-blue-600 dark:text-blue-400 mt-1">
-            3.2 TB / 4 TB
-          </p>
+          <p class="text-xs text-blue-600 dark:text-blue-400 mt-1">3.2 TB / 4 TB</p>
         </div>
         <div
           class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-100 to-orange-50 dark:from-orange-900/30 dark:to-orange-800/20 flex items-center justify-center"
         >
-          <i
-            class="fas fa-database text-orange-600 dark:text-orange-400 text-xl"
-          ></i>
+          <i class="fas fa-database text-orange-600 dark:text-orange-400 text-xl"></i>
         </div>
       </div>
       <div class="mt-4 pt-4 border-t border-blue-50 dark:border-gray-700">
@@ -198,12 +164,8 @@
         <div class="px-6 py-4 border-b border-blue-50 dark:border-gray-700">
           <div class="flex items-center justify-between">
             <div>
-              <h3 class="text-lg font-bold text-gray-900 dark:text-white">
-                Live DVRs
-              </h3>
-              <p class="text-sm text-gray-600 dark:text-gray-400">
-                Active surveillance locations
-              </p>
+              <h3 class="text-lg font-bold text-gray-900 dark:text-white">Live DVRs</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Active surveillance locations</p>
             </div>
             <a
               href="/dvr"
@@ -229,18 +191,14 @@
                     <div
                       class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center"
                     >
-                      <i
-                        class="fas fa-server text-blue-600 dark:text-blue-400"
-                      ></i>
+                      <i class="fas fa-server text-blue-600 dark:text-blue-400"></i>
                     </div>
                     <div
                       class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-green-500 border-2 border-white dark:border-gray-800"
                     ></div>
                   </div>
                   <div>
-                    <h4 class="font-bold text-gray-900 dark:text-white">
-                      <%= dvr.dvr_name %>
-                    </h4>
+                    <h4 class="font-bold text-gray-900 dark:text-white"><%= dvr.dvr_name %></h4>
                     <p class="text-sm text-gray-600 dark:text-gray-400">
                       <i class="fas fa-map-marker-alt mr-1"></i>
                       <%= dvr.location_name %>
@@ -251,9 +209,7 @@
                   <div
                     class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 mb-2"
                   >
-                    <div
-                      class="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"
-                    ></div>
+                    <div class="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"></div>
                     LIVE
                   </div>
                   <p class="text-sm text-gray-600 dark:text-gray-400">
@@ -261,9 +217,7 @@
                   </p>
                 </div>
               </div>
-              <div
-                class="mt-4 flex items-center text-sm text-gray-600 dark:text-gray-400"
-              >
+              <div class="mt-4 flex items-center text-sm text-gray-600 dark:text-gray-400">
                 <div class="flex items-center mr-4">
                   <i class="fas fa-eye mr-2"></i>
                   <span>Public View</span>
@@ -282,11 +236,7 @@
             >
               <i class="fas fa-server text-gray-400 text-xl"></i>
             </div>
-            <h4
-              class="text-lg font-semibold text-gray-900 dark:text-white mb-2"
-            >
-              No Active DVRs
-            </h4>
+            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">No Active DVRs</h4>
             <p class="text-gray-600 dark:text-gray-400 mb-6">
               All DVRs are currently offline or not streaming.
             </p>
@@ -309,9 +259,7 @@
       <div
         class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-blue-100 dark:border-gray-700 p-6"
       >
-        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">
-          Quick Actions
-        </h3>
+        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Quick Actions</h3>
         <div class="space-y-3">
           <a
             href="/camera/new"
@@ -323,12 +271,8 @@
               <i class="fas fa-plus text-blue-600 dark:text-blue-400"></i>
             </div>
             <div>
-              <div class="font-medium text-gray-900 dark:text-white">
-                Add Camera
-              </div>
-              <div class="text-sm text-gray-600 dark:text-gray-400">
-                Connect new RTSP stream
-              </div>
+              <div class="font-medium text-gray-900 dark:text-white">Add Camera</div>
+              <div class="text-sm text-gray-600 dark:text-gray-400">Connect new RTSP stream</div>
             </div>
           </a>
           <a
@@ -341,12 +285,8 @@
               <i class="fas fa-server text-purple-600 dark:text-purple-400"></i>
             </div>
             <div>
-              <div class="font-medium text-gray-900 dark:text-white">
-                Add DVR
-              </div>
-              <div class="text-sm text-gray-600 dark:text-gray-400">
-                Register new location
-              </div>
+              <div class="font-medium text-gray-900 dark:text-white">Add DVR</div>
+              <div class="text-sm text-gray-600 dark:text-gray-400">Register new location</div>
             </div>
           </a>
           <a
@@ -356,17 +296,11 @@
             <div
               class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-100 to-green-50 dark:from-green-900/30 dark:to-green-800/20 flex items-center justify-center mr-3"
             >
-              <i
-                class="fas fa-chart-line text-green-600 dark:text-green-400"
-              ></i>
+              <i class="fas fa-chart-line text-green-600 dark:text-green-400"></i>
             </div>
             <div>
-              <div class="font-medium text-gray-900 dark:text-white">
-                View Analytics
-              </div>
-              <div class="text-sm text-gray-600 dark:text-gray-400">
-                Performance reports
-              </div>
+              <div class="font-medium text-gray-900 dark:text-white">View Analytics</div>
+              <div class="text-sm text-gray-600 dark:text-gray-400">Performance reports</div>
             </div>
           </a>
         </div>
@@ -376,18 +310,12 @@
       <div
         class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-blue-100 dark:border-gray-700 p-6"
       >
-        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">
-          System Health
-        </h3>
+        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">System Health</h3>
         <div class="space-y-4">
           <div>
             <div class="flex items-center justify-between mb-2">
-              <span class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                >Server Load</span
-              >
-              <span class="text-sm font-bold text-green-600 dark:text-green-400"
-                >42%</span
-              >
+              <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Server Load</span>
+              <span class="text-sm font-bold text-green-600 dark:text-green-400">42%</span>
             </div>
             <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
               <div
@@ -398,12 +326,10 @@
           </div>
           <div>
             <div class="flex items-center justify-between mb-2">
-              <span class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                >Network Uptime</span
-              >
-              <span class="text-sm font-bold text-green-600 dark:text-green-400"
-                >99.9%</span
-              >
+              <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Network Uptime
+              </span>
+              <span class="text-sm font-bold text-green-600 dark:text-green-400">99.9%</span>
             </div>
             <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
               <div
@@ -414,13 +340,10 @@
           </div>
           <div>
             <div class="flex items-center justify-between mb-2">
-              <span class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                >Storage Health</span
-              >
-              <span
-                class="text-sm font-bold text-yellow-600 dark:text-yellow-400"
-                >78%</span
-              >
+              <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Storage Health
+              </span>
+              <span class="text-sm font-bold text-yellow-600 dark:text-yellow-400">78%</span>
             </div>
             <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
               <div
@@ -431,9 +354,7 @@
           </div>
         </div>
         <div class="mt-6 pt-4 border-t border-blue-50 dark:border-gray-700">
-          <div
-            class="flex items-center text-sm text-gray-600 dark:text-gray-400"
-          >
+          <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
             <i class="fas fa-check-circle text-green-500 mr-2"></i>
             <span>All systems operational</span>
           </div>

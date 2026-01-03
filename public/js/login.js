@@ -16,8 +16,7 @@ function initializeLoginForm() {
 
   if (togglePasswordBtn && passwordInput) {
     togglePasswordBtn.addEventListener("click", function () {
-      const type =
-        passwordInput.getAttribute("type") === "password" ? "text" : "password";
+      const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
       passwordInput.setAttribute("type", type);
 
       // Toggle eye icon and text
@@ -25,8 +24,7 @@ function initializeLoginForm() {
       if (type === "text") {
         icon.classList.remove("fa-eye");
         icon.classList.add("fa-eye-slash");
-        togglePasswordBtn.innerHTML =
-          '<i class="fas fa-eye-slash mr-1"></i> Hide';
+        togglePasswordBtn.innerHTML = '<i class="fas fa-eye-slash mr-1"></i> Hide';
       } else {
         icon.classList.remove("fa-eye-slash");
         icon.classList.add("fa-eye");
@@ -85,12 +83,8 @@ function showFlashMessage(message, type = "error") {
 // Reset error states
 function resetErrorStates() {
   // Remove error borders from inputs
-  document
-    .getElementById("email")
-    ?.classList.remove("border-red-500", "dark:border-red-500");
-  document
-    .getElementById("password")
-    ?.classList.remove("border-red-500", "dark:border-red-500");
+  document.getElementById("email")?.classList.remove("border-red-500", "dark:border-red-500");
+  document.getElementById("password")?.classList.remove("border-red-500", "dark:border-red-500");
 
   // Hide error messages
   document.getElementById("email-error")?.classList.add("hidden");
@@ -153,10 +147,7 @@ async function handleLoginSubmit(event) {
 
     if (data.status === "success") {
       // Successful login
-      showFlashMessage(
-        "Login successful! Redirecting to dashboard...",
-        "success"
-      );
+      showFlashMessage("Login successful! Redirecting to dashboard...", "success");
 
       // Delay redirect to show success message
       setTimeout(() => {
@@ -166,19 +157,12 @@ async function handleLoginSubmit(event) {
       // Handle different error cases
       if (data.status === "Invalid Password") {
         document.getElementById("password-error")?.classList.remove("hidden");
-        document
-          .getElementById("password")
-          ?.classList.add("border-red-500", "dark:border-red-500");
+        document.getElementById("password")?.classList.add("border-red-500", "dark:border-red-500");
         showFlashMessage("Incorrect password. Please try again.", "error");
       } else if (data.status === "Invalid email") {
         document.getElementById("email-error")?.classList.remove("hidden");
-        document
-          .getElementById("email")
-          ?.classList.add("border-red-500", "dark:border-red-500");
-        showFlashMessage(
-          "Email not found. Please check your email address.",
-          "error"
-        );
+        document.getElementById("email")?.classList.add("border-red-500", "dark:border-red-500");
+        showFlashMessage("Email not found. Please check your email address.", "error");
       } else if (data.message) {
         // Generic error message from server
         showFlashMessage(data.message, "error");
@@ -191,15 +175,9 @@ async function handleLoginSubmit(event) {
 
     // Network error
     if (error.name === "TypeError" && error.message.includes("fetch")) {
-      showFlashMessage(
-        "Network error. Please check your connection and try again.",
-        "error"
-      );
+      showFlashMessage("Network error. Please check your connection and try again.", "error");
     } else {
-      showFlashMessage(
-        "An unexpected error occurred. Please try again.",
-        "error"
-      );
+      showFlashMessage("An unexpected error occurred. Please try again.", "error");
     }
   } finally {
     // Reset button state
@@ -224,22 +202,12 @@ function handleUrlParameters() {
     // Show appropriate error message
     if (status === "Invalid Password") {
       document.getElementById("password-error")?.classList.remove("hidden");
-      document
-        .getElementById("password")
-        ?.classList.add("border-red-500", "dark:border-red-500");
-      showFlashMessage(
-        message || "Incorrect password. Please try again.",
-        "error"
-      );
+      document.getElementById("password")?.classList.add("border-red-500", "dark:border-red-500");
+      showFlashMessage(message || "Incorrect password. Please try again.", "error");
     } else if (status === "Invalid email") {
       document.getElementById("email-error")?.classList.remove("hidden");
-      document
-        .getElementById("email")
-        ?.classList.add("border-red-500", "dark:border-red-500");
-      showFlashMessage(
-        message || "Email not found. Please check your email address.",
-        "error"
-      );
+      document.getElementById("email")?.classList.add("border-red-500", "dark:border-red-500");
+      showFlashMessage(message || "Email not found. Please check your email address.", "error");
     } else if (message) {
       showFlashMessage(message, "error");
     }
@@ -278,10 +246,7 @@ if (window.innerWidth > 768) {
 
 // Handle Enter key to submit form
 document.addEventListener("keydown", function (event) {
-  if (
-    event.key === "Enter" &&
-    !event.target.matches('button, [type="submit"]')
-  ) {
+  if (event.key === "Enter" && !event.target.matches('button, [type="submit"]')) {
     const activeElement = document.activeElement;
     if (activeElement.matches("#email, #password")) {
       event.preventDefault();

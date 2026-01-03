@@ -82,8 +82,7 @@ function initializeDeleteButtons() {
       if (!currentDvrId) return;
 
       // Show loading state
-      this.innerHTML =
-        '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...';
+      this.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Deleting...';
       this.disabled = true;
 
       try {
@@ -92,8 +91,7 @@ function initializeDeleteButtons() {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
-            "X-CSRF-Token":
-              document.querySelector('meta[name="csrf-token"]')?.content || "",
+            "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]')?.content || "",
           },
         });
 
@@ -101,10 +99,7 @@ function initializeDeleteButtons() {
 
         if (result.success) {
           // Show success message
-          showFlashMessage(
-            `DVR "${currentDvrName}" deleted successfully`,
-            "success"
-          );
+          showFlashMessage(`DVR "${currentDvrName}" deleted successfully`, "success");
 
           // Remove the row from table
           const row = document
@@ -154,10 +149,7 @@ function initializeShowDetails() {
       const additionalInfo = this.previousElementSibling;
       const icon = this.querySelector("i");
 
-      if (
-        additionalInfo &&
-        additionalInfo.classList.contains("additional-info")
-      ) {
+      if (additionalInfo && additionalInfo.classList.contains("additional-info")) {
         if (additionalInfo.classList.contains("hidden")) {
           // Show details
           additionalInfo.classList.remove("hidden");
@@ -169,8 +161,7 @@ function initializeShowDetails() {
           additionalInfo.classList.add("hidden");
           icon.classList.remove("fa-chevron-up");
           icon.classList.add("fa-chevron-down");
-          this.innerHTML =
-            '<i class="fas fa-chevron-down mr-1"></i> Show Details';
+          this.innerHTML = '<i class="fas fa-chevron-down mr-1"></i> Show Details';
         }
       }
     });
@@ -305,9 +296,7 @@ function animateTableRows() {
 // Update DVR counts after deletion
 function updateDVRCounts() {
   const totalCountElement = document.querySelector('[data-stat="total-dvrs"]');
-  const onlineCountElement = document.querySelector(
-    '[data-stat="online-dvrs"]'
-  );
+  const onlineCountElement = document.querySelector('[data-stat="online-dvrs"]');
 
   if (totalCountElement) {
     const currentCount = parseInt(totalCountElement.textContent) || 0;
@@ -335,8 +324,7 @@ function updateStatusIndicators() {
     } else {
       badge.className =
         "inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400";
-      badge.innerHTML =
-        '<i class="fas fa-circle-exclamation mr-2"></i> Offline';
+      badge.innerHTML = '<i class="fas fa-circle-exclamation mr-2"></i> Offline';
     }
   });
 }

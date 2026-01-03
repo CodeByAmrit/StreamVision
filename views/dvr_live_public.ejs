@@ -12,16 +12,10 @@
     <script src="/js/flowbite.min.js"></script>
 
     <!-- HLS.js -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/hls.js@latest"
-      nonce="<%= nonce %>"
-    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest" nonce="<%= nonce %>"></script>
 
     <!-- Cache control -->
-    <meta
-      http-equiv="Cache-Control"
-      content="no-store, no-cache, must-revalidate, max-age=0"
-    />
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
   </head>
@@ -42,15 +36,13 @@
           <h1 class="text-lg sm:text-xl font-bold text-white leading-tight">
             <%= dvr.dvr_name %> - Live Camera Streams
           </h1>
-          <p class="text-xs sm:text-sm text-gray-400">
-            📍 <%= dvr.location_name %>
-          </p>
+          <p class="text-xs sm:text-sm text-gray-400">📍 <%= dvr.location_name %></p>
         </div>
       </div>
 
       <!-- Desktop: Support Button -->
       <a
-        href='https://service.cctvcameralive.in/'"
+        href="https://service.cctvcameralive.in/"
         class="hidden sm:flex bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold px-5 py-2 rounded-xl shadow-md hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 items-center space-x-2 z-50"
       >
         <svg
@@ -73,16 +65,14 @@
 
     <!-- Mobile: Fixed Support Button -->
     <a
-      href='https://service.cctvcameralive.in/'"
+      href="https://service.cctvcameralive.in/"
       class="sm:hidden fixed bottom-0 right-0 w-full py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold text-center shadow-[0_-2px_10px_rgba(0,0,0,0.3)] hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 z-50"
     >
       💬 Support
     </a>
 
     <!-- Video Grid -->
-    <main
-      class="flex-1 p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
-    >
+    <main class="flex-1 p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       <% cameras.forEach((camera, index) => { %>
       <div class="relative rounded-lg overflow-hidden bg-black">
         <!-- Spinner -->
@@ -98,14 +88,8 @@
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <path
-              d="M100 50.5908C100 78.2051 77.6142 100.591 50..."
-              fill="currentColor"
-            />
-            <path
-              d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116..."
-              fill="currentFill"
-            />
+            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50..." fill="currentColor" />
+            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116..." fill="currentFill" />
           </svg>
           <span class="sr-only">Loading...</span>
         </div>
@@ -124,8 +108,7 @@
 
     <!-- Footer -->
     <footer class="bg-gray-900 text-center py-3 text-sm text-gray-500">
-      &copy; <%= new Date().getFullYear() %> Netwon Technologies. All rights
-      reserved.
+      &copy; <%= new Date().getFullYear() %> Netwon Technologies. All rights reserved.
     </footer>
 
     <!-- Client-side JS -->

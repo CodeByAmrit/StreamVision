@@ -21,10 +21,7 @@
       property="og:description"
       content="Real-time RTSP CCTV camera streaming using HLS and analytics."
     />
-    <meta
-      property="og:image"
-      content="https://cctvcameralive.in/images/banner.svg"
-    />
+    <meta property="og:image" content="https://cctvcameralive.in/images/banner.svg" />
     <meta property="og:url" content="https://cctvcameralive.in" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -33,10 +30,7 @@
       name="twitter:description"
       content="Real-time RTSP CCTV camera streaming using HLS and analytics."
     />
-    <meta
-      name="twitter:image"
-      content="https://cctvcameralive.in/images/banner.svg"
-    />
+    <meta name="twitter:image" content="https://cctvcameralive.in/images/banner.svg" />
 
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="manifest" href="/site.webmanifest" />
@@ -66,16 +60,9 @@
       nonce="<%= nonce %>"
     ></script>
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/hls.js@latest"
-      defer
-      nonce="<%= nonce %>"
-    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest" defer nonce="<%= nonce %>"></script>
 
-    <meta
-      http-equiv="Cache-Control"
-      content="no-store, no-cache, must-revalidate, max-age=0"
-    />
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
 
@@ -166,10 +153,8 @@
       }
 
       .bg-grid-pattern {
-        background-image: linear-gradient(
-            rgba(99, 179, 237, 0.1) 1px,
-            transparent 1px
-          ),
+        background-image:
+          linear-gradient(rgba(99, 179, 237, 0.1) 1px, transparent 1px),
           linear-gradient(90deg, rgba(99, 179, 237, 0.1) 1px, transparent 1px);
         background-size: 50px 50px;
       }
@@ -215,10 +200,7 @@
     </style>
   </head>
 
-  <body
-    class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen"
-  >
-
+  <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen">
     <!-- Header -->
     <header
       class="sticky top-0 z-40 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-blue-100 dark:border-gray-800"
@@ -232,12 +214,8 @@
               <i class="fas fa-video text-white"></i>
             </div>
             <div>
-              <span class="text-xl font-bold gradient-text">
-                StreamVision
-              </span>
-              <p class="text-xs text-gray-500 dark:text-gray-400">
-                by Netwon Team
-              </p>
+              <span class="text-xl font-bold gradient-text">StreamVision</span>
+              <p class="text-xs text-gray-500 dark:text-gray-400">by Netwon Team</p>
             </div>
           </a>
 
@@ -286,28 +264,24 @@
               <span
                 class="text-xs bg-gradient-to-r from-[#63b3ed] to-[#3182ce] text-white px-3 py-1 rounded-full mr-2"
               >
-                <i class="fas fa-rocket mr-1"></i> New
+                <i class="fas fa-rocket mr-1"></i>
+                New
               </span>
-              <a
-                href="/updates"
-                class="text-sm font-medium text-gray-700 dark:text-gray-300"
-              >
+              <a href="/updates" class="text-sm font-medium text-gray-700 dark:text-gray-300">
                 StreamVision v2.0 is live! Enhanced streaming experience 🚀
               </a>
             </div>
 
             <!-- Main Heading -->
             <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-              <span class="block">Live </span>
+              <span class="block">Live</span>
               <span class="gradient-text">RTSP Stream Viewer</span>
             </h1>
 
             <!-- Subtitle -->
-            <p
-              class="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto mb-10"
-            >
-              Securely view your RTSP camera feeds in real-time with our
-              powerful web-based streaming platform
+            <p class="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto mb-10">
+              Securely view your RTSP camera feeds in real-time with our powerful web-based
+              streaming platform
             </p>
           </div>
 
@@ -321,14 +295,10 @@
                 <div
                   class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mr-4"
                 >
-                  <i
-                    class="fas fa-link text-blue-600 dark:text-blue-400 text-xl"
-                  ></i>
+                  <i class="fas fa-link text-blue-600 dark:text-blue-400 text-xl"></i>
                 </div>
                 <div>
-                  <h3 class="text-xl font-bold text-gray-900 dark:text-white">
-                    Stream Input
-                  </h3>
+                  <h3 class="text-xl font-bold text-gray-900 dark:text-white">Stream Input</h3>
                   <p class="text-sm text-gray-600 dark:text-gray-400">
                     Enter your RTSP URL to begin
                   </p>
@@ -341,7 +311,8 @@
                     for="rtspInput"
                     class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
                   >
-                    <i class="fas fa-camera mr-2"></i>RTSP Stream URL
+                    <i class="fas fa-camera mr-2"></i>
+                    RTSP Stream URL
                   </label>
                   <input
                     type="text"
@@ -371,8 +342,7 @@
 
                 <div class="text-xs text-gray-500 dark:text-gray-400 pt-2">
                   <i class="fas fa-info-circle mr-1"></i>
-                  Ensure your camera supports RTSP and is accessible from this
-                  network
+                  Ensure your camera supports RTSP and is accessible from this network
                 </div>
               </div>
             </div>
@@ -387,35 +357,22 @@
                     <div
                       class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mr-3"
                     >
-                      <i
-                        class="fas fa-eye text-blue-600 dark:text-blue-400"
-                      ></i>
+                      <i class="fas fa-eye text-blue-600 dark:text-blue-400"></i>
                     </div>
                     <div>
-                      <h3 class="font-bold text-gray-900 dark:text-white">
-                        Live Preview
-                      </h3>
-                      <p class="text-sm text-gray-600 dark:text-gray-400">
-                        Stream output
-                      </p>
+                      <h3 class="font-bold text-gray-900 dark:text-white">Live Preview</h3>
+                      <p class="text-sm text-gray-600 dark:text-gray-400">Stream output</p>
                     </div>
                   </div>
                   <div class="flex items-center space-x-2">
-                    <div
-                      class="w-3 h-3 rounded-full bg-green-500 animate-pulse"
-                    ></div>
-                    <span class="text-sm text-green-600 dark:text-green-400"
-                      >Live</span
-                    >
+                    <div class="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
+                    <span class="text-sm text-green-600 dark:text-green-400">Live</span>
                   </div>
                 </div>
               </div>
 
               <!-- Video Container -->
-              <div
-                id="videoContainer"
-                class="hidden relative bg-gray-900 aspect-video"
-              >
+              <div id="videoContainer" class="hidden relative bg-gray-900 aspect-video">
                 <!-- Loader -->
                 <div
                   id="loader"
@@ -425,12 +382,8 @@
                     <div
                       class="loader ease-linear rounded-full border-4 border-t-4 border-blue-500 h-12 w-12 mx-auto mb-4"
                     ></div>
-                    <p class="text-blue-400 font-medium">
-                      Initializing stream...
-                    </p>
-                    <p class="text-sm text-gray-400 mt-1">
-                      This may take a few moments
-                    </p>
+                    <p class="text-blue-400 font-medium">Initializing stream...</p>
+                    <p class="text-sm text-gray-400 mt-1">This may take a few moments</p>
                   </div>
                 </div>
 
@@ -454,12 +407,9 @@
                 >
                   <i class="fas fa-video text-blue-400 text-3xl"></i>
                 </div>
-                <h4 class="text-xl font-bold text-white mb-2">
-                  Stream Preview
-                </h4>
+                <h4 class="text-xl font-bold text-white mb-2">Stream Preview</h4>
                 <p class="text-gray-400 text-center max-w-md">
-                  Enter an RTSP URL and click "Start Stream" to view your live
-                  camera feed here
+                  Enter an RTSP URL and click "Start Stream" to view your live camera feed here
                 </p>
               </div>
             </div>
@@ -481,18 +431,14 @@
               Powered by
               <span class="gradient-text">Modern Technology</span>
             </h2>
-            <p
-              class="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto"
-            >
-              StreamVision leverages cutting-edge open-source technologies for
-              exceptional performance and reliability
+            <p class="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+              StreamVision leverages cutting-edge open-source technologies for exceptional
+              performance and reliability
             </p>
           </div>
 
           <!-- Tech Cards -->
-          <div
-            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12"
-          >
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             <!-- FFmpeg Card -->
             <div
               class="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 border border-blue-100 dark:border-gray-700 card-hover"
@@ -500,13 +446,9 @@
               <div
                 class="w-16 h-16 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mb-6 mx-auto tech-icon"
               >
-                <i
-                  class="fas fa-video text-blue-600 dark:text-blue-400 text-2xl"
-                ></i>
+                <i class="fas fa-video text-blue-600 dark:text-blue-400 text-2xl"></i>
               </div>
-              <h3
-                class="text-xl font-bold text-gray-900 dark:text-white text-center mb-2"
-              >
+              <h3 class="text-xl font-bold text-gray-900 dark:text-white text-center mb-2">
                 FFmpeg
               </h3>
               <p class="text-gray-600 dark:text-gray-400 text-center text-sm">
@@ -521,13 +463,9 @@
               <div
                 class="w-16 h-16 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mb-6 mx-auto tech-icon"
               >
-                <i
-                  class="fas fa-broadcast-tower text-blue-600 dark:text-blue-400 text-2xl"
-                ></i>
+                <i class="fas fa-broadcast-tower text-blue-600 dark:text-blue-400 text-2xl"></i>
               </div>
-              <h3
-                class="text-xl font-bold text-gray-900 dark:text-white text-center mb-2"
-              >
+              <h3 class="text-xl font-bold text-gray-900 dark:text-white text-center mb-2">
                 HLS Protocol
               </h3>
               <p class="text-gray-600 dark:text-gray-400 text-center text-sm">
@@ -542,13 +480,9 @@
               <div
                 class="w-16 h-16 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mb-6 mx-auto tech-icon"
               >
-                <i
-                  class="fab fa-node-js text-blue-600 dark:text-blue-400 text-2xl"
-                ></i>
+                <i class="fab fa-node-js text-blue-600 dark:text-blue-400 text-2xl"></i>
               </div>
-              <h3
-                class="text-xl font-bold text-gray-900 dark:text-white text-center mb-2"
-              >
+              <h3 class="text-xl font-bold text-gray-900 dark:text-white text-center mb-2">
                 Node.js
               </h3>
               <p class="text-gray-600 dark:text-gray-400 text-center text-sm">
@@ -563,13 +497,9 @@
               <div
                 class="w-16 h-16 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mb-6 mx-auto tech-icon"
               >
-                <i
-                  class="fas fa-bolt text-blue-600 dark:text-blue-400 text-2xl"
-                ></i>
+                <i class="fas fa-bolt text-blue-600 dark:text-blue-400 text-2xl"></i>
               </div>
-              <h3
-                class="text-xl font-bold text-gray-900 dark:text-white text-center mb-2"
-              >
+              <h3 class="text-xl font-bold text-gray-900 dark:text-white text-center mb-2">
                 Express.js
               </h3>
               <p class="text-gray-600 dark:text-gray-400 text-center text-sm">
@@ -584,14 +514,12 @@
           >
             <div class="flex flex-col lg:flex-row items-center justify-between">
               <div class="mb-6 lg:mb-0 lg:mr-8">
-                <h3
-                  class="text-2xl font-bold text-gray-900 dark:text-white mb-3"
-                >
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">
                   Open Source Community
                 </h3>
                 <p class="text-gray-700 dark:text-gray-300">
-                  StreamVision is an open-source project. Join our community to
-                  contribute, suggest features, or report issues.
+                  StreamVision is an open-source project. Join our community to contribute, suggest
+                  features, or report issues.
                 </p>
               </div>
               <a
@@ -621,11 +549,8 @@
               Why Choose
               <span class="gradient-text">StreamVision?</span>
             </h2>
-            <p
-              class="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto"
-            >
-              A comprehensive streaming solution built for performance,
-              security, and ease of use
+            <p class="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+              A comprehensive streaming solution built for performance, security, and ease of use
             </p>
           </div>
 
@@ -640,12 +565,10 @@
               >
                 <i class="fas fa-bolt text-blue-600 dark:text-blue-400"></i>
               </div>
-              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
-                Low Latency
-              </h3>
+              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Low Latency</h3>
               <p class="text-gray-600 dark:text-gray-400">
-                Real-time streaming with minimal delay, perfect for live
-                surveillance and monitoring applications.
+                Real-time streaming with minimal delay, perfect for live surveillance and monitoring
+                applications.
               </p>
             </div>
 
@@ -656,16 +579,12 @@
               <div
                 class="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mb-6"
               >
-                <i
-                  class="fas fa-shield-alt text-blue-600 dark:text-blue-400"
-                ></i>
+                <i class="fas fa-shield-alt text-blue-600 dark:text-blue-400"></i>
               </div>
-              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
-                Secure Streaming
-              </h3>
+              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Secure Streaming</h3>
               <p class="text-gray-600 dark:text-gray-400">
-                Encrypted streams with SSL/TLS and secure authentication to
-                protect your video feeds.
+                Encrypted streams with SSL/TLS and secure authentication to protect your video
+                feeds.
               </p>
             </div>
 
@@ -678,12 +597,9 @@
               >
                 <i class="fas fa-link text-blue-600 dark:text-blue-400"></i>
               </div>
-              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
-                Shareable Links
-              </h3>
+              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Shareable Links</h3>
               <p class="text-gray-600 dark:text-gray-400">
-                Generate time-limited public links to share streams without
-                compromising security.
+                Generate time-limited public links to share streams without compromising security.
               </p>
             </div>
 
@@ -694,16 +610,11 @@
               <div
                 class="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mb-6"
               >
-                <i
-                  class="fas fa-mobile-alt text-blue-600 dark:text-blue-400"
-                ></i>
+                <i class="fas fa-mobile-alt text-blue-600 dark:text-blue-400"></i>
               </div>
-              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
-                Cross-Platform
-              </h3>
+              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Cross-Platform</h3>
               <p class="text-gray-600 dark:text-gray-400">
-                Access streams from any device - desktop, tablet, or mobile with
-                responsive design.
+                Access streams from any device - desktop, tablet, or mobile with responsive design.
               </p>
             </div>
 
@@ -716,12 +627,9 @@
               >
                 <i class="fas fa-sync text-blue-600 dark:text-blue-400"></i>
               </div>
-              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
-                Auto Reconnect
-              </h3>
+              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Auto Reconnect</h3>
               <p class="text-gray-600 dark:text-gray-400">
-                Automatic reconnection attempts if the stream drops, ensuring
-                continuous monitoring.
+                Automatic reconnection attempts if the stream drops, ensuring continuous monitoring.
               </p>
             </div>
 
@@ -732,16 +640,13 @@
               <div
                 class="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mb-6"
               >
-                <i
-                  class="fas fa-chart-line text-blue-600 dark:text-blue-400"
-                ></i>
+                <i class="fas fa-chart-line text-blue-600 dark:text-blue-400"></i>
               </div>
               <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
                 Performance Analytics
               </h3>
               <p class="text-gray-600 dark:text-gray-400">
-                Monitor stream health, bandwidth usage, and performance metrics
-                in real-time.
+                Monitor stream health, bandwidth usage, and performance metrics in real-time.
               </p>
             </div>
           </div>
@@ -784,30 +689,21 @@
                     </div>
                   </div>
                   <div class="ml-6">
-                    <h3
-                      class="text-2xl font-bold text-gray-900 dark:text-white"
-                    >
-                      Amrit Sharma
-                    </h3>
-                    <p class="text-blue-600 dark:text-blue-400 font-medium">
-                      Full-Stack Developer
-                    </p>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Amrit Sharma</h3>
+                    <p class="text-blue-600 dark:text-blue-400 font-medium">Full-Stack Developer</p>
                     <div class="flex items-center mt-2">
-                      <div
-                        class="w-3 h-3 rounded-full bg-green-500 animate-pulse mr-2"
-                      ></div>
-                      <span class="text-sm text-gray-600 dark:text-gray-400"
-                        >Available for collaborations</span
-                      >
+                      <div class="w-3 h-3 rounded-full bg-green-500 animate-pulse mr-2"></div>
+                      <span class="text-sm text-gray-600 dark:text-gray-400">
+                        Available for collaborations
+                      </span>
                     </div>
                   </div>
                 </div>
 
                 <p class="text-gray-700 dark:text-gray-300 mb-6">
-                  Specializing in real-time video streaming, Node.js backend
-                  development, and scalable system architecture. With expertise
-                  in FFmpeg, WebRTC, and HLS technologies, I build secure and
-                  high-performance streaming solutions.
+                  Specializing in real-time video streaming, Node.js backend development, and
+                  scalable system architecture. With expertise in FFmpeg, WebRTC, and HLS
+                  technologies, I build secure and high-performance streaming solutions.
                 </p>
 
                 <!-- Social Links -->
@@ -849,21 +745,14 @@
                     <i class="fas fa-users text-white text-2xl"></i>
                   </div>
                   <div>
-                    <h3
-                      class="text-2xl font-bold text-gray-900 dark:text-white"
-                    >
-                      Netwon Team
-                    </h3>
-                    <p class="text-gray-600 dark:text-gray-400">
-                      Project Collaborators
-                    </p>
+                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Netwon Team</h3>
+                    <p class="text-gray-600 dark:text-gray-400">Project Collaborators</p>
                   </div>
                 </div>
 
                 <p class="text-gray-700 dark:text-gray-300 mb-6">
-                  StreamVision was developed in collaboration with Netwon Team,
-                  focusing on creating innovative solutions for real-time
-                  surveillance and video streaming applications.
+                  StreamVision was developed in collaboration with Netwon Team, focusing on creating
+                  innovative solutions for real-time surveillance and video streaming applications.
                 </p>
 
                 <div class="space-y-4">
@@ -871,9 +760,7 @@
                     <div
                       class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mr-4"
                     >
-                      <i
-                        class="fas fa-check text-blue-600 dark:text-blue-400"
-                      ></i>
+                      <i class="fas fa-check text-blue-600 dark:text-blue-400"></i>
                     </div>
                     <div>
                       <h4 class="font-medium text-gray-900 dark:text-white">
@@ -889,14 +776,10 @@
                     <div
                       class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mr-4"
                     >
-                      <i
-                        class="fas fa-check text-blue-600 dark:text-blue-400"
-                      ></i>
+                      <i class="fas fa-check text-blue-600 dark:text-blue-400"></i>
                     </div>
                     <div>
-                      <h4 class="font-medium text-gray-900 dark:text-white">
-                        Secure Architecture
-                      </h4>
+                      <h4 class="font-medium text-gray-900 dark:text-white">Secure Architecture</h4>
                       <p class="text-sm text-gray-600 dark:text-gray-400">
                         Encrypted end-to-end streams
                       </p>
@@ -907,9 +790,7 @@
                     <div
                       class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mr-4"
                     >
-                      <i
-                        class="fas fa-check text-blue-600 dark:text-blue-400"
-                      ></i>
+                      <i class="fas fa-check text-blue-600 dark:text-blue-400"></i>
                     </div>
                     <div>
                       <h4 class="font-medium text-gray-900 dark:text-white">
@@ -929,9 +810,7 @@
     </main>
 
     <!-- Footer -->
-    <footer
-      class="bg-gray-50 dark:bg-gray-900 border-t border-blue-100 dark:border-gray-800"
-    >
+    <footer class="bg-gray-50 dark:bg-gray-900 border-t border-blue-100 dark:border-gray-800">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="flex flex-col md:flex-row justify-between items-center">
           <div class="mb-6 md:mb-0">
@@ -943,9 +822,7 @@
               </div>
               <div>
                 <div class="text-xl font-bold gradient-text">StreamVision</div>
-                <p class="text-sm text-gray-600 dark:text-gray-400">
-                  by Netwon Team
-                </p>
+                <p class="text-sm text-gray-600 dark:text-gray-400">by Netwon Team</p>
               </div>
             </div>
             <p class="text-sm text-gray-600 dark:text-gray-400">
@@ -985,10 +862,7 @@
 
       themeToggle.addEventListener("click", () => {
         htmlElement.classList.toggle("dark");
-        localStorage.setItem(
-          "theme",
-          htmlElement.classList.contains("dark") ? "dark" : "light"
-        );
+        localStorage.setItem("theme", htmlElement.classList.contains("dark") ? "dark" : "light");
       });
 
       // Set initial theme

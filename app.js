@@ -41,7 +41,6 @@ const skipVideo = (req, res) => {
   return req.url.endsWith(".ts") || req.url.includes("/streams/");
 };
 
-
 app.use(
   morgan(
     (tokens, req, res) => {
@@ -65,7 +64,7 @@ app.use(
   )
 );
 
-app.disable('x-powered-by');
+app.disable("x-powered-by");
 
 app.use(
   helmet({
@@ -131,10 +130,7 @@ app.use(
     },
   })
 );
-app.use(
-  "/flowbite",
-  express.static(path.join(__dirname, "node_modules/flowbite/dist"))
-);
+app.use("/flowbite", express.static(path.join(__dirname, "node_modules/flowbite/dist")));
 
 // =================== View Engine ===================
 app.set("view engine", "ejs");
@@ -161,10 +157,7 @@ app.use(
 app.use(
   "/streams",
   (req, res, next) => {
-    res.setHeader(
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate, proxy-revalidate"
-    );
+    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
     res.setHeader("Pragma", "no-cache");
     res.setHeader("Expires", "0");
     res.setHeader("Surrogate-Control", "no-store");
@@ -178,7 +171,7 @@ app.use("/", userRouter);
 app.use("/camera", checkAuth, cameraRoutes);
 app.use("/dvr", checkAuth, dvrRoutes);
 app.get("/public/dvr/:dvrId", (req, res) => {
-  res.render('public', { nonce: res.locals.nonce, dvr: {dvr_name:"PUBLIC"}});
+  res.render("public", { nonce: res.locals.nonce, dvr: { dvr_name: "PUBLIC" } });
 });
 app.use(wsRoutes);
 app.use("/camera/view", cameraRoute);

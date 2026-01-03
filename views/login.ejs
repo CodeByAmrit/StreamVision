@@ -101,10 +101,8 @@
       }
 
       .bg-grid-pattern {
-        background-image: linear-gradient(
-            rgba(99, 179, 237, 0.05) 1px,
-            transparent 1px
-          ),
+        background-image:
+          linear-gradient(rgba(99, 179, 237, 0.05) 1px, transparent 1px),
           linear-gradient(90deg, rgba(99, 179, 237, 0.05) 1px, transparent 1px);
         background-size: 50px 50px;
       }
@@ -139,9 +137,7 @@
           ></div>
           <div class="relative w-full h-full flex items-center justify-center">
             <div class="text-center">
-              <div class="text-4xl font-bold gradient-text mb-4">
-                StreamVision
-              </div>
+              <div class="text-4xl font-bold gradient-text mb-4">StreamVision</div>
               <div class="text-blue-600 dark:text-blue-400 text-sm font-medium">
                 Loading admin portal...
               </div>
@@ -151,9 +147,7 @@
       </div>
     </div>
 
-    <div
-      class="min-h-screen flex items-center justify-center p-4 login-container"
-    >
+    <div class="min-h-screen flex items-center justify-center p-4 login-container">
       <!-- Background Elements -->
       <div class="absolute inset-0 overflow-hidden bg-grid-pattern"></div>
 
@@ -188,9 +182,7 @@
             StreamVision
             <span class="gradient-text">Admin</span>
           </h1>
-          <p class="text-gray-600 dark:text-gray-400">
-            Secure access to your streaming dashboard
-          </p>
+          <p class="text-gray-600 dark:text-gray-400">Secure access to your streaming dashboard</p>
         </div>
 
         <!-- Login Card -->
@@ -198,16 +190,11 @@
           class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-blue-100 dark:border-gray-700 p-8"
         >
           <!-- Flash Message Area -->
-          <div
-            id="flash-message"
-            class="hidden mb-6 p-4 rounded-lg border"
-          ></div>
+          <div id="flash-message" class="hidden mb-6 p-4 rounded-lg border"></div>
 
           <!-- Form Header -->
           <div class="mb-8">
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-              Welcome Back
-            </h2>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Welcome Back</h2>
             <p class="text-gray-600 dark:text-gray-400">
               Sign in to manage your streaming services
             </p>
@@ -242,10 +229,7 @@
                   <i class="fas fa-user-circle"></i>
                 </div>
               </div>
-              <p
-                class="hidden mt-2 text-sm text-red-600 dark:text-red-400"
-                id="email-error"
-              >
+              <p class="hidden mt-2 text-sm text-red-600 dark:text-red-400" id="email-error">
                 <i class="fas fa-exclamation-circle mr-1"></i>
                 Email not found in our system
               </p>
@@ -254,10 +238,7 @@
             <!-- Password Field -->
             <div>
               <div class="flex items-center justify-between mb-3">
-                <label
-                  for="password"
-                  class="text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
+                <label for="password" class="text-sm font-medium text-gray-700 dark:text-gray-300">
                   <div class="flex items-center">
                     <i class="fas fa-lock mr-2 text-blue-500"></i>
                     Password
@@ -288,10 +269,7 @@
                   <i class="fas fa-key"></i>
                 </div>
               </div>
-              <p
-                class="hidden mt-2 text-sm text-red-600 dark:text-red-400"
-                id="password-error"
-              >
+              <p class="hidden mt-2 text-sm text-red-600 dark:text-red-400" id="password-error">
                 <i class="fas fa-exclamation-circle mr-1"></i>
                 Incorrect password. Please try again
               </p>
@@ -307,10 +285,7 @@
                   class="w-4 h-4 text-blue-600 bg-gray-100 border-blue-300 rounded focus:ring-blue-500 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   checked
                 />
-                <label
-                  for="remember"
-                  class="ml-2 text-sm text-gray-700 dark:text-gray-300"
-                >
+                <label for="remember" class="ml-2 text-sm text-gray-700 dark:text-gray-300">
                   Remember this device
                 </label>
               </div>
@@ -341,26 +316,20 @@
             </div>
 
             <!-- Security Note -->
-            <div
-              class="mt-6 pt-6 border-t border-blue-100 dark:border-gray-700"
-            >
+            <div class="mt-6 pt-6 border-t border-blue-100 dark:border-gray-700">
               <div class="flex items-start">
                 <div
                   class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mr-4 flex-shrink-0"
                 >
-                  <i
-                    class="fas fa-shield-alt text-blue-600 dark:text-blue-400"
-                  ></i>
+                  <i class="fas fa-shield-alt text-blue-600 dark:text-blue-400"></i>
                 </div>
                 <div>
-                  <h4
-                    class="text-sm font-medium text-gray-900 dark:text-white mb-1"
-                  >
+                  <h4 class="text-sm font-medium text-gray-900 dark:text-white mb-1">
                     Secure Login
                   </h4>
                   <p class="text-xs text-gray-600 dark:text-gray-400">
-                    Your credentials are encrypted and never stored in plain
-                    text. Ensure you're on the official StreamVision domain.
+                    Your credentials are encrypted and never stored in plain text. Ensure you're on
+                    the official StreamVision domain.
                   </p>
                 </div>
               </div>
@@ -428,16 +397,12 @@
 
         if (togglePasswordBtn && passwordInput) {
           togglePasswordBtn.addEventListener("click", function () {
-            const type =
-              passwordInput.getAttribute("type") === "password"
-                ? "text"
-                : "password";
+            const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
             passwordInput.setAttribute("type", type);
 
             // Toggle eye icon and text
             const icon = togglePasswordBtn.querySelector("i");
-            const text =
-              togglePasswordBtn.querySelector("span") || togglePasswordBtn;
+            const text = togglePasswordBtn.querySelector("span") || togglePasswordBtn;
 
             if (type === "text") {
               icon.classList.remove("fa-eye");
@@ -468,9 +433,7 @@
                 <div class="flex items-center">
                     <i class="fas fa-${
                       type === "success" ? "check-circle" : "exclamation-circle"
-                    } mr-3 text-${
-          type === "success" ? "green" : "red"
-        }-500"></i>
+                    } mr-3 text-${type === "success" ? "green" : "red"}-500"></i>
                     <span class="${
                       type === "success"
                         ? "text-green-800 dark:text-green-200"
@@ -528,12 +491,8 @@
           const data = Object.fromEntries(formData);
         } catch (error) {
           console.error("Login error:", error);
-          showFlashMessage(
-            "An error occurred during login. Please try again.",
-            "error"
-          );
-        }
-        finally {
+          showFlashMessage("An error occurred during login. Please try again.", "error");
+        } finally {
           // Reset button state
           if (submitBtn && btnText && btnLoading) {
             btnText.classList.remove("hidden");
@@ -550,17 +509,10 @@
         const message = url.get("message");
 
         if (error || message) {
-          showFlashMessage(
-            message || "Login failed. Please try again.",
-            "error"
-          );
+          showFlashMessage(message || "Login failed. Please try again.", "error");
 
           // Clear URL parameters
-          window.history.replaceState(
-            {},
-            document.title,
-            window.location.pathname
-          );
+          window.history.replaceState({}, document.title, window.location.pathname);
         }
       }
 
@@ -574,14 +526,16 @@
           el.style.opacity = "0";
           el.style.transform = "translateY(10px)";
 
-          setTimeout(() => {
-            el.style.transition = "opacity 0.5s ease, transform 0.5s ease";
-            el.style.opacity = "1";
-            el.style.transform = "translateY(0)";
-          }, 100 + index * 50);
+          setTimeout(
+            () => {
+              el.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+              el.style.opacity = "1";
+              el.style.transform = "translateY(0)";
+            },
+            100 + index * 50
+          );
         });
       });
-
     </script>
     <script src="/js/login.js" nonce="<%= nonce %>"></script>
   </body>

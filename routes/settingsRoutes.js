@@ -1,9 +1,9 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const settingsController = require('../controllers/settingsController');
-const checkAuth = require('../services/checkauth');
+const settingsController = require("../controllers/settingsController");
+const checkAuth = require("../services/checkauth");
 
-router.get('/settings', checkAuth, settingsController.getSettingsPage);
-router.post('/settings', checkAuth, settingsController.updateSettings);
+router.get("/settings", checkAuth, settingsController.getSettingsPage);
+router.post("/settings", checkAuth, settingsController.updateSettings);
 
 module.exports = router;

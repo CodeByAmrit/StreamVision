@@ -1,62 +1,64 @@
 <main class="p-6 sm:ml-64 mt-16 min-h-screen bg-gray-50/50 dark:bg-gray-900/50">
   <!-- Quick Stats -->
   <div class="mb-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/10 rounded-2xl p-6 border border-blue-200 dark:border-blue-800">
-          <div class="flex items-center">
-              <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mr-4">
-                  <i class="fas fa-server text-blue-600 dark:text-blue-400"></i>
-              </div>
-              <div>
-                  <p class="text-sm text-gray-500 dark:text-gray-400">Total DVRs</p>
-                  <p class="text-2xl font-bold text-gray-900 dark:text-white">
-                      <%= totalDvrs || 0 %>
-                  </p>
-              </div>
-          </div>
+    <div
+      class="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/10 rounded-2xl p-6 border border-blue-200 dark:border-blue-800"
+    >
+      <div class="flex items-center">
+        <div
+          class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mr-4"
+        >
+          <i class="fas fa-server text-blue-600 dark:text-blue-400"></i>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Total DVRs</p>
+          <p class="text-2xl font-bold text-gray-900 dark:text-white"><%= totalDvrs || 0 %></p>
+        </div>
       </div>
-      
-      <div class="bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/10 rounded-2xl p-6 border border-green-200 dark:border-green-800">
-          <div class="flex items-center">
-              <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-100 to-green-50 dark:from-green-900/30 dark:to-green-800/20 flex items-center justify-center mr-4">
-                  <i class="fas fa-wifi text-green-600 dark:text-green-400"></i>
-              </div>
-              <div>
-                  <p class="text-sm text-gray-500 dark:text-gray-400">Online DVRs</p>
-                  <p class="text-2xl font-bold text-gray-900 dark:text-white">
-                      <%= onlineCount || 0 %>
-                  </p>
-              </div>
-          </div>
+    </div>
+
+    <div
+      class="bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/10 rounded-2xl p-6 border border-green-200 dark:border-green-800"
+    >
+      <div class="flex items-center">
+        <div
+          class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-100 to-green-50 dark:from-green-900/30 dark:to-green-800/20 flex items-center justify-center mr-4"
+        >
+          <i class="fas fa-wifi text-green-600 dark:text-green-400"></i>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Online DVRs</p>
+          <p class="text-2xl font-bold text-gray-900 dark:text-white"><%= onlineCount || 0 %></p>
+        </div>
       </div>
-      
-      <div class="bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/10 rounded-2xl p-6 border border-purple-200 dark:border-purple-800">
-          <div class="flex items-center">
-              <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 dark:from-purple-900/30 dark:to-purple-800/20 flex items-center justify-center mr-4">
-                  <i class="fas fa-camera text-purple-600 dark:text-purple-400"></i>
-              </div>
-              <div>
-                  <p class="text-sm text-gray-500 dark:text-gray-400">Total Cameras</p>
-                  <p class="text-2xl font-bold text-gray-900 dark:text-white">
-                      <%= totalCameras || 0 %>
-                  </p>
-              </div>
-          </div>
+    </div>
+
+    <div
+      class="bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/10 rounded-2xl p-6 border border-purple-200 dark:border-purple-800"
+    >
+      <div class="flex items-center">
+        <div
+          class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-100 to-purple-50 dark:from-purple-900/30 dark:to-purple-800/20 flex items-center justify-center mr-4"
+        >
+          <i class="fas fa-camera text-purple-600 dark:text-purple-400"></i>
+        </div>
+        <div>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Total Cameras</p>
+          <p class="text-2xl font-bold text-gray-900 dark:text-white"><%= totalCameras || 0 %></p>
+        </div>
       </div>
+    </div>
   </div>
 
   <!-- Search and Filters Card -->
   <div
     class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-blue-100 dark:border-gray-700 p-6 mb-6"
   >
-    <div
-      class="flex flex-col md:flex-row md:items-center justify-between gap-4"
-    >
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
       <!-- Search Form -->
       <form method="GET" action="/dvr" class="flex-1">
         <div class="relative">
-          <div
-            class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-          >
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <i class="fas fa-search text-gray-400"></i>
           </div>
           <input
@@ -82,9 +84,19 @@
           id="status-filter"
           class="px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-blue-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:text-white transition-all"
         >
-          <option value="all" <%= status === 'all' ? 'selected' : '' %>>All Status</option>
-          <option value="online" <%= status === 'online' ? 'selected' : '' %>>Online Only</option>
-          <option value="offline" <%= status === 'offline' ? 'selected' : '' %>>Offline Only</option>
+          <% if (status === 'all') { %>
+          <option value="all" selected>All Status</option>
+          <% } else { %>
+          <option value="all">All Status</option>
+          <% } %> <% if (status === 'online') { %>
+          <option value="online" selected>Online Only</option>
+          <% } else { %>
+          <option value="online">Online Only</option>
+          <% } %> <% if (status === 'offline') { %>
+          <option value="offline" selected>Offline Only</option>
+          <% } else { %>
+          <option value="offline">Offline Only</option>
+          <% } %>
         </select>
 
         <button
@@ -98,7 +110,8 @@
           href="/dvr/add"
           class="btn-gradient text-white font-medium rounded-xl px-5 py-2.5 text-sm inline-flex items-center"
         >
-          <i class="fas fa-plus mr-2"></i>  Add New DVR
+          <i class="fas fa-plus mr-2"></i>
+          Add New DVR
         </a>
       </div>
     </div>
@@ -112,9 +125,7 @@
     <div
       class="px-6 py-4 border-b border-blue-50 dark:border-gray-700 bg-blue-50/50 dark:bg-blue-900/20"
     >
-      <div
-        class="grid grid-cols-12 gap-4 text-sm font-semibold text-gray-700 dark:text-gray-300"
-      >
+      <div class="grid grid-cols-12 gap-4 text-sm font-semibold text-gray-700 dark:text-gray-300">
         <div class="col-span-1">#</div>
         <div class="col-span-3">DVR Name</div>
         <div class="col-span-3">Location</div>
@@ -125,11 +136,9 @@
 
     <!-- DVR List -->
     <div class="divide-y divide-blue-50 dark:divide-gray-700">
-      <% if (dvrsWithCameras && dvrsWithCameras.length > 0) { %> <%
-      dvrsWithCameras.forEach((dvr, index) => { %>
-      <div
-        class="px-6 py-4 hover:bg-blue-50/30 dark:hover:bg-gray-700/30 transition-colors"
-      >
+      <% if (dvrsWithCameras && dvrsWithCameras.length > 0) { %> <% dvrsWithCameras.forEach((dvr,
+      index) => { %>
+      <div class="px-6 py-4 hover:bg-blue-50/30 dark:hover:bg-gray-700/30 transition-colors">
         <div class="grid grid-cols-12 gap-4 items-center">
           <!-- Index -->
           <div class="col-span-1">
@@ -149,12 +158,8 @@
                 <i class="fas fa-server text-blue-600 dark:text-blue-400"></i>
               </div>
               <div>
-                <h4 class="font-bold text-gray-900 dark:text-white">
-                  <%= dvr.dvr_name %>
-                </h4>
-                <p class="text-xs text-gray-500 dark:text-gray-400">
-                  ID: <%= dvr.id %>
-                </p>
+                <h4 class="font-bold text-gray-900 dark:text-white"><%= dvr.dvr_name %></h4>
+                <p class="text-xs text-gray-500 dark:text-gray-400">ID: <%= dvr.id %></p>
               </div>
             </div>
           </div>
@@ -163,31 +168,26 @@
           <div class="col-span-3">
             <div class="flex items-center">
               <i class="fas fa-map-marker-alt text-gray-400 mr-2"></i>
-              <span class="text-gray-700 dark:text-gray-300"
-                ><%= dvr.location_name %></span
-              >
+              <span class="text-gray-700 dark:text-gray-300"><%= dvr.location_name %></span>
             </div>
           </div>
 
           <!-- Status - FIXED: Use real isOnline data -->
           <div class="col-span-2">
-              <% 
-                  // REAL DATA: Use isOnline from backend (set by dvrManager check)
-                  const isOnline = dvr.isOnline === true;
-                  const statusClass = isOnline ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400';
-                  const statusIcon = isOnline ? 'fa-circle-check' : 'fa-circle-exclamation';
-                  const statusText = isOnline ? 'Online' : 'Offline';
-                  
-                  // Show active cameras count if available
-                  const activeCameras = dvr.activeCameras || 0;
-              %>
-              <div class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium <%= statusClass %>">
-                  <i class="fas <%= statusIcon %> mr-2"></i>
-                  <%= statusText %>
-                  <% if (isOnline && activeCameras > 0) { %>
-                  <span class="ml-2 text-xs">(<%= activeCameras %> active)</span>
-                  <% } %>
-              </div>
+            <% // REAL DATA: Use isOnline from backend (set by dvrManager check) const isOnline =
+            dvr.isOnline === true; const statusClass = isOnline ? 'bg-green-100 dark:bg-green-900/30
+            text-green-800 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/30 text-red-800
+            dark:text-red-400'; const statusIcon = isOnline ? 'fa-circle-check' :
+            'fa-circle-exclamation'; const statusText = isOnline ? 'Online' : 'Offline'; // Show
+            active cameras count if available const activeCameras = dvr.activeCameras || 0; %>
+            <div
+              class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium <%= statusClass %>"
+            >
+              <i class="fas <%= statusIcon %> mr-2"></i>
+              <%= statusText %> <% if (isOnline && activeCameras > 0) { %>
+              <span class="ml-2 text-xs">(<%= activeCameras %> active)</span>
+              <% } %>
+            </div>
           </div>
 
           <!-- Actions -->
@@ -200,11 +200,7 @@
                 class="inline-flex items-center px-3 py-1.5 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 rounded-lg hover:bg-green-200 dark:hover:bg-green-800/50 transition-colors text-sm font-medium"
               >
                 <i class="fas fa-eye mr-2"></i>
-                <% if (isOnline) { %>
-                Live View
-                <% } else { %>
-                View
-                <% } %>
+                <% if (isOnline) { %> Live View <% } else { %> View <% } %>
               </a>
 
               <!-- Edit Button -->
@@ -229,50 +225,42 @@
         </div>
 
         <!-- Additional Info Row (Collapsible) - FIXED: Use real data -->
-        <div
-          class="mt-4 pt-4 border-t border-blue-100 dark:border-gray-700 hidden additional-info"
-        >
+        <div class="mt-4 pt-4 border-t border-blue-100 dark:border-gray-700 hidden additional-info">
           <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
             <div>
               <p class="text-gray-500 dark:text-gray-400 mb-1">Cameras</p>
               <p class="font-medium text-gray-900 dark:text-white">
-                <% 
-                  const totalCams = dvr.totalCameras || 0;
-                  const activeCams = dvr.activeCameras || 0;
-                %>
-                <%= totalCams %> Total
-                <% if (activeCams > 0) { %>
-                <span class="text-green-600 dark:text-green-400 ml-1">(<%= activeCams %> Active)</span>
+                <% const totalCams = dvr.totalCameras || 0; const activeCams = dvr.activeCameras ||
+                0; %> <%= totalCams %> Total <% if (activeCams > 0) { %>
+                <span class="text-green-600 dark:text-green-400 ml-1">
+                  (<%= activeCams %> Active)
+                </span>
                 <% } %>
               </p>
             </div>
             <div>
               <p class="text-gray-500 dark:text-gray-400 mb-1">Status</p>
               <p class="font-medium text-gray-900 dark:text-white">
-                <%= isOnline ? 'Online ✓' : 'Offline' %>
-                <% if (isOnline && dvr.lastActivity) { %>
-                <span class="text-xs text-gray-500">(Since <%= new Date(dvr.lastActivity).toLocaleTimeString() %>)</span>
+                <%= isOnline ? 'Online ✓' : 'Offline' %> <% if (isOnline && dvr.lastActivity) { %>
+                <span class="text-xs text-gray-500">
+                  (Since <%= new Date(dvr.lastActivity).toLocaleTimeString() %>)
+                </span>
                 <% } %>
               </p>
             </div>
             <div>
               <p class="text-gray-500 dark:text-gray-400 mb-1">DVR Location</p>
-              <p class="font-medium text-gray-900 dark:text-white">
-                <%= dvr.location_name %>
-              </p>
+              <p class="font-medium text-gray-900 dark:text-white"><%= dvr.location_name %></p>
             </div>
             <div>
               <p class="text-gray-500 dark:text-gray-400 mb-1">Stream Status</p>
               <p class="font-medium text-gray-900 dark:text-white">
                 <% if (isOnline) { %>
                 <span class="text-green-600 dark:text-green-400">Streaming Now</span>
-                <% } else { %>
-                Not Active
-                <% } %>
+                <% } else { %> Not Active <% } %>
               </p>
             </div>
           </div>
-          
         </div>
 
         <!-- Show More Button -->
@@ -280,7 +268,8 @@
           type="button"
           class="show-more-btn mt-3 text-blue-600 dark:text-blue-400 text-sm font-medium hover:underline"
         >
-          <i class="fas fa-chevron-down mr-1"></i> Show Details
+          <i class="fas fa-chevron-down mr-1"></i>
+          Show Details
         </button>
       </div>
       <% }); %> <% } else { %>
@@ -291,12 +280,10 @@
         >
           <i class="fas fa-server text-gray-400 text-xl"></i>
         </div>
-        <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-          No DVRs Found
-        </h4>
+        <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">No DVRs Found</h4>
         <p class="text-gray-600 dark:text-gray-400 mb-6">
-          <% if (search) { %> No DVRs match your search "<%= search %>" <% }
-          else { %> Get started by adding your first DVR device <% } %>
+          <% if (search) { %> No DVRs match your search "<%= search %>" <% } else { %> Get started
+          by adding your first DVR device <% } %>
         </p>
         <a
           href="/dvr/add"
@@ -314,27 +301,22 @@
     <div
       class="px-6 py-4 border-t border-blue-50 dark:border-gray-700 bg-blue-50/50 dark:bg-blue-900/20"
     >
-      <div
-        class="flex flex-col md:flex-row md:items-center justify-between gap-4"
-      >
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <!-- Page Info -->
         <div class="text-sm text-gray-600 dark:text-gray-400">
-            Showing 
-            <span class="font-semibold text-gray-900 dark:text-white">
-                <% 
-                    const start = (currentPage - 1) * limit + 1;
-                    const end = Math.min(currentPage * limit, typeof filteredTotal !== 'undefined' ? filteredTotal : totalDvrs);
-                %>
-                <%= start %>-<%= end %>
-            </span> 
-            of 
-            <span class="font-semibold text-gray-900 dark:text-white">
-                <%= typeof filteredTotal !== 'undefined' ? filteredTotal : totalDvrs %>
-            </span> 
-            DVRs
-            <% if (status && status !== 'all') { %>
-            <span class="text-blue-600 dark:text-blue-400 ml-2">(Filtered: <%= status %>)</span>
-            <% } %>
+          Showing
+          <span class="font-semibold text-gray-900 dark:text-white">
+            <% const start = (currentPage - 1) * limit + 1; const end = Math.min(currentPage *
+            limit, typeof filteredTotal !== 'undefined' ? filteredTotal : totalDvrs); %> <%= start
+            %>-<%= end %>
+          </span>
+          of
+          <span class="font-semibold text-gray-900 dark:text-white">
+            <%= typeof filteredTotal !== 'undefined' ? filteredTotal : totalDvrs %>
+          </span>
+          DVRs <% if (status && status !== 'all') { %>
+          <span class="text-blue-600 dark:text-blue-400 ml-2">(Filtered: <%= status %>)</span>
+          <% } %>
         </div>
 
         <!-- Pagination Controls -->
@@ -351,8 +333,8 @@
 
           <!-- Page Numbers -->
           <div class="hidden md:flex items-center space-x-1">
-            <% let startPage = Math.max(1, currentPage - 2); let endPage =
-            Math.min(totalPages, currentPage + 2); if (startPage > 1) { %>
+            <% let startPage = Math.max(1, currentPage - 2); let endPage = Math.min(totalPages,
+            currentPage + 2); if (startPage > 1) { %>
             <a
               href="?page=1&search=<%= search %><% if (status && status !== 'all') { %>&status=<%= status %><% } %>"
               class="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
@@ -368,8 +350,7 @@
             >
               <%= i %>
             </a>
-            <% } %> <% if (endPage < totalPages) { %> <% if (endPage <
-            totalPages - 1) { %>
+            <% } %> <% if (endPage < totalPages) { %> <% if (endPage < totalPages - 1) { %>
             <span class="px-2 text-gray-500">...</span>
             <% } %>
             <a
@@ -400,29 +381,20 @@
   <div id="delete-modal" class="hidden fixed inset-0 z-50 overflow-y-auto">
     <div class="flex items-center justify-center min-h-screen px-4">
       <div class="fixed inset-0 bg-black opacity-30"></div>
-      <div
-        class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-md mx-auto"
-      >
+      <div class="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-md mx-auto">
         <div class="p-6">
           <div
             class="flex items-center justify-center w-16 h-16 rounded-full bg-red-100 dark:bg-red-900/30 mx-auto mb-4"
           >
-            <i
-              class="fas fa-exclamation-triangle text-red-600 dark:text-red-400 text-2xl"
-            ></i>
+            <i class="fas fa-exclamation-triangle text-red-600 dark:text-red-400 text-2xl"></i>
           </div>
-          <h3
-            class="text-xl font-bold text-gray-900 dark:text-white text-center mb-2"
-          >
+          <h3 class="text-xl font-bold text-gray-900 dark:text-white text-center mb-2">
             Delete DVR
           </h3>
           <p class="text-gray-600 dark:text-gray-400 text-center mb-6">
             Are you sure you want to delete
-            <span
-              id="dvr-name"
-              class="font-semibold text-gray-900 dark:text-white"
-            ></span
-            >? This action cannot be undone.
+            <span id="dvr-name" class="font-semibold text-gray-900 dark:text-white"></span>
+            ? This action cannot be undone.
           </p>
           <div class="flex justify-center space-x-3">
             <button

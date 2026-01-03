@@ -1,14 +1,14 @@
-const db = require('../config/getConnection'); // Your DB connection
+const db = require("../config/getConnection"); // Your DB connection
 const dvrManager = require("../utils/streamManager");
 
 /**
  * Get all DVRs with location name and total cameras count
  */
 const getAllDvrs = async (req, res) => {
-    let connection;
-    try {
-        connection = await db.getConnection();
-        const query = `
+  let connection;
+  try {
+    connection = await db.getConnection();
+    const query = `
             SELECT d.id, d.dvr_name, l.location_name, COUNT(c.id) AS total_cameras
             FROM dvrs d
             JOIN locations l ON d.location_id = l.id
@@ -16,141 +16,139 @@ const getAllDvrs = async (req, res) => {
             GROUP BY d.id, d.dvr_name, l.location_name
             ORDER BY d.id DESC;
         `;
-        const [rows] = await connection.execute(query);
-        return rows;
-    } catch (error) {
-        console.error("Error fetching DVRs:", error);
-        res.status(500).json({ error: 'Failed to retrieve DVRs' });
-    }
+    const [rows] = await connection.execute(query);
+    return rows;
+  } catch (error) {
+    console.error("Error fetching DVRs:", error);
+    res.status(500).json({ error: "Failed to retrieve DVRs" });
+  }
 };
 
 /**
  * Add a new DVR
  */
 const addDvr = async (req, res) => {
-    let { location_id, dvr_name, new_location } = req.body;
+  let { location_id, dvr_name, new_location } = req.body;
 
-    if (!location_id || !dvr_name) {
-        return res.status(400).json({ error: 'Missing required fields' });
+  if (!location_id || !dvr_name) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  let connection;
+
+  try {
+    connection = await db.getConnection();
+
+    // If user selected "Add New Location"
+    if (location_id === "new") {
+      if (!new_location) {
+        return res.status(400).json({ error: "New location name required" });
+      }
+
+      // Insert the new location
+      const [locationResult] = await connection.execute(
+        `INSERT INTO locations (location_name) VALUES (?)`,
+        [new_location]
+      );
+
+      // Replace location_id with the new one
+      location_id = locationResult.insertId;
     }
 
-    let connection;
+    // Insert DVR
+    const [result] = await connection.execute(
+      `INSERT INTO dvrs (location_id, dvr_name) VALUES (?, ?)`,
+      [location_id, dvr_name]
+    );
 
-    try {
-        connection = await db.getConnection();
-
-        // If user selected "Add New Location"
-        if (location_id === "new") {
-            if (!new_location) {
-                return res.status(400).json({ error: 'New location name required' });
-            }
-
-            // Insert the new location
-            const [locationResult] = await connection.execute(
-                `INSERT INTO locations (location_name) VALUES (?)`,
-                [new_location]
-            );
-
-            // Replace location_id with the new one
-            location_id = locationResult.insertId;
-        }
-
-        // Insert DVR
-        const [result] = await connection.execute(
-            `INSERT INTO dvrs (location_id, dvr_name) VALUES (?, ?)`,
-            [location_id, dvr_name]
-        );
-
-        res.status(201).redirect("/dvr");
-
-    } catch (error) {
-        console.error("Error adding DVR:", error);
-        res.status(500).json({ error: 'Failed to add DVR' });
-    } finally {
-        if (connection) connection.end();
-    }
+    res.status(201).redirect("/dvr");
+  } catch (error) {
+    console.error("Error adding DVR:", error);
+    res.status(500).json({ error: "Failed to add DVR" });
+  } finally {
+    if (connection) connection.end();
+  }
 };
 
 /**
  * Update a DVR
  */
 const updateDvr = async (req, res) => {
-    const dvrId = parseInt(req.params.id);
-    const { dvr_name, location_id } = req.body;
+  const dvrId = parseInt(req.params.id);
+  const { dvr_name, location_id } = req.body;
 
-    if (!dvr_name || !location_id) {
-        return res.status(400).json({ error: 'Missing required fields' });
+  if (!dvr_name || !location_id) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  let connection;
+  try {
+    connection = await db.getConnection();
+    const query = `UPDATE dvrs SET dvr_name = ?, location_id = ? WHERE id = ?`;
+    const [result] = await db.execute(query, [dvr_name, location_id, dvrId]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "DVR not found" });
     }
 
-    let connection;
-    try {
-        connection = await db.getConnection();
-        const query = `UPDATE dvrs SET dvr_name = ?, location_id = ? WHERE id = ?`;
-        const [result] = await db.execute(query, [dvr_name, location_id, dvrId]);
-
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ error: 'DVR not found' });
-        }
-
-        res.json({ message: `DVR ${dvrId} updated successfully` });
-    } catch (error) {
-        console.error("Error updating DVR:", error);
-        res.status(500).json({ error: 'Failed to update DVR' });
-    }
+    res.json({ message: `DVR ${dvrId} updated successfully` });
+  } catch (error) {
+    console.error("Error updating DVR:", error);
+    res.status(500).json({ error: "Failed to update DVR" });
+  }
 };
 
 /**
  * Delete a DVR
  */
 const deleteDvr = async (req, res) => {
-    const dvrId = parseInt(req.params.id);
+  const dvrId = parseInt(req.params.id);
 
-    if (!dvrId) return res.status(400).json({ error: "Invalid DVR ID" });
+  if (!dvrId) return res.status(400).json({ error: "Invalid DVR ID" });
 
-    let connection;
-    try {
-        connection = await db.getConnection();
-        const [result] = await db.execute(`DELETE FROM dvrs WHERE id = ?`, [dvrId]);
+  let connection;
+  try {
+    connection = await db.getConnection();
+    const [result] = await db.execute(`DELETE FROM dvrs WHERE id = ?`, [dvrId]);
 
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ error: "DVR not found" });
-        }
-
-        res.json({ message: `DVR ${dvrId} deleted successfully` });
-    } catch (error) {
-        console.error("Error deleting DVR:", error);
-        res.status(500).json({ error: 'Failed to delete DVR' });
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "DVR not found" });
     }
+
+    res.json({ message: `DVR ${dvrId} deleted successfully` });
+  } catch (error) {
+    console.error("Error deleting DVR:", error);
+    res.status(500).json({ error: "Failed to delete DVR" });
+  }
 };
 
 const getDvrsWithCameras = async (req, res) => {
-    try {
-        const pool = await db.getConnection();
-        const [dvrs] = await pool.query(`
+  try {
+    const pool = await db.getConnection();
+    const [dvrs] = await pool.query(`
             SELECT dvrs.id, dvrs.dvr_name, locations.location_name
             FROM dvrs
             JOIN locations ON dvrs.location_id = locations.id
         `);
 
-        const [cameras] = await pool.query(`SELECT * FROM cameras`);
+    const [cameras] = await pool.query(`SELECT * FROM cameras`);
 
-        const dvrsWithCameras = dvrs.map(dvr => ({
-            ...dvr,
-            cameras: cameras.filter(cam => cam.dvr_id === dvr.id)
-        }));
+    const dvrsWithCameras = dvrs.map((dvr) => ({
+      ...dvr,
+      cameras: cameras.filter((cam) => cam.dvr_id === dvr.id),
+    }));
 
-        res.render('dvr', { dvrsWithCameras });
-    } catch (err) {
-        console.error(err);
-        res.status(500).send("Server Error");
-    }
+    res.render("dvr", { dvrsWithCameras });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
 };
 
 const getAllDvrsPaginated = async (req, res) => {
   try {
     let connection = await db.getConnection();
-    if (!connection)
-      return res.status(500).json({ error: "Database connection failed" });
+    if (!connection) return res.status(500).json({ error: "Database connection failed" });
 
     const page = parseInt(req.query.page) || 1;
     const limit = 10;
@@ -208,8 +206,7 @@ const getAllDvrsPaginated = async (req, res) => {
       dvr.isOnline = activeDvrIds.has(dvr.id);
 
       if (dvr.isOnline && dvrManager.streams.get(dvr.id)) {
-        dvr.activeCameras =
-          dvrManager.streams.get(dvr.id).activeCameraCount || 1;
+        dvr.activeCameras = dvrManager.streams.get(dvr.id).activeCameraCount || 1;
       } else {
         dvr.activeCameras = 0;
       }
@@ -246,71 +243,74 @@ const getAllDvrsPaginated = async (req, res) => {
 };
 
 async function getDvrWithCamerasById(dvrId) {
-    let connection;
-    try {
-        connection = await db.getConnection();
-        // Fetch DVR and location name
-        const [dvrRows] = await connection.query(`
+  let connection;
+  try {
+    connection = await db.getConnection();
+    // Fetch DVR and location name
+    const [dvrRows] = await connection.query(
+      `
             SELECT dvrs.*, locations.location_name 
             FROM dvrs 
             LEFT JOIN locations ON dvrs.location_id = locations.id 
             WHERE dvrs.id = ?
-        `, [dvrId]);
+        `,
+      [dvrId]
+    );
 
-        if (dvrRows.length === 0) return null;
+    if (dvrRows.length === 0) return null;
 
-        const dvr = dvrRows[0];
+    const dvr = dvrRows[0];
 
-        // Fetch all cameras for this DVR
-        const [cameraRows] = await connection.query(`
+    // Fetch all cameras for this DVR
+    const [cameraRows] = await connection.query(
+      `
             SELECT * FROM cameras 
             WHERE dvr_id = ?
-        `, [dvrId]);
+        `,
+      [dvrId]
+    );
 
-        // Attach cameras to DVR object
-        dvr.cameras = cameraRows;
+    // Attach cameras to DVR object
+    dvr.cameras = cameraRows;
 
-        return dvr;
-    } catch (error) {
-        console.error("Error in getDvrWithCamerasById:", error);
-        throw error;
-    } finally {
-        if (connection) {
-            connection.end();
-        }
+    return dvr;
+  } catch (error) {
+    console.error("Error in getDvrWithCamerasById:", error);
+    throw error;
+  } finally {
+    if (connection) {
+      connection.end();
     }
+  }
 }
 
 const renderAddDvrForm = async (req, res) => {
-    let connection;
-    try {
-        connection = await db.getConnection();
+  let connection;
+  try {
+    connection = await db.getConnection();
 
-        // Fetch locations to populate the dropdown
-        const [locations] = await connection.execute('SELECT id, location_name FROM locations');
+    // Fetch locations to populate the dropdown
+    const [locations] = await connection.execute("SELECT id, location_name FROM locations");
 
-        res.render('add_dvr', {
-            title: "Add DVR",
-            locations: locations
-        });
-
-    } catch (error) {
-        console.error("Error rendering Add DVR form:", error);
-        res.status(500).send("Failed to load form");
-    } finally {
-        if (connection) connection.end();
-    }
+    res.render("add_dvr", {
+      title: "Add DVR",
+      locations: locations,
+    });
+  } catch (error) {
+    console.error("Error rendering Add DVR form:", error);
+    res.status(500).send("Failed to load form");
+  } finally {
+    if (connection) connection.end();
+  }
 };
 
-
-
 module.exports = {
-    getAllDvrs,
-    addDvr,
-    updateDvr,
-    deleteDvr,
-    getDvrsWithCameras,
-    getAllDvrsPaginated,
-    getDvrWithCamerasById,
-    renderAddDvrForm,
+  getAllDvrs,
+  addDvr,
+  updateDvr,
+  deleteDvr,
+  getDvrsWithCameras,
+  getAllDvrsPaginated,
+  getDvrWithCamerasById,
+  renderAddDvrForm,
 };

@@ -1,13 +1,13 @@
-const mysql = require('mysql2/promise');
-const dotenv = require('dotenv');
-const fs = require('fs');
-const path = require('path');
+const mysql = require("mysql2/promise");
+const dotenv = require("dotenv");
+const fs = require("fs");
+const path = require("path");
 
 // Load environment variables from .env file
 dotenv.config();
 
 const dbCaBase64 = process.env.DB_CA;
-const caContent = Buffer.from(dbCaBase64, 'base64').toString('utf8');
+const caContent = Buffer.from(dbCaBase64, "base64").toString("utf8");
 
 const dbConfig = {
   host: process.env.DB_HOST,
@@ -16,8 +16,8 @@ const dbConfig = {
   database: process.env.DB_DATABASE,
   port: process.env.DB_PORT,
   ssl: {
-    ca: caContent
-  }
+    ca: caContent,
+  },
 };
 
 async function getConnection() {
@@ -25,11 +25,11 @@ async function getConnection() {
     const connection = await mysql.createConnection(dbConfig);
     return connection;
   } catch (error) {
-    console.error('Error connecting to the database:', error);
+    console.error("Error connecting to the database:", error);
     throw error;
   }
 }
 
 module.exports = {
-  getConnection
+  getConnection,
 };

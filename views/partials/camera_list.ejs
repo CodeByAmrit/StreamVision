@@ -18,10 +18,7 @@
         class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 overflow-hidden"
       >
         <!-- Spinner -->
-        <div
-          id="spinner<%= index + 1 %>"
-          class="flex justify-center items-center h-48 bg-black"
-        >
+        <div id="spinner<%= index + 1 %>" class="flex justify-center items-center h-48 bg-black">
           <svg class="animate-spin h-6 w-6 text-white" viewBox="0 0 24 24">
             <circle
               class="opacity-25"
@@ -49,14 +46,10 @@
 
         <!-- Card Content -->
         <div class="p-5">
-          <h5
-            class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white"
-          >
+          <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
             <%= camera.camera_name %>
           </h5>
-          <p
-            class="mb-3 font-normal text-sm text-gray-700 dark:text-gray-400 break-words"
-          >
+          <p class="mb-3 font-normal text-sm text-gray-700 dark:text-gray-400 break-words">
             <!-- <span class="font-semibold">RTSP:</span> <%= camera.rtsp_url %> -->
           </p>
           <div class="flex justify-between space-x-2">

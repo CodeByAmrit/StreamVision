@@ -12,10 +12,9 @@ function initWebSocketServer(server) {
 
       if (!cameraId) return ws.close();
 
-      const [rows] = await db.execute(
-        `SELECT rtsp_url FROM cameras WHERE id = ? AND enabled = 1`,
-        [cameraId]
-      );
+      const [rows] = await db.execute(`SELECT rtsp_url FROM cameras WHERE id = ? AND enabled = 1`, [
+        cameraId,
+      ]);
 
       if (!rows.length) return ws.close();
 

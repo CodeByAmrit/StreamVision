@@ -45,14 +45,11 @@ function initializeAnalytics() {
 // Initialize charts with real data
 function initializeCharts() {
   if (!window.analyticsData) {
-    console.error(
-      "Analytics data not found. Please ensure analyticsData is initialized."
-    );
+    console.error("Analytics data not found. Please ensure analyticsData is initialized.");
     return;
   }
 
-  const { dvrNames, activeStreamsData, totalCameras, activeCameras } =
-    window.analyticsData;
+  const { dvrNames, activeStreamsData, totalCameras, activeCameras } = window.analyticsData;
 
   // DVR Streams Chart
   const dvrStreamsCtx = document.getElementById("dvrStreamsChart");
@@ -258,8 +255,7 @@ function initializeReportGenerator() {
     generateReportBtn.addEventListener("click", async function () {
       // Show loading state
       const originalText = this.innerHTML;
-      this.innerHTML =
-        '<i class="fas fa-spinner fa-spin mr-2"></i> Generating...';
+      this.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Generating...';
       this.disabled = true;
 
       try {
@@ -275,9 +271,7 @@ function initializeReportGenerator() {
           activeDvrs: window.analyticsData?.activeDvrsCount || 0,
           utilizationRate:
             Math.round(
-              (window.analyticsData?.activeCameras /
-                window.analyticsData?.totalCameras) *
-                100
+              (window.analyticsData?.activeCameras / window.analyticsData?.totalCameras) * 100
             ) || 0,
         };
 
@@ -289,9 +283,7 @@ function initializeReportGenerator() {
         const downloadUrl = URL.createObjectURL(reportBlob);
         const a = document.createElement("a");
         a.href = downloadUrl;
-        a.download = `streamvision-analytics-${
-          new Date().toISOString().split("T")[0]
-        }.json`;
+        a.download = `streamvision-analytics-${new Date().toISOString().split("T")[0]}.json`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -396,9 +388,7 @@ function updateStatsDisplay(stats) {
   };
 
   // Update bandwidth display
-  const bandwidthContainer = document.querySelector(
-    'div:has(> span:contains("Bandwidth Usage"))'
-  );
+  const bandwidthContainer = document.querySelector('div:has(> span:contains("Bandwidth Usage"))');
   if (bandwidthContainer && stats.bandwidth) {
     const bandwidthValue = bandwidthContainer.querySelector("span:last-child");
     if (bandwidthValue) {
@@ -408,17 +398,14 @@ function updateStatsDisplay(stats) {
     // Update progress bar
     const bandwidthNum = parseFloat(stats.bandwidth);
     const percentage = Math.min(95, (bandwidthNum / 3.0) * 100);
-    const progressBar =
-      bandwidthContainer.nextElementSibling?.querySelector(".bg-gradient-to-r");
+    const progressBar = bandwidthContainer.nextElementSibling?.querySelector(".bg-gradient-to-r");
     if (progressBar) {
       progressBar.style.width = `${percentage}%`;
     }
   }
 
   // Update latency display
-  const latencyContainer = document.querySelector(
-    'div:has(> span:contains("Latency"))'
-  );
+  const latencyContainer = document.querySelector('div:has(> span:contains("Latency"))');
   if (latencyContainer && stats.latency) {
     const latencyValue = latencyContainer.querySelector("span:last-child");
     if (latencyValue) {
@@ -427,35 +414,28 @@ function updateStatsDisplay(stats) {
 
     // Update progress bar and color based on latency
     const latencyNum = parseInt(stats.latency);
-    const progressBar =
-      latencyContainer.nextElementSibling?.querySelector(".bg-gradient-to-r");
+    const progressBar = latencyContainer.nextElementSibling?.querySelector(".bg-gradient-to-r");
     if (progressBar) {
       let percentage;
       if (latencyNum < 100) {
         percentage = 30;
-        progressBar.className =
-          "bg-gradient-to-r from-green-400 to-green-500 h-2 rounded-full";
+        progressBar.className = "bg-gradient-to-r from-green-400 to-green-500 h-2 rounded-full";
       } else if (latencyNum < 200) {
         percentage = 50;
-        progressBar.className =
-          "bg-gradient-to-r from-green-400 to-green-500 h-2 rounded-full";
+        progressBar.className = "bg-gradient-to-r from-green-400 to-green-500 h-2 rounded-full";
       } else if (latencyNum < 300) {
         percentage = 70;
-        progressBar.className =
-          "bg-gradient-to-r from-yellow-400 to-yellow-500 h-2 rounded-full";
+        progressBar.className = "bg-gradient-to-r from-yellow-400 to-yellow-500 h-2 rounded-full";
       } else {
         percentage = 90;
-        progressBar.className =
-          "bg-gradient-to-r from-red-400 to-red-500 h-2 rounded-full";
+        progressBar.className = "bg-gradient-to-r from-red-400 to-red-500 h-2 rounded-full";
       }
       progressBar.style.width = `${percentage}%`;
     }
   }
 
   // Update quality display
-  const qualityContainer = document.querySelector(
-    'div:has(> span:contains("Stream Quality"))'
-  );
+  const qualityContainer = document.querySelector('div:has(> span:contains("Stream Quality"))');
   if (qualityContainer && stats.quality) {
     const qualityValue = qualityContainer.querySelector("span:last-child");
     if (qualityValue) {
@@ -464,8 +444,7 @@ function updateStatsDisplay(stats) {
 
     // Update progress bar
     const qualityNum = parseInt(stats.quality);
-    const progressBar =
-      qualityContainer.nextElementSibling?.querySelector(".bg-gradient-to-r");
+    const progressBar = qualityContainer.nextElementSibling?.querySelector(".bg-gradient-to-r");
     if (progressBar) {
       progressBar.style.width = `${qualityNum}%`;
     }
@@ -475,9 +454,7 @@ function updateStatsDisplay(stats) {
 // Show notification
 function showNotification(message, type = "info") {
   // Remove any existing notifications
-  const existingNotification = document.querySelector(
-    ".analytics-notification"
-  );
+  const existingNotification = document.querySelector(".analytics-notification");
   if (existingNotification) {
     existingNotification.remove();
   }
@@ -488,8 +465,8 @@ function showNotification(message, type = "info") {
     type === "success"
       ? "bg-green-50 dark:bg-green-900/30 border-green-200 dark:border-green-800 text-green-800 dark:text-green-200"
       : type === "error"
-      ? "bg-red-50 dark:bg-red-900/30 border-red-200 dark:border-red-800 text-red-800 dark:text-red-200"
-      : "bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-200"
+        ? "bg-red-50 dark:bg-red-900/30 border-red-200 dark:border-red-800 text-red-800 dark:text-red-200"
+        : "bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-200"
   }`;
 
   notification.innerHTML = `
@@ -498,8 +475,8 @@ function showNotification(message, type = "info") {
               type === "success"
                 ? "fa-check-circle"
                 : type === "error"
-                ? "fa-exclamation-circle"
-                : "fa-info-circle"
+                  ? "fa-exclamation-circle"
+                  : "fa-info-circle"
             } mr-2"></i>
             <span>${message}</span>
         </div>
@@ -547,14 +524,11 @@ function initializeChartExports() {
   exportButtons.forEach((button) => {
     button.addEventListener("click", function () {
       const chartType =
-        this.closest("div").previousElementSibling?.querySelector("h3")
-          ?.textContent || "chart";
+        this.closest("div").previousElementSibling?.querySelector("h3")?.textContent || "chart";
       const chartId = this.closest(".rounded-2xl").querySelector("canvas")?.id;
 
       if (chartId && window.analyticsCharts) {
-        const chart = Object.values(window.analyticsCharts).find(
-          (ch) => ch.canvas.id === chartId
-        );
+        const chart = Object.values(window.analyticsCharts).find((ch) => ch.canvas.id === chartId);
 
         if (chart) {
           const url = chart.toBase64Image();
@@ -587,10 +561,7 @@ function initializeDvrDrillDown() {
         // In a real application, you would navigate to a detailed DVR view
         // For now, simulate with a timeout
         setTimeout(() => {
-          showNotification(
-            `Detailed view for ${dvrName} would open here`,
-            "info"
-          );
+          showNotification(`Detailed view for ${dvrName} would open here`, "info");
         }, 500);
       }
     });
