@@ -71,7 +71,7 @@ router.get("/updates", (req, res) => {
   res.render("updates");
 });
 
-router.get("/privacy",(req,res)=>{
+router.get("/privacy", (req, res) => {
   res.render("privacy");
 });
 

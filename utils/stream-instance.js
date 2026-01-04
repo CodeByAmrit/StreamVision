@@ -77,7 +77,6 @@ class StreamInstance {
 
     this.meta.fps = 25;
 
-
     // ===== VIDEO OUTPUT (CRITICAL) =====
     this.ffmpeg.stdout.on("data", (chunk) => {
       this.meta.frames++;

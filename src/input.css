@@ -1,14 +1,22 @@
 @import "tailwindcss";
 @layer base {
   html {
-    font-family: "Quicksand", system-ui, -apple-system, BlinkMacSystemFont,
-      "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family:
+      "Quicksand",
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      Roboto,
+      "Helvetica Neue",
+      Arial,
+      sans-serif;
   }
 }
 
 @theme {
   /* -------- GRAY SCALE -------- */
-  --color-gray-50:  #f9fafb;
+  --color-gray-50: #f9fafb;
   --color-gray-100: #f3f4f6;
   --color-gray-200: #e5e7eb;
   --color-gray-300: #d1d5db;
@@ -21,7 +29,7 @@
   --color-gray-950: #030712;
 
   /* -------- BLUE SCALE -------- */
-  --color-blue-50:  #eff6ff;
+  --color-blue-50: #eff6ff;
   --color-blue-100: #dbeafe;
   --color-blue-200: #bfdbfe;
   --color-blue-300: #93c5fd;
@@ -46,17 +54,15 @@
   --color-primary: #100f12;
   --color-secondary: #1a1920;
 
-  --color-accent-cyan:   #73fbfd;
+  --color-accent-cyan: #73fbfd;
   --color-accent-purple: #c8a2ff;
-  --color-accent-gray:   #4a4654;
-  --color-accent-light:  #eae6f3;
+  --color-accent-gray: #4a4654;
+  --color-accent-light: #eae6f3;
 
   /* -------- BRAND GRADIENTS -------- */
-  --background-image-gradient-primary:
-    linear-gradient(135deg, #73fbfd 0%, #c8a2ff 100%);
+  --background-image-gradient-primary: linear-gradient(135deg, #73fbfd 0%, #c8a2ff 100%);
 
-  --background-image-gradient-secondary:
-    linear-gradient(135deg, #c8a2ff 0%, #73fbfd 100%);
+  --background-image-gradient-secondary: linear-gradient(135deg, #c8a2ff 0%, #73fbfd 100%);
 
   /* -------- GLOW SHADOWS -------- */
   --shadow-glow: 0 0 20px rgba(115, 251, 253, 0.3);

@@ -232,7 +232,6 @@ const getAllDvrsPaginated = async (req, res) => {
           bitrate: stream.getBitrateKbps(),
         });
       }
-
     }
 
     // Add online status and active camera count
@@ -247,8 +246,6 @@ const getAllDvrsPaginated = async (req, res) => {
 
       dvr.totalCameras = parseInt(dvr.totalCameras) || 0;
     }
-
-
 
     // Calculate statistics (on all DVRs, not filtered)
     const onlineCount = dvrs.filter((dvr) => dvr.isOnline === true).length;

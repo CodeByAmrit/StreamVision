@@ -227,7 +227,6 @@ function initializeRefreshButton() {
   });
 }
 
-
 // Search form functionality
 function initializeSearchForm() {
   const searchForm = document.querySelector('form[method="GET"]');

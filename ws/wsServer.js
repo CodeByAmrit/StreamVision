@@ -26,7 +26,6 @@ function initWebSocketServer(server) {
 
       stream.addClient(ws);
 
-
       ws.on("close", () => stream.removeClient(ws));
       ws.on("error", () => stream.removeClient(ws));
     } catch (err) {

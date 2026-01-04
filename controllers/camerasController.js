@@ -2,7 +2,6 @@ const db = require("../config/getConnection");
 const { validationResult } = require("express-validator");
 const { extractAndStoreRtspMetadata } = require("../services/rtspMetadata.service");
 
-
 /**
  * Get all cameras
  */
@@ -127,7 +126,6 @@ const addCamera = async (req, res) => {
     }
   }
 };
-
 
 const renderAddCameraPage = async (req, res) => {
   const dvrId = req.params.id;
