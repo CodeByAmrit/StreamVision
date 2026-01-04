@@ -1,3 +1,4 @@
+-- Active: 1725036750103@@mysql-student-tracker-student-tracker.e.aivencloud.com@28345@stream_vision
 -- Create Database
 CREATE DATABASE stream_vision;
 
@@ -43,6 +44,42 @@ CREATE TABLE settings (
     setting_key VARCHAR(100) UNIQUE NOT NULL,
     setting_value VARCHAR(255) NOT NULL
 );
+
+CREATE TABLE camera_stream_info (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    camera_id INT NOT NULL,
+
+    video_codec VARCHAR(50),
+    audio_codec VARCHAR(50),
+    resolution VARCHAR(20),
+    fps INT,
+    bitrate_kbps INT,
+
+    transport VARCHAR(10), -- TCP / UDP
+    profile VARCHAR(20),   -- baseline/main/high
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (camera_id) REFERENCES cameras(id) ON DELETE CASCADE,
+    UNIQUE (camera_id)
+);
+
+CREATE TABLE camera_health (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    camera_id INT NOT NULL,
+
+    is_online TINYINT(1),
+    last_frame_at DATETIME,
+    latency_ms INT,
+    packet_loss FLOAT,
+    reconnect_count INT DEFAULT 0,
+
+    checked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (camera_id) REFERENCES cameras(id) ON DELETE CASCADE
+);
+
 
 -- Insert Sample Data for Testing
 INSERT INTO

@@ -193,27 +193,62 @@ const getAllDvrsPaginated = async (req, res) => {
       params
     );
 
-    // REAL STATUS CHECK: Use dvrManager
-    const activeDvrIds = new Set();
-    if (dvrManager && dvrManager.streams) {
-      for (const [dvrId, streamInstance] of dvrManager.streams.entries()) {
-        activeDvrIds.add(dvrId);
+    // Build cameraId → stream map (already exists)
+    const activeStreams = dvrManager?.streams || new Map();
+
+    // Build DVR-level aggregation
+    const dvrStreamStats = new Map();
+
+    /*
+  streams Map structure:
+  key   = cameraId
+  value = StreamInstance
+*/
+    for (const [cameraId, stream] of activeStreams.entries()) {
+      // We need DVR ID → so attach it when stream is created (see note below)
+      const dvrId = stream.dvrId;
+      if (!dvrId) continue;
+
+      if (!dvrStreamStats.has(dvrId)) {
+        dvrStreamStats.set(dvrId, {
+          activeCameras: 0,
+          online: false,
+          lastActivity: null,
+          cameras: [],
+        });
       }
+
+      const stats = dvrStreamStats.get(dvrId);
+
+      if (stream.isOnline()) {
+        stats.online = true;
+        stats.activeCameras += 1;
+        stats.lastActivity = stream.meta.lastFrameAt;
+
+        stats.cameras.push({
+          cameraId,
+          resolution: stream.meta.resolution,
+          fps: stream.meta.fps,
+          bitrate: stream.getBitrateKbps(),
+        });
+      }
+
     }
 
     // Add online status and active camera count
     for (let dvr of dvrs) {
-      dvr.isOnline = activeDvrIds.has(dvr.id);
+      const stats = dvrStreamStats.get(dvr.id);
 
-      if (dvr.isOnline && dvrManager.streams.get(dvr.id)) {
-        dvr.activeCameras = dvrManager.streams.get(dvr.id).activeCameraCount || 1;
-      } else {
-        dvr.activeCameras = 0;
-      }
+      dvr.isOnline = stats ? stats.online : false;
+      dvr.activeCameras = stats ? stats.activeCameras : 0;
+      dvr.lastActivity = stats ? stats.lastActivity : null;
 
-      // Convert totalCameras from string to number
+      dvr.streamCameras = stats ? stats.cameras : [];
+
       dvr.totalCameras = parseInt(dvr.totalCameras) || 0;
     }
+
+
 
     // Calculate statistics (on all DVRs, not filtered)
     const onlineCount = dvrs.filter((dvr) => dvr.isOnline === true).length;

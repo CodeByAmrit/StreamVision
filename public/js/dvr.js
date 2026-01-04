@@ -203,29 +203,30 @@ function initializeStatusFilter() {
   }
 }
 
-// Refresh button functionality
 function initializeRefreshButton() {
   const refreshBtn = document.getElementById("refresh-btn");
 
-  if (refreshBtn) {
-    refreshBtn.addEventListener("click", function () {
-      // Add rotation animation
-      this.classList.add("animate-spin");
+  if (!refreshBtn) return;
 
-      // Simulate refresh (in real app, this would fetch fresh data)
-      setTimeout(() => {
-        // Update status indicators
-        updateStatusIndicators();
+  refreshBtn.addEventListener("click", async function () {
+    this.classList.add("animate-spin");
 
-        // Remove animation
-        this.classList.remove("animate-spin");
+    try {
+      const res = await fetch("/dvr/status");
+      const data = await res.json();
 
-        // Show success message
-        showFlashMessage("DVR list refreshed successfully", "success");
-      }, 1000);
-    });
-  }
+      updateDvrUI(data);
+
+      showFlashMessage("DVR list refreshed", "success");
+    } catch (err) {
+      console.error("Refresh failed", err);
+      showFlashMessage("Failed to refresh DVR list", "error");
+    } finally {
+      this.classList.remove("animate-spin");
+    }
+  });
 }
+
 
 // Search form functionality
 function initializeSearchForm() {
@@ -309,26 +310,6 @@ function updateDVRCounts() {
   }
 }
 
-// Update status indicators
-function updateStatusIndicators() {
-  const statusBadges = document.querySelectorAll('[class*="status-badge"]');
-
-  statusBadges.forEach((badge) => {
-    // Simulate random status changes
-    const isOnline = Math.random() > 0.3;
-
-    if (isOnline) {
-      badge.className =
-        "inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400";
-      badge.innerHTML = '<i class="fas fa-circle-check mr-2"></i> Online';
-    } else {
-      badge.className =
-        "inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400";
-      badge.innerHTML = '<i class="fas fa-circle-exclamation mr-2"></i> Offline';
-    }
-  });
-}
-
 // Show flash message
 function showFlashMessage(message, type = "success") {
   // Create message element
@@ -389,6 +370,61 @@ function handleSearchQuery() {
       statusFilter.value = status;
     }
   }
+}
+
+function updateDvrUI(cameraStreams) {
+  // Group by DVR
+  const dvrMap = {};
+
+  cameraStreams.forEach((c) => {
+    if (!dvrMap[c.dvrId]) {
+      dvrMap[c.dvrId] = {
+        online: false,
+        activeCameras: 0,
+        cameras: [],
+      };
+    }
+
+    if (c.online) {
+      dvrMap[c.dvrId].online = true;
+      dvrMap[c.dvrId].activeCameras += 1;
+      dvrMap[c.dvrId].cameras.push(c);
+    }
+  });
+
+  // Update DVR rows
+  Object.entries(dvrMap).forEach(([dvrId, stats]) => {
+    const dvrRow = document.querySelector(`[data-dvr-id="${dvrId}"]`);
+    if (!dvrRow) return;
+
+    // ===== Status badge =====
+    const badge = dvrRow.querySelector(".status-badge");
+    if (badge) {
+      if (stats.online) {
+        badge.className =
+          "status-badge inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400";
+        badge.innerHTML = `<i class="fas fa-circle-check mr-2"></i> Online <span class="ml-1 text-xs">(${stats.activeCameras} active)</span>`;
+      } else {
+        badge.className =
+          "status-badge inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400";
+        badge.innerHTML = `<i class="fas fa-circle-exclamation mr-2"></i> Offline`;
+      }
+    }
+
+    // ===== Live Streams text =====
+    const liveBox = dvrRow.querySelector(".live-stream-info");
+    if (liveBox) {
+      if (stats.cameras.length) {
+        liveBox.innerHTML = stats.cameras
+          .map(
+            (c) => `<div class="text-xs">${c.resolution} · ${c.fps} FPS · ${c.bitrate} kbps</div>`
+          )
+          .join("");
+      } else {
+        liveBox.innerHTML = `<span class="text-xs text-gray-400">No active streams</span>`;
+      }
+    }
+  });
 }
 
 // Initialize on page load

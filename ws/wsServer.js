@@ -12,17 +12,20 @@ function initWebSocketServer(server) {
 
       if (!cameraId) return ws.close();
 
-      const [rows] = await db.execute(`SELECT rtsp_url FROM cameras WHERE id = ? AND enabled = 1`, [
-        cameraId,
-      ]);
+      const [rows] = await db.execute(
+        `SELECT rtsp_url, dvr_id FROM cameras WHERE id = ? AND enabled = 1`,
+        [cameraId]
+      );
 
       if (!rows.length) return ws.close();
 
-      // FIX: use createStream instead of create
       const stream = streamManager.createStream(cameraId, rows[0].rtsp_url);
 
-      // FIX: use correct method names
+      // 🔥 THIS LINE FIXES EVERYTHING
+      stream.dvrId = rows[0].dvr_id;
+
       stream.addClient(ws);
+
 
       ws.on("close", () => stream.removeClient(ws));
       ws.on("error", () => stream.removeClient(ws));

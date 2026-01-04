@@ -1,5 +1,7 @@
 const db = require("../config/getConnection");
 const { validationResult } = require("express-validator");
+const { extractAndStoreRtspMetadata } = require("../services/rtspMetadata.service");
+
 
 /**
  * Get all cameras
@@ -90,14 +92,31 @@ const addCamera = async (req, res) => {
   if (!dvr_id || !camera_name || !rtsp_url) {
     return res.status(400).json({ error: "Missing required fields" });
   }
+
   let connection;
+
   try {
     connection = await db.getConnection();
+
     const insertQuery = `
-            INSERT INTO cameras (dvr_id, camera_name, rtsp_url)
-            VALUES (?, ?, ?)
-        `;
+      INSERT INTO cameras (dvr_id, camera_name, rtsp_url)
+      VALUES (?, ?, ?)
+    `;
+
     const [result] = await connection.execute(insertQuery, [dvr_id, camera_name, rtsp_url]);
+
+    const cameraId = result.insertId;
+
+    // 🔥 IMPORTANT: run metadata extraction asynchronously
+    extractAndStoreRtspMetadata(cameraId, rtsp_url)
+      .then(() => {
+        console.log(`[RTSP META] Stored metadata for camera ${cameraId}`);
+      })
+      .catch((err) => {
+        console.warn(`[RTSP META] Failed for camera ${cameraId} (non-blocking)`, err.message);
+      });
+
+    // ✅ Redirect immediately (do not wait)
     res.status(201).redirect(`/dvr/edit/${dvr_id}`);
   } catch (error) {
     console.error("Error adding camera:", error);
@@ -108,6 +127,7 @@ const addCamera = async (req, res) => {
     }
   }
 };
+
 
 const renderAddCameraPage = async (req, res) => {
   const dvrId = req.params.id;
