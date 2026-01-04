@@ -2,20 +2,18 @@
 
 // Initialize dashboard when DOM is loaded
 document.addEventListener("DOMContentLoaded", function () {
-  // Hide loading screen with smooth transition
   setTimeout(() => {
     const introScreen = document.getElementById("introScreen");
     if (introScreen) {
+      introScreen.style.pointerEvents = "none"; // ✅ THIS IS KEY
       introScreen.style.opacity = "0";
+
       setTimeout(() => {
-        introScreen.style.display = "none";
+        introScreen.remove(); // ✅ better than display:none
         localStorage.setItem("introShown", "true");
       }, 500);
     }
   }, 800);
-
-  // Initialize all dashboard components
-  initializeDashboard();
 });
 
 // Dashboard initialization function
