@@ -1,6 +1,6 @@
 services:
   streamvision:
-    image: codebyamrit/streamvision:latest
+    image: codebyamrit/streamvision:stable
     container_name: streamvision_app
     expose:
       - "3000"
