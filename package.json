@@ -15,14 +15,13 @@
   "description": "",
   "dependencies": {
     "bcrypt": "^6.0.0",
-    "body-parser": "^2.2.1",
+    "body-parser": "^2.2.2",
     "buffer-equal-constant-time": "^1.0.1",
     "child_process": "^1.0.2",
     "cookie-parser": "^1.4.7",
-    "cors": "^2.8.5",
-    "crypto": "^1.0.1",
+    "cors": "^2.8.6",
     "dotenv": "^17.2.3",
-    "ejs": "^3.1.10",
+    "ejs": "^4.0.1",
     "encrypt": "^0.0.1",
     "express": "^5.2.1",
     "express-validator": "^7.3.1",
@@ -33,19 +32,19 @@
     "jsonwebtoken": "^9.0.3",
     "jwa": "^2.0.1",
     "morgan": "^1.10.1",
-    "mysql2": "^3.16.0",
+    "mysql2": "^3.16.2",
     "nodemon": "^3.1.11",
     "path": "^0.12.7",
-    "pg": "^8.16.3",
+    "pg": "^8.18.0",
     "serve-favicon": "^2.5.1",
     "uuid": "^13.0.0",
     "winston": "^3.19.0",
     "winston-daily-rotate-file": "^5.0.0",
-    "ws": "^8.18.3"
+    "ws": "^8.19.0"
   },
   "devDependencies": {
     "flowbite": "^4.0.1",
-    "prettier": "^3.7.4",
+    "prettier": "^3.8.1",
     "prettier-plugin-ejs": "^1.0.3",
     "tailwindcss": "^4"
   }
