@@ -1,22 +1,29 @@
-FROM node:20-slim
+# syntax=docker/dockerfile:1
 
-# Install ffmpeg and clean up in a single layer
-RUN apt-get update && \
-    apt-get install -y ffmpeg --no-install-recommends && \
-    rm -rf /var/lib/apt/lists/*
-
-# Set the working directory
+FROM node:lts-slim AS base
 WORKDIR /usr/src/app
 
-# Copy package files and install dependencies first to leverage caching
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+  --mount=type=cache,target=/var/lib/apt,sharing=locked \
+  apt-get update && \
+  apt-get install -y ffmpeg --no-install-recommends
+
+FROM base AS build
 COPY package*.json ./
-RUN npm install --production
 
-# Copy the rest of your application code
-COPY . .
+RUN --mount=type=cache,target=/root/.npm \
+  npm ci --only=production
 
-# Expose the port the app runs on
+FROM base AS final
+ENV NODE_ENV=production
+WORKDIR /usr/src/app
+
+RUN mkdir -p logs && chown -R node:node /usr/src/app
+
+# Copy dependencies and application code with proper ownership
+COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
+COPY --chown=node:node . .
+
 EXPOSE 3000
-
-# Define the command to run your app
+USER node
 CMD [ "node", "app.js" ]
