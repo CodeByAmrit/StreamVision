@@ -1,10 +1,9 @@
 ---
 name: Bug report
 about: Create a report to help us improve StreamVision
-title: '[BUG] '
+title: "[BUG] "
 labels: bug
-assignees: ''
-
+assignees: ""
 ---
 
 **Describe the bug**
@@ -15,6 +14,7 @@ A clear and concise description of what you expected to happen instead.
 
 **To Reproduce**
 Steps to reproduce the behavior:
+
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
@@ -24,6 +24,7 @@ Steps to reproduce the behavior:
 If applicable, add screenshots or copy-paste backend error logs (e.g., FFmpeg crash logs from `app.js` or `pm2 logs`) to help explain your problem.
 
 **Environment:**
+
 - Deployment Type: [e.g., Docker, Raw Node.js PM2, Windows/Linux]
 - Node.js Version: [e.g., v18.16.0]
 - FFmpeg Version: [e.g., 4.4.2]

@@ -11,6 +11,8 @@
   "htmlWhitespaceSensitivity": "ignore",
   "embeddedLanguageFormatting": "auto",
 
+  "endOfLine": "lf",
+
   "overrides": [
     {
       "files": "*.html",
