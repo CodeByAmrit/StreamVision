@@ -14,6 +14,7 @@ const initWebSocketServer = require("./ws/wsServer");
 const wsRoutes = require("./routes/wsRoutes");
 
 // Local services and routes
+// local services
 const checkAuth = require("./services/checkauth");
 const cameraRoutes = require("./routes/cameraRoutes");
 const cameraRoute = require("./routes/camera");
@@ -22,8 +23,9 @@ const dvrRoutes = require("./routes/dvrs");
 const settingsRoutes = require("./routes/settingsRoutes");
 const analyticsRoutes = require("./routes/analyticsRoutes");
 const apiAnalyticsRoutes = require("./routes/api/analyticsRoutes");
-// const publicRoute = require("./routes/publicRoutes");
-const { cleanupInactiveStreams } = require("./utils/streamManager");
+const apiRoutes = require("./routes/api"); 
+// local utils
+const streamManager = require("./utils/streamManager");
 const logger = require("./utils/logger");
 const morgan = require("morgan");
 
@@ -111,7 +113,7 @@ app.use(helmet.hsts({ maxAge: 31536000 }));
 
 app.use(
   cors({
-    origin: ["https://cctvcameralive.in"],
+    origin: ["https://cctvcameralive.in", "http://localhost:5173"],
     credentials: true,
   })
 );
@@ -132,9 +134,15 @@ app.use(
 );
 app.use("/flowbite", express.static(path.join(__dirname, "node_modules/flowbite/dist")));
 
-// =================== View Engine ===================
-app.set("view engine", "ejs");
+// =================== View Engine (Legacy) ===================
+app.set("view engine", "ejs"); // Keep enabled if we need to render specific legacy pages
 app.set("views", path.join(__dirname, "views"));
+
+// =================== React Production Build ===================
+const clientBuildPath = path.join(__dirname, "client/dist");
+if (fs.existsSync(clientBuildPath)) {
+    app.use(express.static(clientBuildPath));
+}
 
 // =================== HLS Stream Serving ===================
 const streamDir = path.join(__dirname, "streams");
@@ -167,26 +175,47 @@ app.use(
 );
 
 // =================== Routes ===================
-app.use("/", userRouter);
-app.use("/camera", checkAuth, cameraRoutes);
-app.use("/dvr", checkAuth, dvrRoutes);
+// =================== Legacy Routes (Disabled for React Migration) ===================
+// app.use("/", userRouter);
+// app.use("/camera", checkAuth, cameraRoutes);
+// app.use("/dvr", checkAuth, dvrRoutes);
 app.get("/public/dvr/:dvrId", (req, res) => {
   res.render("public", { nonce: res.locals.nonce, dvr: { dvr_name: "PUBLIC" } });
 });
+// app.use(settingsRoutes);
+// app.use(analyticsRoutes);
+
+// =================== Active Routes ===================
 app.use(wsRoutes);
-app.use("/camera/view", cameraRoute);
-app.use(settingsRoutes);
-app.use(analyticsRoutes);
+app.use("/camera/view", cameraRoute); // Kept for ffprobe/metadata if needed
 app.use(apiAnalyticsRoutes);
+app.use("/api", apiRoutes); // Mount API routes
 
-// =================== HLS Streaming Endpoint for Extension ===================
-const activeStreams = {};
+// =================== React Catch-All ===================
+// Catch-all handler (MUST be last)
+app.use((req, res) => {
 
-function hashRtspUrl(rtspUrl) {
-  return crypto.createHash("md5").update(rtspUrl).digest("hex");
-}
+  // Ignore API / streams / hls
+  if (
+    req.url.startsWith("/api") ||
+    req.url.startsWith("/streams") ||
+    req.url.startsWith("/hls")
+  ) {
+    return res.status(404).json({ error: "Not Found" });
+  }
 
-const STREAM_DURATION_LIMIT = 10 * 60 * 1000; // 10 minutes in milliseconds
+  const indexPath = path.join(clientBuildPath, "index.html");
+
+  if (fs.existsSync(indexPath)) {
+    return res.sendFile(indexPath);
+  }
+
+  res
+    .status(404)
+    .send("React build not found. Run 'npm run build' in client/");
+});
+
+
 
 app.post("/api/start-stream", (req, res) => {
   const { rtspUrl } = req.body;
@@ -195,95 +224,22 @@ app.post("/api/start-stream", (req, res) => {
     return res.status(400).json({ error: "Invalid RTSP URL" });
   }
 
-  const streamId = hashRtspUrl(rtspUrl);
-  const outputPath = path.join(streamDir, streamId);
-  const playlistPath = path.join(outputPath, "index.m3u8");
-  const hlsUrl = `/hls/${streamId}/index.m3u8`;
-
-  if (activeStreams[streamId]) {
-    return res.json({ hlsUrl });
+  try {
+      const { id } = streamManager.startHlsStream(rtspUrl);
+      const hlsUrl = `/hls/${id}/index.m3u8`;
+      res.json({ hlsUrl });
+  } catch (err) {
+      logger.error("Stream start failed", err);
+      res.status(500).json({ error: "Failed to start stream" });
   }
-
-  fs.mkdirSync(outputPath, { recursive: true });
-
-  const ffmpeg = spawn(
-    "ffmpeg",
-    [
-      "-rtsp_transport",
-      "tcp",
-      "-fflags",
-      "nobuffer",
-      "-flags",
-      "low_delay",
-      "-strict",
-      "experimental",
-      "-i",
-      rtspUrl,
-      "-c:v",
-      "copy",
-      "-preset",
-      "ultrafast",
-      "-tune",
-      "zerolatency",
-      "-f",
-      "hls",
-      "-hls_time",
-      "1",
-      "-hls_list_size",
-      "2",
-      "-hls_flags",
-      "delete_segments+omit_endlist+discont_start",
-      "-hls_segment_type",
-      "mpegts",
-      `-hls_segment_filename`,
-      `${outputPath}/segment_%03d.ts`,
-      playlistPath,
-    ],
-    {
-      stdio: "ignore",
-    }
-  );
-
-  ffmpeg.on("error", (err) => {
-    logger.error(`[FFmpeg Error]: ${err.message}`);
-    return res.status(500).json({ error: "Failed to start stream" });
-  });
-
-  ffmpeg.on("close", (code) => {
-    logger.info(`FFmpeg stream for ${rtspUrl} exited with code ${code}`);
-    delete activeStreams[streamId];
-    fs.rmSync(outputPath, { recursive: true, force: true });
-  });
-
-  // Auto stop stream after 10 minutes
-  const timeout = setTimeout(() => {
-    logger.info(`Auto-stopping stream ${streamId} after 10 minutes`);
-    ffmpeg.kill("SIGINT");
-  }, STREAM_DURATION_LIMIT);
-
-  activeStreams[streamId] = {
-    ffmpeg,
-    rtspUrl,
-    hlsUrl,
-    startedAt: new Date(),
-    timeout, // store timeout in case you want to cancel it later
-  };
-
-  res.json({ hlsUrl });
 });
 
 app.post("/api/stop-stream", (req, res) => {
   const { rtspUrl } = req.body;
-  const streamId = hashRtspUrl(rtspUrl);
+  if (!rtspUrl) return res.status(400).json({ error: "Missing RTSP URL" });
 
-  const stream = activeStreams[streamId];
-  if (stream) {
-    stream.ffmpeg.kill("SIGINT");
-    clearTimeout(stream.timeout);
-    return res.json({ message: "Stream stopped manually" });
-  }
-
-  res.status(404).json({ error: "Stream not found" });
+  streamManager.stopHlsStream(rtspUrl);
+  res.json({ message: "Stream stopped" });
 });
 
 // Debug: List active streams

@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const analyticsController = require("../../controllers/analyticsController");
+const dashboardController = require("../../controllers/dashboardController");
 const checkAuth = require("../../services/checkauth");
 
-router.get("/data", checkAuth, analyticsController.getAnalyticsData);
+router.get("/", checkAuth, dashboardController.getDashboardData);
 
 module.exports = router;
