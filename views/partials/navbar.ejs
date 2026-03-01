@@ -25,11 +25,11 @@
     <div class="flex-grow overflow-y-auto px-4 py-6">
       <!-- Quick Action Button -->
       <a
-        href="/camera/new"
+        href="/dvr/add"
         class="w-full mb-6 btn-gradient text-white font-medium rounded-xl px-4 py-3.5 text-center inline-flex items-center justify-center shadow-sm"
       >
         <i class="fas fa-plus mr-2"></i>
-        Add Camera
+        Add DVR
       </a>
 
       <!-- Navigation Links -->
@@ -63,22 +63,6 @@
               ></i>
             </div>
             <span class="font-medium">DVRs / Locations</span>
-          </a>
-        </li>
-
-        <li>
-          <a
-            href="/cameras"
-            class="flex items-center p-3.5 rounded-xl group <%= activePage === 'cameras' ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30' : 'text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700/50 transition-colors' %>"
-          >
-            <div
-              class="w-8 h-8 rounded-lg bg-gradient-to-br <%= activePage === 'cameras' ? 'from-blue-100 to-blue-50 dark:from-blue-900/40 dark:to-blue-800/20' : 'from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600' %> flex items-center justify-center mr-3"
-            >
-              <i
-                class="fas fa-camera <%= activePage === 'cameras' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400' %>"
-              ></i>
-            </div>
-            <span class="font-medium">All Cameras</span>
           </a>
         </li>
 
@@ -123,14 +107,22 @@
           Recent Activity
         </h3>
         <div class="space-y-3">
-          <div class="flex items-center text-sm">
-            <div class="w-2 h-2 rounded-full bg-green-500 mr-3"></div>
-            <span class="text-gray-700 dark:text-gray-300">System updated</span>
-          </div>
-          <div class="flex items-center text-sm">
-            <div class="w-2 h-2 rounded-full bg-blue-500 mr-3"></div>
-            <span class="text-gray-700 dark:text-gray-3">New camera added</span>
-          </div>
+          <% if (typeof recentActivities !== 'undefined' && recentActivities.length > 0) { %>
+            <% recentActivities.forEach(activity => { 
+                let colorClass = "bg-gray-500";
+                if (activity.source_type === "camera") colorClass = "bg-blue-500";
+                else if (activity.source_type === "dvr") colorClass = "bg-green-500";
+                else if (activity.source_type === "system") colorClass = "bg-purple-500";
+                else if (activity.action === "deleted") colorClass = "bg-red-500";
+            %>
+              <div class="flex items-center text-sm" title="<%= new Date(activity.created_at).toLocaleString() %>">
+                <div class="w-2 h-2 rounded-full <%= colorClass %> mr-3 flex-shrink-0"></div>
+                <span class="text-gray-700 dark:text-gray-300 truncate" title="<%= activity.description %>"><%= activity.description %></span>
+              </div>
+            <% }); %>
+          <% } else { %>
+            <div class="text-sm text-gray-500 italic">No recent activity</div>
+          <% } %>
         </div>
       </div>
     </div>

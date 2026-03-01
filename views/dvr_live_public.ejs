@@ -75,28 +75,10 @@
     <main class="flex-1 p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       <% cameras.forEach((camera, index) => { %>
       <div class="relative rounded-lg overflow-hidden bg-black">
-        <!-- Spinner -->
-        <div
-          id="spinner<%= index + 1 %>"
-          role="status"
-          class="flex items-center justify-center h-64"
-        >
-          <svg
-            aria-hidden="true"
-            class="w-8 h-8 mr-2 text-gray-200 animate-spin fill-blue-600"
-            viewBox="0 0 100 101"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50..." fill="currentColor" />
-            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116..." fill="currentFill" />
-          </svg>
-          <span class="sr-only">Loading...</span>
-        </div>
         <!-- Video -->
         <video
           id="video<%= index + 1 %>"
-          class="hidden w-full h-auto"
+          class="w-full h-auto bg-black"
           controls
           autoplay
           muted
@@ -115,30 +97,33 @@
     <script nonce="<%= nonce %>">
       const cameras = <%- JSON.stringify(cameras) %>;
       const dvrId = <%= dvr.id %>;
-      const RETRY_INTERVAL = 2000; // 2 seconds
-      const MAX_RETRIES = 5;
+      const RETRY_INTERVAL = 500;
+      const MAX_RETRIES = 30;
 
       function tryLoadStream(camera, index, retriesLeft = MAX_RETRIES) {
         const video = document.getElementById(`video${index + 1}`);
-        const spinner = document.getElementById(`spinner${index + 1}`);
         const source = `/streams/dvr_${dvrId}/cam_${camera.id}/index.m3u8`;
 
         fetch(source)
           .then(response => {
             if (response.ok) {
               if (Hls.isSupported()) {
-                const hls = new Hls();
+                const hls = new Hls({ lowLatencyMode: true });
                 hls.loadSource(source);
                 hls.attachMedia(video);
                 hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                  spinner.classList.add('hidden');
-                  video.classList.remove('hidden');
+                  video.play().catch(() => {});
+                });
+                hls.on(Hls.Events.ERROR, function (event, data) {
+                  if (data.fatal) {
+                    hls.destroy();
+                    handleRetry();
+                  }
                 });
               } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = source;
                 video.addEventListener('loadedmetadata', () => {
-                  spinner.classList.add('hidden');
-                  video.classList.remove('hidden');
+                  video.play().catch(() => {});
                 });
               }
             } else {
@@ -146,16 +131,12 @@
             }
           })
           .catch(err => {
-            console.error(`Error for cam ${camera.id}:`, err);
             handleRetry();
           });
 
         function handleRetry() {
           if (retriesLeft > 0) {
-            console.warn(`Retrying cam ${camera.id} in ${RETRY_INTERVAL / 1000}s...`);
             setTimeout(() => tryLoadStream(camera, index, retriesLeft - 1), RETRY_INTERVAL);
-          } else {
-            spinner.innerHTML = `<p class="text-red-500 text-center">Stream not available for cam ${camera.id}</p>`;
           }
         }
       }

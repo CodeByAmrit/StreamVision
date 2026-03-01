@@ -87,7 +87,7 @@ function initializeDeleteButtons() {
 
       try {
         // Send delete request
-        const response = await fetch(`/dvr/delete/${currentDvrId}`, {
+        const response = await fetch(`/dvr/${currentDvrId}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
@@ -402,7 +402,7 @@ function updateDvrUI(cameraStreams) {
       if (stats.online) {
         badge.className =
           "status-badge inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400";
-        badge.innerHTML = `<i class="fas fa-circle-check mr-2"></i> Online <span class="ml-1 text-xs">(${stats.activeCameras} active)</span>`;
+        badge.innerHTML = `<i class="fas fa-circle-check mr-2"></i> <span class="ml-1 text-xs">(${stats.activeCameras} active)</span>`;
       } else {
         badge.className =
           "status-badge inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400";

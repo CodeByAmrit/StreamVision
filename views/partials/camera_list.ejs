@@ -17,26 +17,10 @@
       <div
         class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 overflow-hidden"
       >
-        <!-- Spinner -->
-        <div id="spinner<%= index + 1 %>" class="flex justify-center items-center h-48 bg-black">
-          <svg class="animate-spin h-6 w-6 text-white" viewBox="0 0 24 24">
-            <circle
-              class="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="white"
-              stroke-width="4"
-              fill="none"
-            />
-            <path class="opacity-75" fill="white" d="M4 12a8 8 0 018-8v8z" />
-          </svg>
-        </div>
-
         <!-- Video Player -->
         <video
           id="video<%= index + 1 %>"
-          class="w-full h-48 object-cover bg-black hidden"
+          class="w-full h-48 object-cover bg-black"
           controls
           muted
           autoplay
@@ -80,41 +64,43 @@
   const cameras = <%- JSON.stringify(dvr.cameras) %>;
   const dvrId = <%= dvr.id %>;
 
-  fetch(`/public/dvr/${dvrId}`);
-
-  function tryLoadStream(camera, index, retries = 5, delay = 2000) {
+  async function tryLoadStream(camera, index, retries = 30, delay = 500) {
     const video = document.getElementById(`video${index + 1}`);
-    const spinner = document.getElementById(`spinner${index + 1}`);
-    const source = `/streams/dvr_${dvrId}/cam_${camera.id}/index.m3u8`;
 
-    fetch(source).then(response => {
-      if (response.ok) {
-        if (Hls.isSupported()) {
-          const hls = new Hls();
-          hls.loadSource(source);
-          hls.attachMedia(video);
-          hls.on(Hls.Events.MANIFEST_PARSED, () => {
-            spinner.classList.add('hidden');
-            video.classList.remove('hidden');
-          });
-        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-          video.src = source;
-          video.addEventListener('loadedmetadata', () => {
-            spinner.classList.add('hidden');
-            video.classList.remove('hidden');
-          });
-        }
-      } else if (retries > 0) {
-        fetch(`/public/dvr/${dvrId}`);
-        console.warn(`Retrying cam ${camera.id} in ${delay / 1000}s`);
-        setTimeout(() => tryLoadStream(camera, index, retries - 1, delay * 2), delay);
-      } else {
-        spinner.innerHTML = `<p class="text-red-500 text-center">Stream not available for cam ${camera.id}</p>`;
+    try {
+      const res = await fetch(`/api/public/camera/${camera.id}/hls`);
+      if (!res.ok) throw new Error("API error");
+      const data = await res.json();
+      if (!data.hlsUrl) throw new Error("No HLS URL");
+      
+      const source = data.hlsUrl;
+
+      if (Hls.isSupported()) {
+        const hls = new Hls({ lowLatencyMode: true });
+        hls.loadSource(source);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          video.play().catch(() => {});
+        });
+        hls.on(Hls.Events.ERROR, function (event, data) {
+          if (data.fatal) {
+            hls.destroy();
+            if (retries > 0) {
+              setTimeout(() => tryLoadStream(camera, index, retries - 1, delay), delay);
+            }
+          }
+        });
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = source;
+        video.addEventListener('loadedmetadata', () => {
+          video.play().catch(() => {});
+        });
       }
-    }).catch(err => {
-      console.error(`Error for cam ${camera.id}:`, err);
-      spinner.innerHTML = `<p class="text-red-500 text-center">Error loading cam ${camera.id}</p>`;
-    });
+    } catch (err) {
+      if (retries > 0) {
+        setTimeout(() => tryLoadStream(camera, index, retries - 1, delay), delay);
+      }
+    }
   }
 
   function loadAllStreams() {

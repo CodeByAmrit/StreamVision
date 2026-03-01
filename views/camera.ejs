@@ -31,15 +31,9 @@
       <!-- Video Player -->
       <div class="lg:col-span-2 space-y-4">
         <div id="videoContainer" class="bg-black rounded-lg overflow-hidden relative aspect-video">
-          <div
-            id="spinner"
-            class="absolute inset-0 flex items-center justify-center bg-gray-300 dark:bg-gray-700 animate-pulse z-10"
-          >
-            <span class="text-sm text-gray-700 dark:text-gray-400">Loading stream...</span>
-          </div>
           <video
             id="video"
-            class="hidden w-full h-full"
+            class="w-full h-full"
             controls
             autoplay
             muted
@@ -204,12 +198,8 @@
       const cameraId = <%= camera.id %>;
       const dvrId = <%= camera.dvr_id %>;
       const video = document.getElementById('video');
-      const spinner = document.getElementById('spinner');
       const statusEl = document.getElementById('liveStatus');
       const logs = document.getElementById('cameraLogs');
-      const source = `/streams/dvr_${dvrId}/cam_${cameraId}/index.m3u8`;
-
-      fetch(`/public/dvr/${dvrId}`);
 
       function log(message) {
           const time = new Date().toLocaleTimeString();
@@ -217,32 +207,56 @@
           logs.scrollTop = logs.scrollHeight;
       }
 
-      function initStream() {
-          if (Hls.isSupported()) {
-              const hls = new Hls({ lowLatencyMode: true });
-              hls.loadSource(source);
-              hls.attachMedia(video);
-              hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                  spinner.classList.add('hidden');
-                  video.classList.remove('hidden');
-                  statusEl.textContent = 'Streaming';
-                  log('Stream started.');
-              });
-              hls.on(Hls.Events.ERROR, (_, data) => {
-                  statusEl.textContent = 'Error';
-                  log(`Error: ${data.details}`);
-              });
-          } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-              video.src = source;
-              video.addEventListener('loadedmetadata', () => {
-                  spinner.classList.add('hidden');
-                  video.classList.remove('hidden');
-                  statusEl.textContent = 'Streaming';
-                  log('Stream started (native support).');
-              });
-          } else {
-              spinner.innerHTML = '<p class="text-sm text-red-400 p-4">HLS not supported.</p>';
-              log('HLS not supported in this browser.');
+      async function initStream(retries = 30, delay = 500) {
+          try {
+              const res = await fetch(`/api/public/camera/${cameraId}/hls`);
+              if (!res.ok) {
+                  throw new Error(`API error: ${res.status}`);
+              }
+              const data = await res.json();
+              if (!data.hlsUrl) throw new Error("No HLS URL returned");
+              
+              const source = data.hlsUrl;
+              
+              if (Hls.isSupported()) {
+                  const hls = new Hls({ lowLatencyMode: true });
+                  hls.loadSource(source);
+                  hls.attachMedia(video);
+                  hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                      statusEl.textContent = 'Streaming';
+                      log('Stream started.');
+                  });
+                  hls.on(Hls.Events.ERROR, (_, data) => {
+                      if (data.fatal) {
+                          statusEl.textContent = 'Reconnecting...';
+                          log(`Fatal HLS Error: ${data.details}. Restarting.`);
+                          hls.destroy();
+                          if (retries > 0) {
+                              setTimeout(() => initStream(retries - 1, delay), delay);
+                          } else {
+                              statusEl.textContent = 'Offline';
+                          }
+                      } else {
+                          log(`HLS Error: ${data.details}`);
+                      }
+                  });
+              } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                  video.src = source;
+                  video.addEventListener('loadedmetadata', () => {
+                      statusEl.textContent = 'Streaming';
+                      log('Stream started (native support).');
+                  });
+              } else {
+                  statusEl.textContent = 'HLS Not Supported';
+                  log('HLS not supported in this browser.');
+              }
+          } catch (err) {
+              if (retries > 0) {
+                  setTimeout(() => initStream(retries - 1, delay), delay);
+              } else {
+                  statusEl.textContent = 'Offline';
+                  log(`Error: ${err.message}`);
+              }
           }
       }
 
@@ -264,12 +278,11 @@
 
       function reloadStream() {
           video.pause();
-          video.src = '';
-          spinner.classList.remove('hidden');
+          video.removeAttribute('src');
+          video.load();
           statusEl.textContent = 'Reconnecting...';
-          fetch(`/public/dvr/${dvrId}`);
           log('Reloading stream.');
-          initStream();
+          initStream(30, 500);
       }
 
       document.querySelector('[data-action="fullscreen"]').addEventListener('click', toggleFullscreen);

@@ -7,23 +7,19 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const favicon = require("serve-favicon");
 const fs = require("fs");
-const { spawn } = require("child_process");
 
 const http = require("http");
-const initWebSocketServer = require("./ws/wsServer");
-const wsRoutes = require("./routes/wsRoutes");
 
 // Local services and routes
 const checkAuth = require("./services/checkauth");
 const cameraRoutes = require("./routes/cameraRoutes");
-const cameraRoute = require("./routes/camera");
 const userRouter = require("./routes/userRouters");
 const dvrRoutes = require("./routes/dvrs");
 const settingsRoutes = require("./routes/settingsRoutes");
 const analyticsRoutes = require("./routes/analyticsRoutes");
-const apiAnalyticsRoutes = require("./routes/api/analyticsRoutes");
-// const publicRoute = require("./routes/publicRoutes");
-const { cleanupInactiveStreams } = require("./utils/streamManager");
+const publicRoutes = require("./routes/publicRoutes");
+const streamStore = require("./utils/streamStore");
+const { getRecentActivities } = require("./utils/activityLogger");
 const logger = require("./utils/logger");
 const morgan = require("morgan");
 
@@ -34,6 +30,19 @@ const PORT = process.env.PORT || 5000;
 
 app.use((req, res, next) => {
   res.locals.nonce = crypto.randomBytes(16).toString("base64");
+  next();
+});
+
+// Middleware to inject Recent Activities into every render
+app.use(async (req, res, next) => {
+  try {
+    // Only fetch for pages that might render the navbar
+    if (req.method === 'GET' && !req.path.startsWith('/api/') && !req.path.startsWith('/public/dvr/')) {
+       res.locals.recentActivities = await getRecentActivities(5);
+    }
+  } catch(err) {
+    res.locals.recentActivities = [];
+  }
   next();
 });
 
@@ -57,7 +66,7 @@ app.use(
       stream: {
         write: (message) => {
           const data = JSON.parse(message);
-          logger.info("HTTP Request", data);
+          logger.info(`HTTP Request: ${data.method} ${data.url} - Status: ${data.status}`, data);
         },
       },
     }
@@ -96,7 +105,7 @@ app.use(
         ],
         "object-src": ["'self'"],
         "frame-src": ["'self'"],
-        "connect-src": ["'self'", "https://cdnjs.cloudflare.com"],
+        "connect-src": ["'self'", "https://cdnjs.cloudflare.com", "https://cdn.jsdelivr.net"],
       },
     },
     referrerPolicy: { policy: "strict-origin-when-cross-origin" },
@@ -170,154 +179,75 @@ app.use(
 app.use("/", userRouter);
 app.use("/camera", checkAuth, cameraRoutes);
 app.use("/dvr", checkAuth, dvrRoutes);
-app.get("/public/dvr/:dvrId", (req, res) => {
-  res.render("public", { nonce: res.locals.nonce, dvr: { dvr_name: "PUBLIC" } });
-});
-app.use(wsRoutes);
-app.use("/camera/view", cameraRoute);
 app.use(settingsRoutes);
 app.use(analyticsRoutes);
-app.use(apiAnalyticsRoutes);
+app.use(publicRoutes);
+// =================== API Endpoints ===================
 
-// =================== HLS Streaming Endpoint for Extension ===================
-const activeStreams = {};
-
-function hashRtspUrl(rtspUrl) {
-  return crypto.createHash("md5").update(rtspUrl).digest("hex");
-}
-
-const STREAM_DURATION_LIMIT = 10 * 60 * 1000; // 10 minutes in milliseconds
-
-app.post("/api/start-stream", (req, res) => {
+app.post("/api/start-stream", async (req, res) => {
   const { rtspUrl } = req.body;
 
   if (!rtspUrl || !rtspUrl.startsWith("rtsp://")) {
     return res.status(400).json({ error: "Invalid RTSP URL" });
   }
 
-  const streamId = hashRtspUrl(rtspUrl);
-  const outputPath = path.join(streamDir, streamId);
-  const playlistPath = path.join(outputPath, "index.m3u8");
-  const hlsUrl = `/hls/${streamId}/index.m3u8`;
-
-  if (activeStreams[streamId]) {
-    return res.json({ hlsUrl });
+  try {
+    const result = await streamStore.startHlsStream(rtspUrl, null, null);
+    res.json({ hlsUrl: result.hlsUrl });
+  } catch (err) {
+    logger.error("Error triggering stream via API:", err);
+    res.status(500).json({ error: "Failed to start stream" });
   }
-
-  fs.mkdirSync(outputPath, { recursive: true });
-
-  const ffmpeg = spawn(
-    "ffmpeg",
-    [
-      "-rtsp_transport",
-      "tcp",
-      "-fflags",
-      "nobuffer",
-      "-flags",
-      "low_delay",
-      "-strict",
-      "experimental",
-      "-i",
-      rtspUrl,
-      "-c:v",
-      "copy",
-      "-preset",
-      "ultrafast",
-      "-tune",
-      "zerolatency",
-      "-f",
-      "hls",
-      "-hls_time",
-      "1",
-      "-hls_list_size",
-      "2",
-      "-hls_flags",
-      "delete_segments+omit_endlist+discont_start",
-      "-hls_segment_type",
-      "mpegts",
-      `-hls_segment_filename`,
-      `${outputPath}/segment_%03d.ts`,
-      playlistPath,
-    ],
-    {
-      stdio: "ignore",
-    }
-  );
-
-  ffmpeg.on("error", (err) => {
-    logger.error(`[FFmpeg Error]: ${err.message}`);
-    return res.status(500).json({ error: "Failed to start stream" });
-  });
-
-  ffmpeg.on("close", (code) => {
-    logger.info(`FFmpeg stream for ${rtspUrl} exited with code ${code}`);
-    delete activeStreams[streamId];
-    fs.rmSync(outputPath, { recursive: true, force: true });
-  });
-
-  // Auto stop stream after 10 minutes
-  const timeout = setTimeout(() => {
-    logger.info(`Auto-stopping stream ${streamId} after 10 minutes`);
-    ffmpeg.kill("SIGINT");
-  }, STREAM_DURATION_LIMIT);
-
-  activeStreams[streamId] = {
-    ffmpeg,
-    rtspUrl,
-    hlsUrl,
-    startedAt: new Date(),
-    timeout, // store timeout in case you want to cancel it later
-  };
-
-  res.json({ hlsUrl });
 });
+
 
 app.post("/api/stop-stream", (req, res) => {
   const { rtspUrl } = req.body;
-  const streamId = hashRtspUrl(rtspUrl);
+  if (!rtspUrl) return res.status(400).json({ error: "Missing RTSP URL" });
 
-  const stream = activeStreams[streamId];
-  if (stream) {
-    stream.ffmpeg.kill("SIGINT");
-    clearTimeout(stream.timeout);
+  const stopped = streamStore.stopHlsStream(rtspUrl);
+  if (stopped) {
     return res.json({ message: "Stream stopped manually" });
   }
 
   res.status(404).json({ error: "Stream not found" });
 });
 
-// Debug: List active streams
-app.get("/debug/streams", (req, res) => {
-  res.json(
-    Object.fromEntries(
-      Object.entries(activeStreams).map(([id, stream]) => [
-        id,
-        {
-          rtspUrl: stream.rtspUrl,
-          startedAt: stream.startedAt,
-        },
-      ])
-    )
-  );
+app.get("/api/public/camera/:id/hls", async (req, res) => {
+  try {
+    const cameraId = req.params.id;
+    if (!/^\d+$/.test(cameraId)) {
+      return res.status(400).json({ error: "Invalid camera ID" });
+    }
+
+    const [rows] = await require("./config/db").execute(
+      `SELECT rtsp_url, dvr_id FROM cameras WHERE id = ? AND enabled = 1`,
+      [cameraId]
+    );
+
+    if (!rows.length) {
+      return res.status(404).json({ error: "Camera not found or disabled" });
+    }
+
+    const rtspUrl = rows[0].rtsp_url;
+    if (!rtspUrl || !rtspUrl.startsWith("rtsp://")) {
+      return res.status(400).json({ error: "Invalid RTSP URL configured for this camera" });
+    }
+
+    const { hlsUrl } = await streamStore.startHlsStream(rtspUrl, cameraId, rows[0].dvr_id);
+    res.json({ hlsUrl });
+  } catch (err) {
+    logger.error("Error in public HLS endpoint:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
 
-// Periodic Cleanup (if needed, extend later)
-// setInterval(() => cleanupInactiveStreams(5 * 60 * 1000), 5 * 60 * 1000);
 
-// clear old streams on startup
-if (fs.existsSync("./streams")) {
-  fs.rmSync("./streams", { recursive: true, force: true });
-}
 
-app.get("/api/health", (req, res) => {
-  res.json({ status: "ok" });
-});
+
 
 // =================== Start Server ===================
 const server = http.createServer(app);
-
-// init WebSocket
-initWebSocketServer(server);
 
 server.listen(PORT, () => {
   logger.info(`🚀 Server running at http://localhost:${PORT}`);

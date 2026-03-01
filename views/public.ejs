@@ -9,8 +9,9 @@
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
 
-    <!-- Tailwind / Flowbite -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4" nonce="<%= nonce %>"></script>
+    <link rel="stylesheet" href="/css/style.css" nonce="<%= nonce %>">
+    <!-- HLS.js -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest" nonce="<%= nonce %>"></script>
 
     <style>
       video {
@@ -85,11 +86,6 @@
     <!-- ================= CLIENT JS ================= -->
     <script nonce="<%= nonce %>">
       /* =====================================================
-       CONFIG
-    ===================================================== */
-      const MIME = 'video/mp4; codecs="avc1.42c01e"';
-
-      /* =====================================================
        HELPERS
     ===================================================== */
       function getDvrId() {
@@ -102,72 +98,71 @@
       }
 
       /* =====================================================
-       WS VIDEO PLAYER
+       HLS VIDEO PLAYER
     ===================================================== */
-      class WSPlayer {
-        constructor(video, spinner, cameraId) {
-          this.video = video;
-          this.spinner = spinner;
-          this.cameraId = cameraId;
+      const RETRY_INTERVAL = 500;
+      const MAX_RETRIES = 30;
 
-          this.mediaSource = null;
-          this.sourceBuffer = null;
-          this.queue = [];
-          this.ws = null;
-          this.started = false;
-        }
+      function tryLoadHlsStream(video, cameraId, retriesLeft = MAX_RETRIES) {
+        fetch(`/api/public/camera/${cameraId}/hls`)
+          .then(res => res.json())
+          .then(data => {
+            if (data.error) {
+              throw new Error(data.error);
+            }
+            
+            const source = data.hlsUrl;
 
-        start() {
-          if (!window.MediaSource || !MediaSource.isTypeSupported(MIME)) {
-            this.spinner.innerHTML = `<p class="text-red-500 text-sm">Not supported</p>`;
-            return;
-          }
-
-          this.mediaSource = new MediaSource();
-          this.video.src = URL.createObjectURL(this.mediaSource);
-
-          this.mediaSource.addEventListener("sourceopen", () => {
-            this.sourceBuffer = this.mediaSource.addSourceBuffer(MIME);
-            this.sourceBuffer.mode = "segments";
-
-            this.sourceBuffer.addEventListener("updateend", () => {
-              if (this.queue.length && !this.sourceBuffer.updating) {
-                this.sourceBuffer.appendBuffer(this.queue.shift());
-              }
-            });
-
-            this.connect();
+            if (Hls.isSupported()) {
+              const hls = new Hls({
+                manifestLoadingTimeOut: 2000,
+                manifestLoadingMaxRetry: 1,
+                levelLoadingTimeOut: 2000,
+                levelLoadingMaxRetry: 1,
+                lowLatencyMode: true,
+              });
+              hls.loadSource(source);
+              hls.attachMedia(video);
+              hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                video.play().catch(() => {});
+              });
+              hls.on(Hls.Events.ERROR, function (event, data) {
+                if (data.fatal) {
+                  switch (data.type) {
+                    case Hls.ErrorTypes.NETWORK_ERROR:
+                      // A 404 means the stream dropped from the server. Destroy and rebuild via the API.
+                      hls.destroy();
+                      handleRetry();
+                      break;
+                    case Hls.ErrorTypes.MEDIA_ERROR:
+                      hls.recoverMediaError();
+                      break;
+                    default:
+                      hls.destroy();
+                      handleRetry();
+                      break;
+                  }
+                }
+              });
+            } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+              video.src = source;
+              video.addEventListener("loadedmetadata", () => {
+                video.play().catch(() => {});
+              });
+              video.addEventListener("error", () => {
+                handleRetry();
+              });
+            }
+          })
+          .catch(err => {
+            console.error(`Error for cam ${cameraId}:`, err);
+            handleRetry();
           });
-        }
 
-        connect() {
-          const proto = location.protocol === "https:" ? "wss" : "ws";
-          const wsUrl = `${proto}://${location.host}/ws?camera=${this.cameraId}`;
-
-          log("Connecting camera", this.cameraId);
-          this.ws = new WebSocket(wsUrl);
-          this.ws.binaryType = "arraybuffer";
-
-          this.ws.onmessage = (e) => {
-            const data = new Uint8Array(e.data);
-
-            if (!this.started) {
-              this.spinner.classList.add("hidden");
-              this.video.classList.remove("hidden");
-              this.video.play().catch(() => {});
-              this.started = true;
-            }
-
-            if (this.sourceBuffer.updating || this.queue.length) {
-              this.queue.push(data);
-            } else {
-              this.sourceBuffer.appendBuffer(data);
-            }
-          };
-
-          this.ws.onerror = () => {
-            this.spinner.innerHTML = `<p class="text-red-500 text-sm">Stream error</p>`;
-          };
+        function handleRetry() {
+          if (retriesLeft > 0) {
+            setTimeout(() => tryLoadHlsStream(video, cameraId, retriesLeft - 1), RETRY_INTERVAL);
+          }
         }
       }
 
@@ -188,26 +183,17 @@
           wrapper.className = "relative bg-black rounded-lg overflow-hidden";
 
           wrapper.innerHTML = `
-      <div class="absolute top-1 left-1 bg-black/60 px-2 py-1 text-xs rounded">
+      <div class="absolute top-1 left-1 bg-black/60 px-2 py-1 text-xs rounded text-white z-10">
         ${cam.camera_name}
       </div>
 
-      <div class="flex items-center justify-center h-48 spinner">
-        <svg class="w-8 h-8 animate-spin text-blue-500" viewBox="0 0 100 101">
-          <path d="M100 50.5a50 50 0 1 1-50-50" fill="currentColor"/>
-        </svg>
-      </div>
-
-      <video class="hidden w-full h-full" muted autoplay playsinline></video>
+      <video class="w-full h-full object-cover" muted autoplay playsinline></video>
     `;
 
           grid.appendChild(wrapper);
 
           const video = wrapper.querySelector("video");
-          const spinner = wrapper.querySelector(".spinner");
-
-          const player = new WSPlayer(video, spinner, cam.id);
-          player.start();
+          tryLoadHlsStream(video, cam.id);
         });
       }
 
