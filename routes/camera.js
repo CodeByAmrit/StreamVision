@@ -11,8 +11,7 @@ ffmpeg.setFfprobePath(ffprobeStatic.path);
 
 router.get("/:id/ffprobe", async (req, res) => {
   try {
-    const camera = await Camera.findById(req, res);
-    // console.log("ffprobe", camera.rtsp_url);
+    const camera = await Camera.findById(req.params.id);
     if (!camera) return res.status(404).json({ error: "Camera not found" });
 
     ffmpeg.ffprobe(camera.rtsp_url, (err, metadata) => {

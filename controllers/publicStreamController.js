@@ -1,14 +1,10 @@
-const db = require("../config/getConnection");
+const db = require("../config/db");
 
 const renderDvrLiveStream = async (req, res) => {
   const dvrId = req.params.dvrId;
-  let connection;
-
   try {
-    connection = await db.getConnection();
-
     // Get DVR and related cameras
-    const [[dvr]] = await connection.execute(
+    const [[dvr]] = await db.execute(
       `
             SELECT d.id, d.dvr_name, l.location_name 
             FROM dvrs d 
@@ -18,7 +14,7 @@ const renderDvrLiveStream = async (req, res) => {
       [dvrId]
     );
 
-    const [cameras] = await connection.execute(
+    const [cameras] = await db.execute(
       `
             SELECT id, camera_name, rtsp_url FROM cameras WHERE dvr_id = ?
         `,
@@ -33,8 +29,6 @@ const renderDvrLiveStream = async (req, res) => {
   } catch (error) {
     console.error("Error rendering DVR live stream:", error);
     res.status(500).send("Something went wrong");
-  } finally {
-    if (connection) connection.end();
   }
 };
 

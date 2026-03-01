@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const { setUser } = require("../services/aouth");
-const db = require("../config/getConnection"); // Your MySQL db connection wrapper
+const db = require("../config/db"); // Your MySQL db connection wrapper
 
 class User {
   // Create a new user
@@ -9,110 +9,73 @@ class User {
     const hashedPassword = await bcrypt.hash(password, salt);
     const query = `INSERT INTO users (name, email, password) VALUES (?, ?, ?)`;
     const values = [name, email, hashedPassword];
-    let connection;
-
     try {
-      connection = await db.getConnection();
-      const [result] = await connection.execute(query, values);
+      const [result] = await db.execute(query, values);
       const insertedId = result.insertId;
 
-      const [user] = await connection.execute("SELECT id, name, email FROM users WHERE id = ?", [
+      const [user] = await db.execute("SELECT id, name, email FROM users WHERE id = ?", [
         insertedId,
       ]);
       return user[0];
     } catch (error) {
       throw new Error("Error creating user: " + error.message);
-    } finally {
-      if (connection) {
-        connection.end();
-      }
     }
   }
 
   // Get all users
   static async findAll() {
     const query = `SELECT id, name, email FROM users`;
-    let connection;
     try {
-      connection = await db.getConnection();
-      const [rows] = await connection.execute(query);
+      const [rows] = await db.execute(query);
       return rows;
     } catch (error) {
       throw new Error("Error fetching users: " + error.message);
-    } finally {
-      if (connection) {
-        connection.end();
-      }
     }
   }
 
   // Get a single user by ID
   static async findById(id) {
     const query = `SELECT * FROM users WHERE id = ?`;
-    let connection;
     try {
-      connection = await db.getConnection();
-      const [rows] = await connection.execute(query, [id]);
+      const [rows] = await db.execute(query, [id]);
       return rows[0] || null;
     } catch (error) {
       throw new Error("Error fetching user: " + error.message);
-    } finally {
-      if (connection) {
-        connection.end();
-      }
     }
   }
 
   // Get a single user by email
   static async findByEmail(email) {
     const query = `SELECT * FROM users WHERE email = ?`;
-    let connection;
     try {
-      connection = await db.getConnection();
-      const [rows] = await connection.execute(query, [email]);
+      const [rows] = await db.execute(query, [email]);
       return rows[0] || null;
     } catch (error) {
       throw new Error("Error fetching user: " + error.message);
-    } finally {
-      if (connection) {
-        connection.end();
-      }
     }
   }
 
   // Update a user
   static async update(id, { name, email }) {
     const query = `UPDATE users SET name = ?, email = ? WHERE id = ?`;
-    let connection;
     try {
-      connection = await db.getConnection();
-      await connection.execute(query, [name, email, id]);
+      await db.execute(query, [name, email, id]);
       return await this.findById(id);
     } catch (error) {
       throw new Error("Error updating user: " + error.message);
-    } finally {
-      if (connection) {
-        connection.end();
-      }
     }
   }
 
   // Update user password
   static async updatePassword(id, password) {
-    let connection;
     const hashedPassword = await bcrypt.hash(password, parseInt(process.env.saltRounds));
     const query = `UPDATE users SET password = ? WHERE id = ?`;
 
     try {
-      connection = await db.getConnection();
-      await connection.execute(query, [hashedPassword, id]);
+      await db.execute(query, [hashedPassword, id]);
       return await this.findById(id);
     } catch (error) {
       throw new Error("Error updating password: " + error.message);
-    } finally {
-      if (connection) {
-        connection.end();
-      }
     }
   }
 
@@ -120,17 +83,11 @@ class User {
   static async delete(id) {
     const query = `DELETE FROM users WHERE id = ?`;
 
-    let connection;
     try {
-      connection = await db.getConnection();
-      const [result] = await connection.execute(query, [id]);
+      const [result] = await db.execute(query, [id]);
       return result.affectedRows > 0;
     } catch (error) {
       throw new Error("Error deleting user: " + error.message);
-    } finally {
-      if (connection) {
-        connection.end();
-      }
     }
   }
 

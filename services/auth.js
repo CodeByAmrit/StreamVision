@@ -1,6 +1,6 @@
 const express = require("express");
 const { OAuth2Client } = require("google-auth-library");
-const { getConnection } = require("../models/getConnection");
+const db = require("../config/db");
 const { setUser } = require("./aouth");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
@@ -42,9 +42,7 @@ router.get("/auth/google/callback", async (req, res) => {
     const { email, name, picture } = userInfo.data;
 
     // Get DB Connection
-    const connection = await getConnection();
-    const [rows] = await connection.execute("SELECT * FROM teacher WHERE email = ?", [email]);
-    await connection.end();
+    const [rows] = await db.execute("SELECT * FROM teacher WHERE email = ?", [email]);
 
     if (rows.length > 0) {
       const teacher = rows[0];

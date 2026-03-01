@@ -80,6 +80,13 @@ CREATE TABLE camera_health (
     FOREIGN KEY (camera_id) REFERENCES cameras(id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS stream_vision.activity_logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    source_type VARCHAR(50) NOT NULL,
+    action VARCHAR(50) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
 -- Insert Sample Data for Testing
 INSERT INTO

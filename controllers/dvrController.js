@@ -1,13 +1,12 @@
-const db = require("../config/getConnection"); // Your DB connection
-const dvrManager = require("../utils/streamManager");
+const db = require("../config/db"); // Your DB connection
+const streamStore = require("../utils/streamStore");
+const { logActivity } = require("../utils/activityLogger");
 
 /**
  * Get all DVRs with location name and total cameras count
  */
 const getAllDvrs = async (req, res) => {
-  let connection;
   try {
-    connection = await db.getConnection();
     const query = `
             SELECT d.id, d.dvr_name, l.location_name, COUNT(c.id) AS total_cameras
             FROM dvrs d
@@ -16,7 +15,7 @@ const getAllDvrs = async (req, res) => {
             GROUP BY d.id, d.dvr_name, l.location_name
             ORDER BY d.id DESC;
         `;
-    const [rows] = await connection.execute(query);
+    const [rows] = await db.execute(query);
     return rows;
   } catch (error) {
     console.error("Error fetching DVRs:", error);
@@ -34,11 +33,7 @@ const addDvr = async (req, res) => {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
-  let connection;
-
   try {
-    connection = await db.getConnection();
-
     // If user selected "Add New Location"
     if (location_id === "new") {
       if (!new_location) {
@@ -46,7 +41,7 @@ const addDvr = async (req, res) => {
       }
 
       // Insert the new location
-      const [locationResult] = await connection.execute(
+      const [locationResult] = await db.execute(
         `INSERT INTO locations (location_name) VALUES (?)`,
         [new_location]
       );
@@ -56,17 +51,17 @@ const addDvr = async (req, res) => {
     }
 
     // Insert DVR
-    const [result] = await connection.execute(
+    const [result] = await db.execute(
       `INSERT INTO dvrs (location_id, dvr_name) VALUES (?, ?)`,
       [location_id, dvr_name]
     );
+
+    logActivity("dvr", "added", `Created new DVR: ${dvr_name}`);
 
     res.status(201).redirect("/dvr");
   } catch (error) {
     console.error("Error adding DVR:", error);
     res.status(500).json({ error: "Failed to add DVR" });
-  } finally {
-    if (connection) connection.end();
   }
 };
 
@@ -81,15 +76,15 @@ const updateDvr = async (req, res) => {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
-  let connection;
   try {
-    connection = await db.getConnection();
     const query = `UPDATE dvrs SET dvr_name = ?, location_id = ? WHERE id = ?`;
     const [result] = await db.execute(query, [dvr_name, location_id, dvrId]);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: "DVR not found" });
     }
+
+    logActivity("dvr", "updated", `Updated DVR: ${dvr_name}`);
 
     res.json({ message: `DVR ${dvrId} updated successfully` });
   } catch (error) {
@@ -106,14 +101,14 @@ const deleteDvr = async (req, res) => {
 
   if (!dvrId) return res.status(400).json({ error: "Invalid DVR ID" });
 
-  let connection;
   try {
-    connection = await db.getConnection();
     const [result] = await db.execute(`DELETE FROM dvrs WHERE id = ?`, [dvrId]);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: "DVR not found" });
     }
+
+    logActivity("dvr", "deleted", `Deleted a DVR (${dvrId})`);
 
     res.json({ message: `DVR ${dvrId} deleted successfully` });
   } catch (error) {
@@ -124,14 +119,13 @@ const deleteDvr = async (req, res) => {
 
 const getDvrsWithCameras = async (req, res) => {
   try {
-    const pool = await db.getConnection();
-    const [dvrs] = await pool.query(`
+    const [dvrs] = await db.query(`
             SELECT dvrs.id, dvrs.dvr_name, locations.location_name
             FROM dvrs
             JOIN locations ON dvrs.location_id = locations.id
         `);
 
-    const [cameras] = await pool.query(`SELECT * FROM cameras`);
+    const [cameras] = await db.query(`SELECT * FROM cameras`);
 
     const dvrsWithCameras = dvrs.map((dvr) => ({
       ...dvr,
@@ -147,9 +141,6 @@ const getDvrsWithCameras = async (req, res) => {
 
 const getAllDvrsPaginated = async (req, res) => {
   try {
-    let connection = await db.getConnection();
-    if (!connection) return res.status(500).json({ error: "Database connection failed" });
-
     const page = parseInt(req.query.page) || 1;
     const limit = 10;
     const offset = (page - 1) * limit;
@@ -165,7 +156,7 @@ const getAllDvrsPaginated = async (req, res) => {
     }
 
     // Single query to get DVRs with camera counts
-    const [dvrs] = await connection.query(
+    const [dvrs] = await db.query(
       `
             SELECT 
                 d.*, 
@@ -183,7 +174,7 @@ const getAllDvrsPaginated = async (req, res) => {
     );
 
     // Get total count for pagination
-    const [[{ total }]] = await connection.query(
+    const [[{ total }]] = await db.query(
       `
             SELECT COUNT(DISTINCT d.id) as total 
             FROM dvrs d 
@@ -193,19 +184,12 @@ const getAllDvrsPaginated = async (req, res) => {
       params
     );
 
-    // Build cameraId → stream map (already exists)
-    const activeStreams = dvrManager?.streams || new Map();
-
     // Build DVR-level aggregation
     const dvrStreamStats = new Map();
 
-    /*
-  streams Map structure:
-  key   = cameraId
-  value = StreamInstance
-*/
-    for (const [cameraId, stream] of activeStreams.entries()) {
-      // We need DVR ID → so attach it when stream is created (see note below)
+    const activeStreams = streamStore.getAllStreams();
+
+    for (const stream of activeStreams) {
       const dvrId = stream.dvrId;
       if (!dvrId) continue;
 
@@ -220,18 +204,16 @@ const getAllDvrsPaginated = async (req, res) => {
 
       const stats = dvrStreamStats.get(dvrId);
 
-      if (stream.isOnline()) {
-        stats.online = true;
-        stats.activeCameras += 1;
-        stats.lastActivity = stream.meta.lastFrameAt;
+      stats.online = true;
+      stats.activeCameras += 1;
+      stats.lastActivity = stream.startedAt;
 
-        stats.cameras.push({
-          cameraId,
-          resolution: stream.meta.resolution,
-          fps: stream.meta.fps,
-          bitrate: stream.getBitrateKbps(),
-        });
-      }
+      stats.cameras.push({
+        cameraId: stream.cameraId,
+        resolution: "Auto", // Removed FFmpeg metadata parsing for performance here
+        fps: "Auto",
+        bitrate: "Auto",
+      });
     }
 
     // Add online status and active camera count
@@ -250,8 +232,6 @@ const getAllDvrsPaginated = async (req, res) => {
     // Calculate statistics (on all DVRs, not filtered)
     const onlineCount = dvrs.filter((dvr) => dvr.isOnline === true).length;
     const totalCameras = dvrs.reduce((sum, dvr) => sum + dvr.totalCameras, 0);
-
-    connection.end();
 
     res.render("dvr", {
       dvrsWithCameras: dvrs,
@@ -275,11 +255,9 @@ const getAllDvrsPaginated = async (req, res) => {
 };
 
 async function getDvrWithCamerasById(dvrId) {
-  let connection;
   try {
-    connection = await db.getConnection();
     // Fetch DVR and location name
-    const [dvrRows] = await connection.query(
+    const [dvrRows] = await db.query(
       `
             SELECT dvrs.*, locations.location_name 
             FROM dvrs 
@@ -294,7 +272,7 @@ async function getDvrWithCamerasById(dvrId) {
     const dvr = dvrRows[0];
 
     // Fetch all cameras for this DVR
-    const [cameraRows] = await connection.query(
+    const [cameraRows] = await db.query(
       `
             SELECT * FROM cameras 
             WHERE dvr_id = ?
@@ -309,20 +287,13 @@ async function getDvrWithCamerasById(dvrId) {
   } catch (error) {
     console.error("Error in getDvrWithCamerasById:", error);
     throw error;
-  } finally {
-    if (connection) {
-      connection.end();
-    }
   }
 }
 
 const renderAddDvrForm = async (req, res) => {
-  let connection;
   try {
-    connection = await db.getConnection();
-
     // Fetch locations to populate the dropdown
-    const [locations] = await connection.execute("SELECT id, location_name FROM locations");
+    const [locations] = await db.execute("SELECT id, location_name FROM locations");
 
     res.render("add_dvr", {
       title: "Add DVR",
@@ -332,8 +303,6 @@ const renderAddDvrForm = async (req, res) => {
   } catch (error) {
     console.error("Error rendering Add DVR form:", error);
     res.status(500).send("Failed to load form");
-  } finally {
-    if (connection) connection.end();
   }
 };
 

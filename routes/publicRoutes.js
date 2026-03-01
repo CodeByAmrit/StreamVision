@@ -1,55 +1,54 @@
 const express = require("express");
 const router = express.Router();
-const fs = require("fs");
-const path = require("path");
-const dvrController = require("../controllers/dvrController");
-const { startStream, isStreamActive } = require("../utils/streamManager");
+const publicStreamController = require("../controllers/publicStreamController");
+const db = require("../config/db");
+const logger = require("../utils/logger");
 
-// Disable caching for HLS segments
-router.use("/streams", (req, res, next) => {
-  res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
-  res.setHeader("Pragma", "no-cache");
-  res.setHeader("Expires", "0");
-  res.setHeader("Surrogate-Control", "no-store");
-  next();
+// Render main Public DVR grid
+router.get("/public/dvr/:dvrId", async (req, res) => {
+  try {
+    const dvrId = req.params.dvrId;
+    const [rows] = await db.execute(
+      `SELECT d.id, d.dvr_name, l.location_name
+       FROM dvrs d
+       LEFT JOIN locations l ON d.location_id = l.id
+       WHERE d.id = ?`,
+       [dvrId]
+    );
+
+    if (!rows || rows.length === 0) {
+      return res.status(404).send("DVR not found");
+    }
+
+    res.render("public", { nonce: res.locals.nonce, dvr: rows[0] });
+  } catch (error) {
+    logger.error("Error fetching public DVR info:", error);
+    res.status(500).send("Internal server error");
+  }
 });
 
-// DVR Live View (Public)
-router.get("/public/dvr/:id", async (req, res) => {
+// Render focused Public Camera streamer
+router.get("/public/dvr/:dvrId/camera/:cameraId", publicStreamController.renderDvrLiveStream);
+
+// Fetch all enabled cameras for a specific DVR
+router.get("/api/dvr/:id/cameras", async (req, res) => {
   try {
     const dvrId = req.params.id;
-
-    // Sanitize: Only digits allowed in ID (prevent traversal attacks)
     if (!/^\d+$/.test(dvrId)) {
-      return res.status(400).send("Invalid DVR ID");
+      return res.status(400).json({ error: "Invalid DVR ID" });
     }
 
-    const dvr = await dvrController.getDvrWithCamerasById(dvrId);
-    if (!dvr || !Array.isArray(dvr.cameras)) {
-      return res.status(404).send("DVR or cameras not found");
-    }
+    const [cameras] = await db.execute(
+      `SELECT id, camera_name, rtsp_url 
+       FROM cameras 
+       WHERE dvr_id = ? AND enabled = 1`,
+      [dvrId]
+    );
 
-    for (const cam of dvr.cameras) {
-      const camPath = path.join(
-        __dirname,
-        "..",
-        "public",
-        "streams",
-        `dvr_${dvr.id}`,
-        `cam_${cam.id}`
-      );
-      fs.mkdirSync(camPath, { recursive: true });
-
-      const camKey = `${dvr.id}_${cam.id}`;
-      if (!isStreamActive(camKey)) {
-        startStream(camKey, cam.rtsp_url, camPath, cam);
-      }
-    }
-
-    res.render("dvr_live_public", { nonce: res.locals.nonce, dvr, cameras: dvr.cameras });
-  } catch (error) {
-    console.error("Error loading public DVR stream:", error);
-    res.status(500).send("Failed to load DVR stream");
+    res.json(cameras);
+  } catch (err) {
+    logger.error("Error fetching cameras for public DVR view:", err);
+    res.status(500).json({ error: "Failed to fetch cameras" });
   }
 });
 
