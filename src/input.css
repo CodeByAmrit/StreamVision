@@ -1,4 +1,7 @@
 @import "tailwindcss";
+@variant dark (&:where(.dark, .dark *));
+@config "../tailwind.config.js";
+
 @layer base {
   html {
     font-family:

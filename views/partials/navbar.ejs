@@ -8,39 +8,41 @@
     <!-- Logo Section -->
     <a
       href="/dashboard"
-      class="flex items-center justify-center h-auto p-6 border-b border-blue-50 dark:border-gray-700"
+      class="flex items-center justify-center p-4 border-b border-blue-50 dark:border-gray-700"
     >
-      <div class="text-center">
+      <div class="flex items-center space-x-3 w-full justify-center">
         <div
-          class="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#63b3ed] to-[#3182ce] flex items-center justify-center mx-auto mb-3 shadow-lg"
+          class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#63b3ed] to-[#3182ce] flex items-center justify-center shadow-md shrink-0"
         >
-          <i class="fas fa-video text-white text-2xl"></i>
+          <i class="fas fa-video text-white text-lg"></i>
         </div>
-        <div class="text-xl font-bold gradient-text">StreamVision</div>
-        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Admin Dashboard</p>
+        <div class="text-left hidden sm:block">
+          <div class="text-lg font-bold gradient-text leading-tight">StreamVision</div>
+          <p class="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">Admin Dashboard</p>
+        </div>
       </div>
     </a>
 
     <!-- Navigation Menu -->
-    <div class="flex-grow overflow-y-auto px-4 py-6">
+    <div class="flex-grow overflow-y-auto px-3 py-4">
       <!-- Quick Action Button -->
       <a
         href="/dvr/add"
-        class="w-full mb-6 btn-gradient text-white font-medium rounded-xl px-4 py-3.5 text-center inline-flex items-center justify-center shadow-sm"
+        class="w-full mb-4 btn-gradient text-white font-medium rounded-lg px-3 py-2 text-sm text-center inline-flex items-center justify-center shadow-sm"
       >
-        <i class="fas fa-plus mr-2"></i>
+        <i class="fas fa-plus mr-1.5"></i>
         Add DVR
       </a>
 
       <!-- Navigation Links -->
-      <ul class="space-y-2 font-medium">
+      <ul class="space-y-1.5 text-sm font-medium">
         <li>
           <a
             href="/dashboard"
-            class="flex items-center p-3.5 rounded-xl group <%= activePage === 'dashboard' ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30' : 'text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700/50 transition-colors' %>"
+            class="flex items-center p-2.5 rounded-lg group <%= activePage === 'dashboard' ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30' : 'text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700/50 transition-colors' %>"
           >
             <div
-              class="w-8 h-8 rounded-lg bg-gradient-to-br <%= activePage === 'dashboard' ? 'from-blue-100 to-blue-50 dark:from-blue-900/40 dark:to-blue-800/20' : 'from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600' %> flex items-center justify-center mr-3"
+              class="w-7 h-7 rounded-md bg-gradient-to-br <%= activePage === 'dashboard' ? 'from-blue-100 to-blue-50 dark:from-blue-900/40 dark:to-blue-800/20' : 'from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600' %> flex items-center justify-center mr-2.5"
             >
               <i
                 class="fas fa-home <%= activePage === 'dashboard' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400' %>"
@@ -53,10 +55,10 @@
         <li>
           <a
             href="/dvr"
-            class="flex items-center p-3.5 rounded-xl group <%= activePage === 'dvr' ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30' : 'text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700/50 transition-colors' %>"
+            class="flex items-center p-2.5 rounded-lg group <%= activePage === 'dvr' ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30' : 'text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700/50 transition-colors' %>"
           >
             <div
-              class="w-8 h-8 rounded-lg bg-gradient-to-br <%= activePage === 'dvr' ? 'from-blue-100 to-blue-50 dark:from-blue-900/40 dark:to-blue-800/20' : 'from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600' %> flex items-center justify-center mr-3"
+              class="w-7 h-7 rounded-md bg-gradient-to-br <%= activePage === 'dvr' ? 'from-blue-100 to-blue-50 dark:from-blue-900/40 dark:to-blue-800/20' : 'from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600' %> flex items-center justify-center mr-2.5"
             >
               <i
                 class="fas fa-server <%= activePage === 'dvr' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400' %>"
@@ -69,10 +71,10 @@
         <li>
           <a
             href="/settings"
-            class="flex items-center p-3.5 rounded-xl group <%= activePage === 'settings' ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30' : 'text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700/50 transition-colors' %>"
+            class="flex items-center p-2.5 rounded-lg group <%= activePage === 'settings' ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30' : 'text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700/50 transition-colors' %>"
           >
             <div
-              class="w-8 h-8 rounded-lg bg-gradient-to-br <%= activePage === 'settings' ? 'from-blue-100 to-blue-50 dark:from-blue-900/40 dark:to-blue-800/20' : 'from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600' %> flex items-center justify-center mr-3"
+              class="w-7 h-7 rounded-md bg-gradient-to-br <%= activePage === 'settings' ? 'from-blue-100 to-blue-50 dark:from-blue-900/40 dark:to-blue-800/20' : 'from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600' %> flex items-center justify-center mr-2.5"
             >
               <i
                 class="fas fa-cog <%= activePage === 'settings' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400' %>"
@@ -85,10 +87,10 @@
         <li>
           <a
             href="/analytics"
-            class="flex items-center p-3.5 rounded-xl group <%= activePage === 'analytics' ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30' : 'text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700/50 transition-colors' %>"
+            class="flex items-center p-2.5 rounded-lg group <%= activePage === 'analytics' ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30' : 'text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700/50 transition-colors' %>"
           >
             <div
-              class="w-8 h-8 rounded-lg bg-gradient-to-br <%= activePage === 'analytics' ? 'from-blue-100 to-blue-50 dark:from-blue-900/40 dark:to-blue-800/20' : 'from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600' %> flex items-center justify-center mr-3"
+              class="w-7 h-7 rounded-md bg-gradient-to-br <%= activePage === 'analytics' ? 'from-blue-100 to-blue-50 dark:from-blue-900/40 dark:to-blue-800/20' : 'from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600' %> flex items-center justify-center mr-2.5"
             >
               <i
                 class="fas fa-chart-line <%= activePage === 'analytics' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400' %>"
@@ -100,13 +102,13 @@
       </ul>
 
       <!-- Recent Activity Section -->
-      <div class="mt-8 pt-6 border-t border-blue-100 dark:border-gray-700">
+      <div class="mt-6 pt-4 border-t border-blue-100 dark:border-gray-700">
         <h3
-          class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4"
+          class="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2"
         >
           Recent Activity
         </h3>
-        <div class="space-y-3">
+        <div class="space-y-2">
           <% if (typeof recentActivities !== 'undefined' && recentActivities.length > 0) { %>
             <% recentActivities.forEach(activity => { 
                 let colorClass = "bg-gray-500";
@@ -115,9 +117,9 @@
                 else if (activity.source_type === "system") colorClass = "bg-purple-500";
                 else if (activity.action === "deleted") colorClass = "bg-red-500";
             %>
-              <div class="flex items-center text-sm" title="<%= new Date(activity.created_at).toLocaleString() %>">
-                <div class="w-2 h-2 rounded-full <%= colorClass %> mr-3 flex-shrink-0"></div>
-                <span class="text-gray-700 dark:text-gray-300 truncate" title="<%= activity.description %>"><%= activity.description %></span>
+              <div class="flex items-center text-xs" title="<%= new Date(activity.created_at).toLocaleString() %>">
+                <div class="w-1.5 h-1.5 rounded-full <%= colorClass %> mr-2 flex-shrink-0"></div>
+                <span class="text-gray-600 dark:text-gray-300 truncate" title="<%= activity.description %>"><%= activity.description %></span>
               </div>
             <% }); %>
           <% } else { %>
@@ -129,7 +131,7 @@
 
     <!-- Footer -->
     <div class="p-4 border-t border-blue-100 dark:border-gray-700">
-      <div class="text-xs text-gray-500 dark:text-gray-400 text-center">StreamVision v2.0</div>
+      <div class="text-xs text-gray-500 dark:text-gray-400 text-center">StreamVision <%= appVersion %></div>
     </div>
   </div>
 </aside>

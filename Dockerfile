@@ -16,6 +16,8 @@ RUN --mount=type=cache,target=/root/.npm \
 
 FROM base AS final
 ENV NODE_ENV=production
+ARG APP_VERSION=v4.0.0
+ENV APP_VERSION=$APP_VERSION
 WORKDIR /usr/src/app
 
 RUN mkdir -p logs && chown -R node:node /usr/src/app

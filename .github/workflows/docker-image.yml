@@ -40,6 +40,8 @@ jobs:
           file: ./Dockerfile
           push: true
           platforms: linux/amd64
+          build-args: |
+            APP_VERSION=${{ steps.version.outputs.version }}
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/streamvision:${{ steps.version.outputs.version }}
             ${{ secrets.DOCKERHUB_USERNAME }}/streamvision:latest

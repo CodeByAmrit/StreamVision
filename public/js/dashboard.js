@@ -275,7 +275,7 @@ function initializeQuickActions() {
   const quickStreamBtn = document.querySelector('[data-action="quick-stream"]');
   if (quickStreamBtn) {
     quickStreamBtn.addEventListener("click", () => {
-      window.location.href = "/camera/new";
+      window.location.href = "/camera/add";
     });
   }
 
@@ -283,7 +283,7 @@ function initializeQuickActions() {
   const addDvrBtn = document.querySelector('[data-action="add-dvr"]');
   if (addDvrBtn) {
     addDvrBtn.addEventListener("click", () => {
-      window.location.href = "/dvr/new";
+      window.location.href = "/dvr/add";
     });
   }
 

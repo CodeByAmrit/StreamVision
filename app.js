@@ -26,6 +26,9 @@ const morgan = require("morgan");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Global App Version (Injected via Docker Build ARG / System Env)
+app.locals.appVersion = process.env.APP_VERSION || "v4.0.0";
+
 // =================== Security & Middleware ===================
 
 app.use((req, res, next) => {

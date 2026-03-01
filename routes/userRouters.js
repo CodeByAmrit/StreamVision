@@ -5,6 +5,7 @@ const checkAuth = require("../services/checkauth");
 const { getAllDvrs } = require("../controllers/dvrController");
 const dvrManager = require("../utils/streamManager");
 const bcrypt = require("bcrypt");
+const os = require("os");
 require("dotenv").config();
 
 // Get all users
@@ -25,12 +26,21 @@ router.get("/dashboard", checkAuth, async (req, res) => {
     // 2. Build active DVR summary from Map
     const activeDvrsSummary = {};
 
-    for (const [dvrId, streamInstance] of dvrManager.streams.entries()) {
-      activeDvrsSummary[dvrId] = {
-        dvr_id: dvrId,
-        activeCameraCount: streamInstance.activeCameraCount || 1,
-        lastActivity: streamInstance.lastAccess || Date.now(),
-      };
+    for (const [cameraId, streamInstance] of dvrManager.streams.entries()) {
+      // Only count actively online streams
+      if (!streamInstance.isOnline()) continue;
+
+      const dvrId = streamInstance.dvrId;
+      if (!dvrId) continue;
+      
+      if (!activeDvrsSummary[dvrId]) {
+        activeDvrsSummary[dvrId] = {
+          dvr_id: dvrId,
+          activeCameraCount: 0,
+          lastActivity: streamInstance.meta.lastFrameAt || streamInstance.meta.startedAt || Date.now(),
+        };
+      }
+      activeDvrsSummary[dvrId].activeCameraCount += 1;
     }
 
     // 3. Merge active DVRs with full DVR details
@@ -44,10 +54,36 @@ router.get("/dashboard", checkAuth, async (req, res) => {
     // 4. Dashboard statistics
     const total_dvrs = dvrs.length;
     const total_cameras = dvrs.reduce((count, dvr) => count + (dvr.total_cameras || 0), 0);
-
     const active_streams = dvrManager.streams.size;
 
-    // 5. Render dashboard
+    // 5. Calculate Real System Metrics
+    const totalMem = os.totalmem();
+    const freeMem = os.freemem();
+    const usedMem = totalMem - freeMem;
+    const memoryUsagePercent = ((usedMem / totalMem) * 100).toFixed(1);
+
+    const cpus = os.cpus();
+    const loadAvg = os.loadavg()[0]; // 1-minute load average
+    const serverLoadPercent = ((loadAvg / cpus.length) * 100).toFixed(1);
+
+    const uptimeSeconds = os.uptime();
+    const uptimeDays = Math.floor(uptimeSeconds / (3600 * 24));
+    let uptimeDisplay = `${uptimeDays} d`;
+    if (uptimeDays === 0) {
+       const uptimeHours = Math.floor(uptimeSeconds / 3600);
+       uptimeDisplay = `${uptimeHours} h`;
+    }
+
+    const processMemoryMb = (process.memoryUsage().rss / 1024 / 1024).toFixed(1);
+
+    const systemStats = {
+      memoryUsagePercent,
+      serverLoadPercent: Math.min(serverLoadPercent, 100), // Cap at 100% for UI
+      uptimeDisplay,
+      processMemoryMb
+    };
+
+    // 6. Render dashboard
     res.render("dashboard", {
       title: "Dashboard",
       user: req.user,
@@ -56,6 +92,7 @@ router.get("/dashboard", checkAuth, async (req, res) => {
       active_streams,
       dvrs,
       activeDvrs: activeDvrsWithDetails,
+      systemStats
     });
   } catch (error) {
     console.error("Dashboard loading error:", error);
