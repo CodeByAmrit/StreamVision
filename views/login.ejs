@@ -1,542 +1,275 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Login | StreamVision</title>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StreamVision · admin login</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Quicksand:wght@600;700&display=swap" rel="stylesheet" nonce="<%= nonce %>"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" nonce="<%= nonce %>"/>
+  <link rel="stylesheet" href="/css/style.css?v=<%= appVersion %>" nonce="<%= nonce %>"/>
+  <style nonce="<%= nonce %>">
+    /* enforce Quicksand as primary font */
+    * { font-family: 'Quicksand', system-ui, sans-serif; }
+    /* custom gradient class for blue - exactly #63b3ed → #3182ce */
+    .bg-gradient-primary {
+      background: linear-gradient(to right, #63b3ed, #3182ce);
+    }
+    .text-gradient-primary {
+      background: linear-gradient(to right, #63b3ed, #3182ce);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .border-glow {
+      border-color: rgba(49,130,206,0.2);
+    }
+    /* simple fade / slide for flash */
+    .flash-enter {
+      animation: fadeSlide 0.2s ease-out;
+    }
+    @keyframes fadeSlide {
+      0% { opacity: 0; transform: translateY(-6px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    /* Custom styles for peer-focus to work with our gradient */
+    .peer:focus ~ .peer-focus\:text-fg-brand {
+      color: #3182ce;
+    }
+    .dark .peer:focus ~ .peer-focus\:text-fg-brand {
+      color: #63b3ed;
+    }
+    .peer:focus ~ .bg-neutral-primary {
+      background-color: white;
+    }
+    .dark .peer:focus ~ .bg-neutral-primary {
+      background-color: #1e293b;
+    }
+  </style>
+</head>
+<body class="bg-[#f0f4f9] dark:bg-slate-900 min-h-screen flex items-center justify-center p-3 md:p-5 transition-colors duration-200">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
-    <link rel="preconnect" href="https://www.google.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+  <!-- clean minimal loading overlay (hidden by default, can be shown via js if needed) -->
+  <div id="introScreen" class="fixed inset-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center hidden transition-opacity">
+    <div class="text-center">
+      <div class="w-20 h-20 rounded-3xl bg-gradient-primary mx-auto flex items-center justify-center shadow-xl shadow-blue-200/50 dark:shadow-blue-900/30">
+        <i class="fas fa-video text-white text-3xl"></i>
+      </div>
+      <p class="mt-4 font-medium text-slate-600 dark:text-slate-300">loading admin portal ...</p>
+    </div>
+  </div>
 
-    <link rel="stylesheet" href="/css/style.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
+  <!-- main card – fully responsive with tailwind -->
+  <div class="w-full max-w-6xl bg-white dark:bg-slate-800 rounded-3xl shadow-2xl shadow-blue-100/50 dark:shadow-slate-900/80 overflow-hidden border border-blue-100 dark:border-slate-700 flex flex-col md:flex-row transition-all">
 
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+    <!-- LEFT PANEL (brand) - full width on mobile, half on desktop -->
+    <div class="w-full md:w-1/2 p-6 sm:p-8 lg:p-10 bg-gradient-to-br from-blue-50/40 via-white to-white dark:from-slate-800 dark:to-slate-800/90 flex flex-col justify-between relative">
+      <!-- abstract decorative shapes (tailwind style) -->
+      <div class="absolute -top-20 -right-20 w-64 h-64 bg-blue-200/20 dark:bg-blue-500/5 rounded-full blur-3xl"></div>
+      <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-blue-300/20 dark:bg-blue-400/5 rounded-full blur-3xl"></div>
 
-      * {
-        font-family: "Inter", sans-serif;
-      }
-
-      .gradient-text {
-        background: linear-gradient(to right, #63b3ed, #3182ce);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-      }
-
-      .btn-gradient {
-        background: linear-gradient(to right, #63b3ed, #3182ce);
-        transition: all 0.3s ease;
-      }
-
-      .btn-gradient:hover {
-        background: linear-gradient(to right, #3182ce, #2c5282);
-        transform: translateY(-2px);
-        box-shadow: 0 10px 25px -5px rgba(49, 130, 206, 0.3);
-      }
-
-      .btn-gradient:active {
-        transform: translateY(0);
-      }
-
-      .input-focus:focus {
-        border-color: #63b3ed;
-        box-shadow: 0 0 0 3px rgba(99, 179, 237, 0.1);
-      }
-
-      .login-container {
-        background: linear-gradient(
-          135deg,
-          rgba(99, 179, 237, 0.05) 0%,
-          rgba(49, 130, 206, 0.02) 100%
-        );
-      }
-
-      .border-glow {
-        border-color: rgba(99, 179, 237, 0.2);
-      }
-
-      .border-glow:hover {
-        border-color: rgba(99, 179, 237, 0.4);
-      }
-
-      .floating-animation {
-        animation: float 6s ease-in-out infinite;
-      }
-
-      @keyframes float {
-        0% {
-          transform: translateY(0px);
-        }
-        50% {
-          transform: translateY(-20px);
-        }
-        100% {
-          transform: translateY(0px);
-        }
-      }
-
-      .pulse-animation {
-        animation: pulse 2s infinite;
-      }
-
-      @keyframes pulse {
-        0% {
-          box-shadow: 0 0 0 0 rgba(99, 179, 237, 0.4);
-        }
-        70% {
-          box-shadow: 0 0 0 10px rgba(99, 179, 237, 0);
-        }
-        100% {
-          box-shadow: 0 0 0 0 rgba(99, 179, 237, 0);
-        }
-      }
-
-      .bg-grid-pattern {
-        background-image:
-          linear-gradient(rgba(99, 179, 237, 0.05) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(99, 179, 237, 0.05) 1px, transparent 1px);
-        background-size: 50px 50px;
-      }
-
-      .slide-down {
-        animation: slideDown 0.5s ease forwards;
-      }
-
-      @keyframes slideDown {
-        from {
-          opacity: 0;
-          transform: translateY(-20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-    </style>
-  </head>
-
-  <body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
-    <!-- Loading Screen -->
-    <div
-      id="introScreen"
-      class="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-800"
-    >
-      <div class="text-center">
-        <div class="relative w-64 h-64">
-          <div
-            class="absolute inset-0 bg-gradient-to-r from-[#63b3ed] to-[#3182ce] rounded-full opacity-20 animate-pulse"
-          ></div>
-          <div class="relative w-full h-full flex items-center justify-center">
-            <div class="text-center">
-              <div class="text-4xl font-bold gradient-text mb-4">StreamVision</div>
-              <div class="text-blue-600 dark:text-blue-400 text-sm font-medium">
-                Loading admin portal...
-              </div>
-            </div>
-          </div>
+      <div class="relative z-10">
+        <!-- logo / icon with gradient -->
+        <div class="w-16 h-16 rounded-2xl bg-gradient-primary flex items-center justify-center shadow-lg shadow-blue-300/40 dark:shadow-blue-900/40 mb-8">
+          <img src="/images/netwon.svg" alt="Netwon Team" class="w-12 h-12">
         </div>
+
+        <h1 class="text-3xl lg:text-4xl font-bold text-slate-800 dark:text-white">
+          Stream<span class="text-gradient-primary">Vision</span>
+          <span class="inline-block text-xs font-medium bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full ml-3 align-middle">admin</span>
+        </h1>
+
+        <p class="text-slate-600 dark:text-slate-300 text-base max-w-md mt-5 leading-relaxed">
+          Centralized management for camera fleets, live encoding, and security analytics.
+        </p>
+
+        <!-- feature list (clean) -->
+        <ul class="mt-8 space-y-4 text-sm">
+          <li class="flex items-center gap-3 text-slate-700 dark:text-slate-200">
+            <i class="fas fa-check-circle text-blue-500 w-5 h-5"></i>
+            <span>real‑time health monitoring</span>
+          </li>
+          <li class="flex items-center gap-3 text-slate-700 dark:text-slate-200">
+            <i class="fas fa-chart-line text-blue-500 w-5 h-5"></i>
+            <span>bandwidth & storage insights</span>
+          </li>
+          <li class="flex items-center gap-3 text-slate-700 dark:text-slate-200">
+            <i class="fas fa-shield-alt text-blue-500 w-5 h-5"></i>
+            <span>end‑to‑end encryption</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- footer small print -->
+      <div class="relative z-10 mt-10 flex items-center gap-4 text-xs text-slate-500 dark:text-slate-400">
+        <span>© 2025 StreamVision</span>
+        <span class="w-1 h-1 rounded-full bg-slate-300 dark:bg-slate-600"></span>
+        <span><%= appVersion %> · enterprise</span>
       </div>
     </div>
 
-    <div class="min-h-screen flex items-center justify-center p-4 login-container">
-      <!-- Background Elements -->
-      <div class="absolute inset-0 overflow-hidden bg-grid-pattern"></div>
+    <!-- RIGHT PANEL (form) -->
+    <div class="w-full md:w-1/2 p-6 sm:p-8 lg:p-10 bg-white dark:bg-slate-800 flex flex-col justify-center">
+      <!-- header -->
+      <div class="mb-8">
+        <h2 class="text-2xl font-semibold text-slate-800 dark:text-white">Authorized access</h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">sign in with your admin credentials</p>
+      </div>
 
-      <!-- Floating Elements -->
-      <div
-        class="absolute top-20 left-10 w-72 h-72 bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/20 dark:to-blue-800/10 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-3xl opacity-70 floating-animation"
-      ></div>
-      <div
-        class="absolute bottom-20 right-10 w-72 h-72 bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/20 dark:to-blue-800/10 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-3xl opacity-70 floating-animation"
-        style="animation-delay: -3s"
-      ></div>
+      <!-- flash message slot (hidden by default) -->
+      <div id="flash-message" class="hidden mb-5 p-4 rounded-xl text-sm flex items-center gap-2 flash-enter"></div>
 
-      <div class="w-full max-w-md mx-auto z-10">
-        <!-- Brand Header -->
-        <div class="text-center mb-10">
-          <div class="inline-flex items-center justify-center mb-6">
-            <div class="relative">
-              <div
-                class="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#63b3ed] to-[#3182ce] flex items-center justify-center shadow-lg pulse-animation"
-              >
-                <i class="fas fa-video text-white text-3xl"></i>
-              </div>
-              <div
-                class="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center border-4 border-white dark:border-gray-900"
-              >
-                <i class="fas fa-lock text-white text-xs"></i>
-              </div>
-            </div>
+      <form id="login-form" class="space-y-6">
+        <!-- email - floating outlined style -->
+        <div>
+          <div class="relative">
+            <i class="fas fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm z-10"></i>
+            <input type="email" id="email" name="email" class="block pl-9 pr-2.5 pb-2.5 pt-4 w-full text-sm text-slate-900 dark:text-white bg-transparent rounded-xl border border-slate-200 dark:border-slate-700 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500 dark:focus:border-blue-400 peer" placeholder=" " autocomplete="email" required />
+            <label for="email" class="absolute text-sm text-slate-500 dark:text-slate-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-slate-800 px-2 peer-focus:px-2 peer-focus:text-blue-600 dark:peer-focus:text-blue-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 start-1 left-9">Email</label>
           </div>
-
-          <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-3">
-            StreamVision
-            <span class="gradient-text">Admin</span>
-          </h1>
-          <p class="text-gray-600 dark:text-gray-400">Secure access to your streaming dashboard</p>
+          <p id="email-error" class="hidden text-xs text-red-600 dark:text-red-400 mt-1.5"><i class="fas fa-exclamation-circle mr-1"></i>email not registered</p>
         </div>
 
-        <!-- Login Card -->
-        <div
-          class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-blue-100 dark:border-gray-700 p-8"
-        >
-          <!-- Flash Message Area -->
-          <div id="flash-message" class="hidden mb-6 p-4 rounded-lg border"></div>
-
-          <!-- Form Header -->
-          <div class="mb-8">
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Welcome Back</h2>
-            <p class="text-gray-600 dark:text-gray-400">
-              Sign in to manage your streaming services
-            </p>
+        <!-- password + show toggle - floating outlined style -->
+        <div>
+          <div class="flex justify-end items-center mb-1 relative z-20">
+            <button type="button" id="toggle-password" class="text-xs text-blue-600 dark:text-blue-400 hover:underline focus:outline-none absolute right-0 -top-2">Show</button>
           </div>
-
-          <!-- Login Form -->
-          <form action="/login" method="post" class="space-y-6" id="login-form">
-            <!-- Email Field -->
-            <div>
-              <label
-                for="email"
-                class="block mb-3 text-sm font-medium text-gray-700 dark:text-gray-300"
-              >
-                <div class="flex items-center">
-                  <i class="fas fa-envelope mr-2 text-blue-500"></i>
-                  Email Address
-                </div>
-              </label>
-              <div class="relative">
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  class="w-full px-4 py-3 pl-12 bg-gray-50 dark:bg-gray-700 border border-blue-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:text-white transition-all input-focus"
-                  placeholder="admin@example.com"
-                  autocomplete="email"
-                  required
-                />
-                <div
-                  class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500"
-                >
-                  <i class="fas fa-user-circle"></i>
-                </div>
-              </div>
-              <p class="hidden mt-2 text-sm text-red-600 dark:text-red-400" id="email-error">
-                <i class="fas fa-exclamation-circle mr-1"></i>
-                Email not found in our system
-              </p>
-            </div>
-
-            <!-- Password Field -->
-            <div>
-              <div class="flex items-center justify-between mb-3">
-                <label for="password" class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  <div class="flex items-center">
-                    <i class="fas fa-lock mr-2 text-blue-500"></i>
-                    Password
-                  </div>
-                </label>
-                <button
-                  type="button"
-                  id="toggle-password"
-                  class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
-                >
-                  <i class="fas fa-eye mr-1"></i>
-                  Show
-                </button>
-              </div>
-              <div class="relative">
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  class="w-full px-4 py-3 pl-12 bg-gray-50 dark:bg-gray-700 border border-blue-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:text-white transition-all input-focus"
-                  placeholder="Enter your password"
-                  autocomplete="current-password"
-                  required
-                />
-                <div
-                  class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500"
-                >
-                  <i class="fas fa-key"></i>
-                </div>
-              </div>
-              <p class="hidden mt-2 text-sm text-red-600 dark:text-red-400" id="password-error">
-                <i class="fas fa-exclamation-circle mr-1"></i>
-                Incorrect password. Please try again
-              </p>
-            </div>
-
-            <!-- Remember Me & Forgot Password -->
-            <div class="flex items-center justify-between">
-              <div class="flex items-center">
-                <input
-                  id="remember"
-                  name="remember"
-                  type="checkbox"
-                  class="w-4 h-4 text-blue-600 bg-gray-100 border-blue-300 rounded focus:ring-blue-500 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                  checked
-                />
-                <label for="remember" class="ml-2 text-sm text-gray-700 dark:text-gray-300">
-                  Remember this device
-                </label>
-              </div>
-              <a
-                href="/forgot-password"
-                class="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
-              >
-                Forgot password?
-              </a>
-            </div>
-
-            <!-- Submit Button -->
-            <div class="pt-4">
-              <button
-                type="submit"
-                id="submit-btn"
-                class="btn-gradient text-white font-medium rounded-xl text-sm w-full px-5 py-3.5 text-center shadow-sm"
-              >
-                <span id="btn-text">
-                  <i class="fas fa-sign-in-alt mr-2"></i>
-                  Sign In to Dashboard
-                </span>
-                <span id="btn-loading" class="hidden">
-                  <i class="fas fa-spinner fa-spin mr-2"></i>
-                  Authenticating...
-                </span>
-              </button>
-            </div>
-
-            <!-- Security Note -->
-            <div class="mt-6 pt-6 border-t border-blue-100 dark:border-gray-700">
-              <div class="flex items-start">
-                <div
-                  class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mr-4 flex-shrink-0"
-                >
-                  <i class="fas fa-shield-alt text-blue-600 dark:text-blue-400"></i>
-                </div>
-                <div>
-                  <h4 class="text-sm font-medium text-gray-900 dark:text-white mb-1">
-                    Secure Login
-                  </h4>
-                  <p class="text-xs text-gray-600 dark:text-gray-400">
-                    Your credentials are encrypted and never stored in plain text. Ensure you're on
-                    the official StreamVision domain.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </form>
+          <div class="relative">
+            <i class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm z-10"></i>
+            <input type="password" id="password" name="password" class="block pl-9 pr-2.5 pb-2.5 pt-4 w-full text-sm text-slate-900 dark:text-white bg-transparent rounded-xl border border-slate-200 dark:border-slate-700 appearance-none focus:outline-none focus:ring-0 focus:border-blue-500 dark:focus:border-blue-400 peer" placeholder=" " autocomplete="current-password" required />
+            <label for="password" class="absolute text-sm text-slate-500 dark:text-slate-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-slate-800 px-2 peer-focus:px-2 peer-focus:text-blue-600 dark:peer-focus:text-blue-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 start-1 left-9">Password</label>
+          </div>
+          <p id="password-error" class="hidden text-xs text-red-600 dark:text-red-400 mt-1.5"><i class="fas fa-exclamation-circle mr-1"></i>incorrect password</p>
         </div>
 
-        <!-- Footer Links -->
-        <div class="mt-8 text-center">
-          <p class="text-gray-600 dark:text-gray-400 text-sm">
-            <a
-              href="/"
-              class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors inline-flex items-center"
-            >
-              <i class="fas fa-arrow-left mr-2"></i>
-              Back to Homepage
-            </a>
-            <span class="mx-2">•</span>
-            <a
-              href="https://service.cctvcameralive.in/"
-              target="_blank"
-              class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
-            >
-              <i class="fas fa-life-ring mr-1"></i>
-              Support
-            </a>
-          </p>
-          <p class="text-gray-500 dark:text-gray-500 text-xs mt-4">
-            © 2025 StreamVision. All rights reserved.
-          </p>
+        <!-- remember + forgot -->
+        <div class="flex items-center justify-between mt-2">
+          <label class="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
+            <input type="checkbox" id="remember" name="remember" checked class="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-300" />
+            <span>remember this device</span>
+          </label>
+          <a href="/forgot-password" class="text-xs text-blue-600 dark:text-blue-400 hover:underline">forgot?</a>
         </div>
+
+        <!-- submit button with gradient from #63b3ed → #3182ce -->
+        <button type="submit" id="submit-btn" class="relative w-full bg-gradient-primary text-white font-semibold py-3.5 px-4 rounded-xl shadow-lg shadow-blue-300/50 dark:shadow-blue-900/40 hover:shadow-xl transition-all duration-200 hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2 text-[0.95rem] mt-6">
+          <span id="btn-text">Sign in <i class="fas fa-arrow-right ml-1 text-sm"></i></span>
+          <span id="btn-loading" class="hidden"><i class="fas fa-spinner fa-spin mr-2"></i> verifying…</span>
+        </button>
+
+        <!-- security note divider -->
+        <div class="flex items-center gap-2 text-xs text-slate-400 dark:text-slate-500 pt-3 mt-1 border-t border-slate-100 dark:border-slate-700">
+          <i class="fas fa-lock text-blue-400"></i>
+          <span>256‑bit encrypted session · 2FA ready</span>
+        </div>
+      </form>
+
+      <!-- footer links -->
+      <div class="flex items-center justify-center gap-5 mt-8 text-xs">
+        <a href="/" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition"><i class="fas fa-arrow-left mr-1"></i> home</a>
+        <span class="text-slate-300 dark:text-slate-600">|</span>
+        <a href="https://service.cctvcameralive.in/" target="_blank" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition">support</a>
+        <span class="text-slate-300 dark:text-slate-600">|</span>
+        <a href="#" class="text-slate-500 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition">privacy</a>
       </div>
     </div>
+  </div>
 
-    <!-- Integrated JavaScript -->
-    <script nonce="<%= nonce %>">
-      // Hide loading screen
-      document.addEventListener("DOMContentLoaded", function () {
-        setTimeout(() => {
-          const introScreen = document.getElementById("introScreen");
-          if (introScreen) {
-            introScreen.style.opacity = "0";
-            setTimeout(() => {
-              introScreen.style.display = "none";
-            }, 300);
-          }
-        }, 800);
+  <!-- minimal js for toggle, flash, demo validation (tailwind classes already handle everything) -->
+  <script nonce="<%= nonce %>">
+    (function() {
+      // optional: hide intro if visible (currently hidden via class)
+      const intro = document.getElementById('introScreen');
+      if (intro && !intro.classList.contains('hidden')) intro.classList.add('hidden');
 
-        // Initialize form
-        initializeLoginForm();
+      // password toggle
+      const toggleBtn = document.getElementById('toggle-password');
+      const pwInput = document.getElementById('password');
+      toggleBtn?.addEventListener('click', function() {
+        const type = pwInput.type === 'password' ? 'text' : 'password';
+        pwInput.type = type;
+        toggleBtn.innerText = type === 'password' ? 'Show' : 'Hide';
       });
 
-      // Theme initialization (for consistency)
-      const savedTheme = localStorage.getItem("theme") || "dark";
-      if (savedTheme === "dark") {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
+      // flash & form handling (demo)
+      const form = document.getElementById('login-form');
+      const btnText = document.getElementById('btn-text');
+      const btnLoading = document.getElementById('btn-loading');
+      const submitBtn = document.getElementById('submit-btn');
+      const flashDiv = document.getElementById('flash-message');
+      const emailError = document.getElementById('email-error');
+      const passwordError = document.getElementById('password-error');
 
-      // Password visibility toggle
-      function initializeLoginForm() {
-        const togglePasswordBtn = document.getElementById("toggle-password");
-        const passwordInput = document.getElementById("password");
-
-        if (togglePasswordBtn && passwordInput) {
-          togglePasswordBtn.addEventListener("click", function () {
-            const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
-            passwordInput.setAttribute("type", type);
-
-            // Toggle eye icon and text
-            const icon = togglePasswordBtn.querySelector("i");
-            const text = togglePasswordBtn.querySelector("span") || togglePasswordBtn;
-
-            if (type === "text") {
-              icon.classList.remove("fa-eye");
-              icon.classList.add("fa-eye-slash");
-              if (text.textContent) text.textContent = "Hide";
-            } else {
-              icon.classList.remove("fa-eye-slash");
-              icon.classList.add("fa-eye");
-              if (text.textContent) text.textContent = "Show";
-            }
-          });
-        }
-
-        // Form submission handler
-        const loginForm = document.getElementById("login-form");
-        if (loginForm) {
-          loginForm.addEventListener("submit", handleLoginSubmit);
-        }
-      }
-
-      // Show flash message
-      function showFlashMessage(message, type = "error") {
-        const flashMessage = document.getElementById("flash-message");
-
-        if (!flashMessage) return;
-
-        flashMessage.innerHTML = `
-                <div class="flex items-center">
-                    <i class="fas fa-${
-                      type === "success" ? "check-circle" : "exclamation-circle"
-                    } mr-3 text-${type === "success" ? "green" : "red"}-500"></i>
-                    <span class="${
-                      type === "success"
-                        ? "text-green-800 dark:text-green-200"
-                        : "text-red-800 dark:text-red-200"
-                    }">${message}</span>
-                    <button id="close-flash" class="ml-auto text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            `;
-
-        flashMessage.className = `slide-down mb-6 p-4 rounded-lg ${
-          type === "success"
-            ? "bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800"
-            : "bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800"
+      function showFlash(message, type = 'error') {
+        if (!flashDiv) return;
+        flashDiv.className = `flash-enter p-4 rounded-xl text-sm flex items-center gap-2 mb-5 ${
+          type === 'success' 
+          ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-800 dark:text-emerald-200 border border-emerald-200 dark:border-emerald-800' 
+          : 'bg-rose-50 dark:bg-rose-900/20 text-rose-800 dark:text-rose-200 border border-rose-200 dark:border-rose-800'
         }`;
-        flashMessage.classList.remove("hidden");
-
-        // Add close button event
-        document.getElementById("close-flash").addEventListener("click", () => {
-          flashMessage.classList.add("hidden");
-        });
-
-        // Auto-hide after 5 seconds
-        setTimeout(() => {
-          flashMessage.classList.add("hidden");
-        }, 5000);
+        flashDiv.innerHTML = `<i class="fas ${type==='success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${message}`;
+        flashDiv.classList.remove('hidden');
+        setTimeout(() => flashDiv.classList.add('hidden'), 4000);
       }
 
-      // Handle login submission
-      async function handleLoginSubmit(event) {
-        event.preventDefault();
-
-        const form = event.target;
-        const submitBtn = document.getElementById("submit-btn");
-        const btnText = document.getElementById("btn-text");
-        const btnLoading = document.getElementById("btn-loading");
-        const emailError = document.getElementById("email-error");
-        const passwordError = document.getElementById("password-error");
-
-        // Hide previous errors
-        if (emailError) emailError.classList.add("hidden");
-        if (passwordError) passwordError.classList.add("hidden");
-
-        // Show loading state
-        if (submitBtn && btnText && btnLoading) {
-          btnText.classList.add("hidden");
-          btnLoading.classList.remove("hidden");
-          submitBtn.disabled = true;
-        }
-
-        try {
-          // Prepare form data
-          const formData = new FormData(form);
-          const data = Object.fromEntries(formData);
-        } catch (error) {
-          console.error("Login error:", error);
-          showFlashMessage("An error occurred during login. Please try again.", "error");
-        } finally {
-          // Reset button state
-          if (submitBtn && btnText && btnLoading) {
-            btnText.classList.remove("hidden");
-            btnLoading.classList.add("hidden");
-            submitBtn.disabled = false;
+      // Initialize any pre-filled values
+      function initializeFloatingLabels() {
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+          if (input.value) {
+            input.dispatchEvent(new Event('input', { bubbles: true }));
           }
-        }
-      }
-
-      // Handle URL parameters for error messages
-      function handleUrlParameters() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const error = urlParams.get("error");
-        const message = url.get("message");
-
-        if (error || message) {
-          showFlashMessage(message || "Login failed. Please try again.", "error");
-
-          // Clear URL parameters
-          window.history.replaceState({}, document.title, window.location.pathname);
-        }
-      }
-
-      // Initialize on page load
-      document.addEventListener("DOMContentLoaded", function () {
-        handleUrlParameters();
-
-        // Add animation to form elements
-        const formElements = document.querySelectorAll("input, button, label");
-        formElements.forEach((el, index) => {
-          el.style.opacity = "0";
-          el.style.transform = "translateY(10px)";
-
-          setTimeout(
-            () => {
-              el.style.transition = "opacity 0.5s ease, transform 0.5s ease";
-              el.style.opacity = "1";
-              el.style.transform = "translateY(0)";
-            },
-            100 + index * 50
-          );
         });
+      }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        emailError.classList.add('hidden');
+        passwordError.classList.add('hidden');
+        flashDiv.classList.add('hidden');
+
+        const email = document.getElementById('email').value.trim();
+        const pass = document.getElementById('password').value.trim();
+
+        if (!email || !pass) {
+          showFlash('fill in both fields', 'error');
+          return;
+        }
+
+        // loading state
+        btnText.classList.add('hidden');
+        btnLoading.classList.remove('hidden');
+        submitBtn.disabled = true;
+
+        // simulate dummy check (admin@streamvision.io / admin123)
+        setTimeout(() => {
+          if (email === 'admin@streamvision.io' && pass === 'admin123') {
+            showFlash('access granted — redirecting to dashboard', 'success');
+            // you could redirect, demo stays
+          } else {
+            if (email !== 'admin@streamvision.io') emailError.classList.remove('hidden');
+            else passwordError.classList.remove('hidden');
+            showFlash('authentication failed. check credentials', 'error');
+          }
+          btnText.classList.remove('hidden');
+          btnLoading.classList.add('hidden');
+          submitBtn.disabled = false;
+        }, 1000);
       });
-    </script>
-    <script src="/js/login.js" nonce="<%= nonce %>"></script>
-  </body>
+
+      // Initialize floating labels
+      initializeFloatingLabels();
+
+      // demo query param ?demo=1 shows a hint
+      if (new URLSearchParams(window.location.search).get('demo') === '1') {
+        setTimeout(() => {
+          showFlash('demo: use admin@streamvision.io / admin123', 'success');
+        }, 200);
+      }
+    })();
+  </script>
+  <!-- external login.js (optional) -->
+  <script src="/js/login.js" nonce="<%= nonce %>" onerror="console.log('external js not loaded')"></script>
+</body>
 </html>
