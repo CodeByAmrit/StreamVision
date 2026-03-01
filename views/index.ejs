@@ -230,11 +230,11 @@
 
             <!-- Support Link -->
             <a
-              href="https://service.cctvcameralive.in/"
+              href="#contact"
               class="hidden sm:inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
-              <i class="fas fa-life-ring mr-2"></i>
-              Support
+              <i class="fas fa-envelope mr-2"></i>
+              Contact Us
             </a>
 
             <!-- Admin Login Button -->
@@ -802,6 +802,61 @@
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      <!-- Contact Form Section -->
+      <section id="contact" class="py-16 sm:py-20 lg:py-24 bg-gray-50 dark:bg-gray-800/50 border-t border-blue-100 dark:border-gray-800">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center mb-12">
+            <span class="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 text-sm font-medium mb-4">
+              <i class="fas fa-paper-plane mr-2"></i>
+              Get in Touch
+            </span>
+            <h2 class="text-3xl sm:text-4xl font-bold mb-4">
+              Contact <span class="gradient-text">Us</span>
+            </h2>
+            <p class="text-lg text-gray-600 dark:text-gray-400">
+              Have questions or need assistance? Send us a message below.
+            </p>
+          </div>
+
+          <!-- Replace the ACTION URL with your specific Google Form response endpoint later -->
+          <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-blue-100 dark:border-gray-700 shadow-sm card-hover">
+            <script type="text/javascript">var submitted=false;</script>
+            <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted){document.getElementById('contact-form').style.display='none';document.getElementById('success-message').style.display='block';}"></iframe>
+            
+            <form id="contact-form" action="https://docs.google.com/forms/d/e/1FAIpQLSf_ujbJbkQYEQw55NtsDSPnlD5uklRQMnVXoelCbu38ioUYQw/formResponse" method="POST" 
+            onsubmit="submitted=true;" class="space-y-6">
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label for="entry.1217913432" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Name</label>
+                  <input type="text" name="entry.1217913432" id="entry.1217913432" required class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-blue-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:text-white transition-all" placeholder="John Doe">
+                </div>
+                <div>
+                  <label for="entry.1126553980" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
+                  <input type="email" name="entry.1126553980" id="entry.1126553980" required class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-blue-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:text-white transition-all" placeholder="john@example.com">
+                </div>
+              </div>
+
+              <div>
+                <label for="entry.1917831420" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Message</label>
+                <textarea name="entry.1917831420" id="entry.1917831420" rows="5" required class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-blue-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:text-white transition-all" placeholder="How can we help you?"></textarea>
+              </div>
+
+              <button type="submit" class="w-full btn-gradient text-white font-medium rounded-xl px-6 py-4 flex justify-center items-center shadow-md">
+                <i class="fas fa-paper-plane mr-2"></i> Send Message
+              </button>
+            </form>
+
+            <div id="success-message" class="hidden text-center py-10">
+              <div class="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-check text-green-500 text-2xl"></i>
+              </div>
+              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Thank You!</h3>
+              <p class="text-gray-600 dark:text-gray-400">Your message has been sent successfully. We will get back to you soon.</p>
+              <button onclick="document.getElementById('success-message').style.display='none'; document.getElementById('contact-form').style.display='block'; document.getElementById('contact-form').reset(); submitted=false;" class="mt-6 text-blue-600 dark:text-blue-400 hover:underline font-medium text-sm">Send another message</button>
             </div>
           </div>
         </div>
