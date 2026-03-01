@@ -1,12 +1,9 @@
 const mysql = require("mysql2/promise");
 const dotenv = require("dotenv");
-const fs = require("fs");
-const path = require("path");
 
 dotenv.config();
 
-const dbCaBase64 = process.env.DB_CA;
-const caContent = Buffer.from(dbCaBase64, "base64").toString("utf8");
+const isProduction = process.env.NODE_ENV === "production";
 
 const dbConfig = {
   host: process.env.DB_HOST,
@@ -14,12 +11,25 @@ const dbConfig = {
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
   port: process.env.DB_PORT,
-  ssl: {
-    ca: caContent,
-  },
   waitForConnections: true,
   connectionLimit: 10,
 };
+
+if (isProduction) {
+  if (!process.env.DB_CA) {
+    throw new Error("DB_CA is required in production environment");
+  }
+
+  const caContent = Buffer.from(process.env.DB_CA, "base64").toString("utf8");
+
+  dbConfig.ssl = {
+    ca: caContent,
+  };
+
+  console.log("✅ MySQL running with SSL (Production Mode)");
+} else {
+  console.log("🛠 MySQL running without SSL (Development Mode)");
+}
 
 const pool = mysql.createPool(dbConfig);
 

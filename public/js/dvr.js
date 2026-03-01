@@ -102,9 +102,7 @@ function initializeDeleteButtons() {
           showFlashMessage(`DVR "${currentDvrName}" deleted successfully`, "success");
 
           // Remove the row from table
-          const row = document
-            .querySelector(`[data-dvr-id="${currentDvrId}"]`)
-            ?.closest(".hover\\:bg-blue-50");
+          const row = document.querySelector(`div[data-dvr-id="${currentDvrId}"]`);
           if (row) {
             row.style.opacity = "0";
             row.style.transform = "translateX(-100px)";
@@ -278,7 +276,7 @@ function initializeTooltips() {
 
 // Animate table rows on load
 function animateTableRows() {
-  const rows = document.querySelectorAll(".hover\\:bg-blue-50");
+  const rows = document.querySelectorAll("div[data-dvr-id]");
 
   rows.forEach((row, index) => {
     row.style.opacity = "0";
@@ -310,42 +308,94 @@ function updateDVRCounts() {
 }
 
 // Show flash message
+// ===============================
+// FLASH MESSAGE SYSTEM (FIXED)
+// ===============================
 function showFlashMessage(message, type = "success") {
-  // Create message element
+  // Normalize type
+  const messageType = type === "success" ? "success" : "error";
+
   const flashDiv = document.createElement("div");
-  flashDiv.className = `fixed top-4 right-4 z-50 px-6 py-4 rounded-xl shadow-lg transform transition-all duration-300 translate-x-full ${
-    type === "success"
-      ? "bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-400"
-      : "bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-400"
-  }`;
-  flashDiv.innerHTML = `
-        <div class="flex items-center">
-            <i class="fas ${
-              type === "success" ? "fa-check-circle" : "fa-exclamation-circle"
-            } mr-3"></i>
-            <span>${message}</span>
-            <button class="ml-4 text-current hover:opacity-75" onclick="this.parentElement.parentElement.remove()">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-    `;
+
+  // Base classes
+  flashDiv.className =
+    "fixed top-4 right-4 max-w-sm w-full z-50 px-6 py-4 rounded-xl shadow-lg " +
+    "transition-transform duration-300 ease-in-out translate-x-full";
+
+  // Apply color classes safely
+  if (messageType === "success") {
+    flashDiv.classList.add(
+      "bg-green-100",
+      "dark:bg-green-900/30",
+      "border",
+      "border-green-200",
+      "dark:border-green-800",
+      "text-green-800",
+      "dark:text-green-400"
+    );
+  } else {
+    flashDiv.classList.add(
+      "bg-red-100",
+      "dark:bg-red-900/30",
+      "border",
+      "border-red-200",
+      "dark:border-red-800",
+      "text-red-800",
+      "dark:text-red-400"
+    );
+  }
+
+  // Create content safely (NO innerHTML injection)
+  const container = document.createElement("div");
+  container.className = "flex items-center";
+
+  const icon = document.createElement("i");
+  icon.className =
+    "fas mr-3 " +
+    (messageType === "success"
+      ? "fa-check-circle"
+      : "fa-exclamation-circle");
+
+  const textSpan = document.createElement("span");
+  textSpan.textContent = message;
+
+  const closeBtn = document.createElement("button");
+  closeBtn.className = "ml-4 text-current hover:opacity-75";
+
+  const closeIcon = document.createElement("i");
+  closeIcon.className = "fas fa-times";
+
+  closeBtn.appendChild(closeIcon);
+
+  container.appendChild(icon);
+  container.appendChild(textSpan);
+  container.appendChild(closeBtn);
+  flashDiv.appendChild(container);
 
   document.body.appendChild(flashDiv);
 
-  // Animate in
-  setTimeout(() => {
-    flashDiv.style.transform = "translateX(0)";
-  }, 10);
+  // Slide in
+  requestAnimationFrame(() => {
+    flashDiv.classList.remove("translate-x-full");
+  });
 
-  // Auto-remove after 5 seconds
+  // Close button
+  closeBtn.addEventListener("click", () => {
+    removeFlash(flashDiv);
+  });
+
+  // Auto remove
   setTimeout(() => {
-    if (flashDiv.parentNode) {
-      flashDiv.style.transform = "translateX(100%)";
-      setTimeout(() => flashDiv.remove(), 300);
-    }
+    removeFlash(flashDiv);
   }, 5000);
 }
 
+function removeFlash(el) {
+  el.classList.add("translate-x-full");
+  setTimeout(() => {
+    if (el.parentNode) el.remove();
+  }, 300);
+}
 // Export functions for global use
 window.initializeDVRManagement = initializeDVRManagement;
 window.showFlashMessage = showFlashMessage;

@@ -110,7 +110,7 @@ const deleteDvr = async (req, res) => {
 
     logActivity("dvr", "deleted", `Deleted a DVR (${dvrId})`);
 
-    res.json({ message: `DVR ${dvrId} deleted successfully` });
+    res.json({ success: true, message: `DVR ${dvrId} deleted successfully` });
   } catch (error) {
     console.error("Error deleting DVR:", error);
     res.status(500).json({ error: "Failed to delete DVR" });
