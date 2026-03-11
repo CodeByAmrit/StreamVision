@@ -2,7 +2,10 @@
 <html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes"
+    />
     <title>RTSP Live Stream Viewer | StreamVision</title>
     <meta
       name="description"
@@ -13,7 +16,6 @@
       content="live cctv camera feed, watch security camera online, ip camera live stream, remote video surveillance viewer, public webcams, real-time monitoring, rtsp hls stream player"
     />
     <meta name="author" content="Amrit, Developer of StreamVision" />
-
     <link rel="canonical" href="https://cctvcameralive.in/" />
     <meta name="robots" content="index, follow" />
     <meta property="og:title" content="StreamVision | RTSP Live CCTV Viewer" />
@@ -31,18 +33,14 @@
       content="Real-time RTSP CCTV camera streaming using HLS and analytics."
     />
     <meta name="twitter:image" content="https://cctvcameralive.in/images/banner.svg" />
-
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="manifest" href="/site.webmanifest" />
-
     <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-
     <link rel="stylesheet" href="/css/style.css?v=<%= appVersion %>" nonce="<%= nonce %>" />
     <link
       rel="stylesheet"
@@ -60,55 +58,44 @@
       nonce="<%= nonce %>"
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest" defer nonce="<%= nonce %>"></script>
-
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-
     <style nonce="<%= nonce %>">
       @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
-
       * {
         font-family: "Inter", sans-serif;
       }
-
       .gradient-text {
         background: linear-gradient(to right, #63b3ed, #3182ce);
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
       }
-
       .btn-gradient {
         background: linear-gradient(to right, #63b3ed, #3182ce);
         transition: all 0.3s ease;
       }
-
       .btn-gradient:hover {
         background: linear-gradient(to right, #3182ce, #2c5282);
         transform: translateY(-2px);
         box-shadow: 0 10px 25px -5px rgba(49, 130, 206, 0.3);
       }
-
       .btn-gradient:active {
         transform: translateY(0);
       }
-
       .card-hover {
         transition: all 0.3s ease;
       }
-
       .card-hover:hover {
         box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
         transform: translateY(-2px);
       }
-
       .loader {
         border-top-color: #3182ce;
         -webkit-animation: spinner 1.5s linear infinite;
         animation: spinner 1.5s linear infinite;
       }
-
       @-webkit-keyframes spinner {
         0% {
           -webkit-transform: rotate(0deg);
@@ -117,7 +104,6 @@
           -webkit-transform: rotate(360deg);
         }
       }
-
       @keyframes spinner {
         0% {
           transform: rotate(0deg);
@@ -126,38 +112,30 @@
           transform: rotate(360deg);
         }
       }
-
       .tech-icon {
         transition: all 0.3s ease;
       }
-
       .tech-icon:hover {
         transform: scale(1.1) rotate(5deg);
       }
-
       .shadow-glow {
         box-shadow: 0 0 20px rgba(99, 179, 237, 0.2);
       }
-
       .shadow-glow:hover {
         box-shadow: 0 0 30px rgba(99, 179, 237, 0.3);
       }
-
       .border-glow {
         border-color: rgba(99, 179, 237, 0.3);
       }
-
       .border-glow:hover {
         border-color: rgba(99, 179, 237, 0.6);
       }
-
       .bg-grid-pattern {
         background-image:
           linear-gradient(rgba(99, 179, 237, 0.1) 1px, transparent 1px),
           linear-gradient(90deg, rgba(99, 179, 237, 0.1) 1px, transparent 1px);
         background-size: 50px 50px;
       }
-
       .hero-gradient {
         background: linear-gradient(
           135deg,
@@ -165,11 +143,9 @@
           rgba(49, 130, 206, 0.05) 100%
         );
       }
-
       .pulse-animation {
         animation: pulse 2s infinite;
       }
-
       @keyframes pulse {
         0% {
           box-shadow: 0 0 0 0 rgba(99, 179, 237, 0.7);
@@ -181,11 +157,9 @@
           box-shadow: 0 0 0 0 rgba(99, 179, 237, 0);
         }
       }
-
       .slide-down {
         animation: slideDown 0.5s ease forwards;
       }
-
       @keyframes slideDown {
         from {
           opacity: 0;
@@ -196,39 +170,140 @@
           transform: translateY(0);
         }
       }
+
+      /* ✦ SMALL-SCREEN OPTIMIZATIONS (preserving everything) ✦ */
+      @media (max-width: 640px) {
+        .max-w-7xl {
+          padding-left: 1rem;
+          padding-right: 1rem;
+        }
+        h1 {
+          font-size: 2rem !important;
+          line-height: 1.2 !important;
+        }
+        h2 {
+          font-size: 1.75rem !important;
+          line-height: 1.3 !important;
+        }
+        .gradient-text {
+          word-break: break-word;
+        }
+        .grid {
+          gap: 1rem;
+        }
+        .p-8 {
+          padding: 1.25rem;
+        }
+        .px-4 {
+          padding-left: 1rem;
+          padding-right: 1rem;
+        }
+        .py-16 {
+          padding-top: 3rem;
+          padding-bottom: 3rem;
+        }
+        .text-5xl {
+          font-size: 2.5rem !important;
+        }
+        .text-4xl {
+          font-size: 2rem !important;
+        }
+        .hero-gradient .inline-flex {
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+        .hero-gradient .inline-flex a {
+          white-space: normal;
+        }
+        #videoPlaceholder p br {
+          display: none;
+        }
+        #videoPlaceholder p {
+          max-width: 280px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .tech-icon {
+          margin-left: auto;
+          margin-right: auto;
+        }
+        footer .flex-col.md\:flex-row {
+          flex-direction: column;
+          text-align: center;
+        }
+        footer .flex.space-x-6 {
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 1rem;
+        }
+      }
+      @media (max-width: 480px) {
+        header .flex.items-center.space-x-2.sm\:space-x-4 {
+          gap: 0.5rem;
+        }
+        header a[href="#contact"] {
+          display: none;
+        } /* hidden via sm:flex, but ensure it's gone */
+        .btn-gradient.px-3.py-1\.5 {
+          font-size: 0.75rem;
+          padding-left: 0.6rem;
+          padding-right: 0.6rem;
+        }
+        .w-8.h-8.sm\:w-10.sm\:h-10 {
+          width: 2rem;
+          height: 2rem;
+        }
+        .rounded-xl.bg-gradient-to-br.from-\[\#63b3ed\].to-\[\#3182ce\] {
+          width: 2rem;
+          height: 2rem;
+        }
+        img[alt="Logo"] {
+          width: 1.25rem;
+          height: 1.25rem;
+        }
+        .text-base.sm\:text-xl.font-bold {
+          font-size: 0.95rem;
+        }
+        .text-\[10px\].sm\:text-xs {
+          font-size: 0.6rem;
+        }
+      }
     </style>
   </head>
-
   <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen">
     <!-- Header -->
     <header
       class="sticky top-0 z-40 w-full bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-blue-100 dark:border-gray-800"
     >
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
-          <a href="/" class="flex items-center space-x-3">
+      <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-14 sm:h-16">
+          <a href="/" class="flex items-center space-x-2 sm:space-x-3">
             <div
-              class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#63b3ed] to-[#3182ce] flex items-center justify-center"
+              class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-[#63b3ed] to-[#3182ce] flex items-center justify-center shrink-0"
             >
-              <img src="/images/netwon.svg" alt="Logo" class="w-8 h-8 rounded-xl" />  
+              <img
+                src="/images/netwon.svg"
+                alt="Logo"
+                class="w-6 h-6 sm:w-8 sm:h-8 rounded-xl object-contain"
+              />
             </div>
-            <div>
-              <span class="text-xl font-bold gradient-text">Netwon Team</span>
-              <p class="text-xs text-gray-500 dark:text-gray-400">Presents StreamVision</p>
+            <div class="flex flex-col justify-center">
+              <span class="text-base sm:text-xl font-bold gradient-text leading-tight">
+                Netwon Team
+              </span>
+              <p class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 leading-tight">
+                Presents StreamVision
+              </p>
             </div>
           </a>
-
-          <div class="flex items-center space-x-4">
-            <!-- Theme Toggle -->
+          <div class="flex items-center space-x-2 sm:space-x-4 shrink-0">
             <button
               id="theme-toggle"
-              class="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              class="p-1.5 sm:p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
-              <i class="fas fa-moon dark:hidden"></i>
-              <i class="fas fa-sun hidden dark:inline"></i>
+              <i class="fas fa-moon dark:hidden text-sm sm:text-base"></i>
+              <i class="fas fa-sun hidden dark:inline text-sm sm:text-base"></i>
             </button>
-
-            <!-- Support Link -->
             <a
               href="#contact"
               class="hidden sm:inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
@@ -236,13 +311,11 @@
               <i class="fas fa-envelope mr-2"></i>
               Contact Us
             </a>
-
-            <!-- Admin Login Button -->
             <a
               href="/login"
-              class="btn-gradient text-white font-medium rounded-xl px-5 py-2.5 text-sm inline-flex items-center shadow-sm"
+              class="btn-gradient text-white font-medium rounded-lg sm:rounded-xl px-3 py-1.5 sm:px-5 sm:py-2.5 text-xs sm:text-sm inline-flex items-center shadow-sm whitespace-nowrap"
             >
-              <i class="fas fa-sign-in-alt mr-2"></i>
+              <i class="fas fa-sign-in-alt mr-1.5 sm:mr-2"></i>
               Admin Login
             </a>
           </div>
@@ -251,60 +324,61 @@
     </header>
 
     <main class="overflow-x-hidden">
-      <!-- Hero Section -->
-      <section class="relative py-16 sm:py-20 lg:py-24 hero-gradient">
+      <!-- Hero Section (optimized stacking for small screens) -->
+      <section class="relative py-12 sm:py-20 lg:py-24 hero-gradient">
         <div class="absolute inset-0 bg-grid-pattern"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div class="text-center mb-12">
-            <!-- Update Banner -->
+          <div class="text-center mb-8 sm:mb-12">
             <div
-              class="inline-flex items-center mb-8 px-4 py-2 bg-blue-50 dark:bg-blue-900/30 rounded-full border border-blue-100 dark:border-blue-800"
+              class="inline-flex flex-wrap items-center justify-center gap-2 mb-6 sm:mb-8 px-3 py-2 bg-blue-50 dark:bg-blue-900/30 rounded-full border border-blue-100 dark:border-blue-800"
             >
               <span
-                class="text-xs bg-gradient-to-r from-[#63b3ed] to-[#3182ce] text-white px-3 py-1 rounded-full mr-2"
+                class="text-xs bg-gradient-to-r from-[#63b3ed] to-[#3182ce] text-white px-3 py-1 rounded-full"
               >
                 <i class="fas fa-rocket mr-1"></i>
                 New
               </span>
-              <a href="/updates" class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                StreamVision <%= appVersion %> is live! Enhanced streaming experience 🚀
+              <a
+                href="/updates"
+                class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                StreamVision <%= appVersion %> is live! Enhanced streaming 🚀
               </a>
             </div>
-
-            <!-- Main Heading -->
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
+            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-bold mb-3 sm:mb-6 leading-tight">
               <span class="block">Live</span>
               <span class="gradient-text">RTSP Stream Viewer</span>
             </h1>
-
-            <!-- Subtitle -->
-            <p class="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto mb-10">
+            <p
+              class="text-base sm:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto mb-6 sm:mb-10 px-2"
+            >
               Securely view your RTSP camera feeds in real-time with our powerful web-based
               streaming platform
             </p>
           </div>
 
-          <!-- Streaming Interface -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          <!-- Streaming Interface (stacked vertically for small screens) -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-stretch">
             <!-- Input Card -->
             <div
-              class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 lg:p-8 border border-blue-100 dark:border-gray-700 card-hover"
+              class="h-full flex flex-col bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-5 sm:p-6 lg:p-8 border border-blue-100 dark:border-gray-700 card-hover"
             >
-              <div class="flex items-center mb-6">
+              <div class="flex items-center mb-5">
                 <div
-                  class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mr-4"
+                  class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mr-4 shrink-0"
                 >
                   <i class="fas fa-link text-[#3182ce] dark:text-blue-400 text-xl"></i>
                 </div>
                 <div>
-                  <h3 class="text-xl font-bold text-gray-900 dark:text-white">Stream Input</h3>
-                  <p class="text-sm text-gray-600 dark:text-gray-400">
+                  <h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">
+                    Stream Input
+                  </h3>
+                  <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
                     Enter your RTSP URL to begin
                   </p>
                 </div>
               </div>
-
-              <div class="space-y-4">
+              <div class="space-y-4 flex-grow flex flex-col justify-center">
                 <div>
                   <label
                     for="rtspInput"
@@ -317,50 +391,51 @@
                     type="text"
                     id="rtspInput"
                     class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-blue-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:text-white transition-all"
-                    placeholder="rtsp://username:password@ip_address:port/stream"
+                    placeholder="rtsp://username:password@ip:port/stream"
                   />
                 </div>
-
-                <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4 mt-auto">
                   <button
                     id="playBtn"
-                    class="btn-gradient text-white font-medium rounded-xl px-6 py-3.5 flex-1 inline-flex items-center justify-center"
+                    class="btn-gradient text-white font-medium rounded-xl px-4 py-2.5 sm:px-6 sm:py-3.5 flex-1 inline-flex items-center justify-center text-sm sm:text-base"
                   >
                     <i class="fas fa-play mr-2"></i>
                     Start Stream
                   </button>
-
                   <button
                     id="stopBtn"
-                    class="hidden bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 font-medium rounded-xl px-6 py-3.5 flex-1 inline-flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                    class="hidden bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 font-medium rounded-xl px-4 py-2.5 sm:px-6 sm:py-3.5 flex-1 inline-flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors text-sm sm:text-base"
                   >
                     <i class="fas fa-stop mr-2"></i>
                     Stop Stream
                   </button>
                 </div>
-
-                <div class="text-xs text-gray-500 dark:text-gray-400 pt-2">
+                <div class="text-xs text-gray-500 dark:text-gray-400 pt-2 text-center mt-2">
                   <i class="fas fa-info-circle mr-1"></i>
-                  Ensure your camera supports RTSP and is accessible from this network
+                  Ensure your camera supports RTSP and is accessible
                 </div>
               </div>
             </div>
 
-            <!-- Video Preview Card -->
+            <!-- Video Preview Card (min-height adjusted for small screens) -->
             <div
-              class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden border border-blue-100 dark:border-gray-700"
+              class="h-full flex flex-col bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-blue-100 dark:border-gray-700 overflow-hidden"
             >
-              <div class="px-6 py-2 border-b border-blue-50 dark:border-gray-700">
+              <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-blue-50 dark:border-gray-700">
                 <div class="flex items-center justify-between">
                   <div class="flex items-center">
                     <div
-                      class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mr-3"
+                      class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mr-3 shrink-0"
                     >
                       <i class="fas fa-eye text-[#3182ce] dark:text-blue-400"></i>
                     </div>
                     <div>
-                      <h3 class="font-bold text-gray-900 dark:text-white">Live Preview</h3>
-                      <p class="text-sm text-gray-600 dark:text-gray-400">Stream output</p>
+                      <h3 class="text-base sm:text-lg font-bold text-gray-900 dark:text-white">
+                        Live Preview
+                      </h3>
+                      <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                        Stream output
+                      </p>
                     </div>
                   </div>
                   <div class="flex items-center space-x-2">
@@ -369,154 +444,138 @@
                   </div>
                 </div>
               </div>
-
-              <!-- Video Container -->
-              <div id="videoContainer" class="hidden relative bg-gray-900 aspect-video">
-                <!-- Loader -->
-                <div
-                  id="loader"
-                  class="hidden absolute inset-0 flex items-center justify-center bg-gray-900/90"
-                >
-                  <div class="text-center">
-                    <div
-                      class="loader ease-linear rounded-full border-4 border-t-4 border-blue-500 h-12 w-12 mx-auto mb-4"
-                    ></div>
-                    <p class="text-blue-400 font-medium">Initializing stream...</p>
-                    <p class="text-sm text-gray-400 mt-1">This may take a few moments</p>
-                  </div>
-                </div>
-
-                <!-- Video Player -->
-                <video
-                  id="videoPlayer"
-                  width="100%"
-                  controls
-                  class="w-full h-full hidden"
-                  poster="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                ></video>
-              </div>
-
-              <!-- Placeholder State -->
+              <!-- Content Area (height adapts) -->
               <div
-                id="videoPlaceholder"
-                class="bg-gradient-to-br from-gray-800 to-gray-900 aspect-video flex flex-col items-center justify-center p-6"
+                class="flex-grow flex flex-col relative bg-gray-900 overflow-hidden min-h-[260px] sm:min-h-[300px]"
               >
                 <div
-                  class="w-20 h-20 rounded-full bg-gradient-to-br from-blue-900/50 to-blue-800/30 flex items-center justify-center mb-6 border-2 border-blue-700/30"
+                  id="videoContainer"
+                  class="hidden absolute inset-0 w-full h-full flex flex-col"
                 >
-                  <i class="fas fa-video text-blue-400 text-3xl"></i>
+                  <div
+                    id="loader"
+                    class="hidden absolute inset-0 flex items-center justify-center z-10 bg-gray-900/90"
+                  >
+                    <div class="text-center px-4">
+                      <div
+                        class="loader ease-linear rounded-full border-4 border-t-4 border-blue-500 h-12 w-12 mx-auto mb-4"
+                      ></div>
+                      <p class="text-blue-400 font-medium">Initializing stream...</p>
+                      <p class="text-sm text-gray-400 mt-1">This may take a few moments</p>
+                    </div>
+                  </div>
+                  <video
+                    id="videoPlayer"
+                    width="100%"
+                    controls
+                    class="w-full h-full object-contain hidden"
+                    poster="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                  ></video>
                 </div>
-                <h4 class="text-xl font-bold text-white mb-2">Stream Preview</h4>
-                <p class="text-gray-400 text-center max-w-md">
-                  Enter an RTSP URL and click "Start Stream" to view your live camera feed here
-                </p>
+                <div
+                  id="videoPlaceholder"
+                  class="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 flex flex-col items-center justify-center p-4 sm:p-6"
+                >
+                  <div
+                    class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-blue-900/50 to-blue-800/30 flex items-center justify-center mb-4 sm:mb-6 border-2 border-blue-700/30"
+                  >
+                    <i class="fas fa-video text-blue-400 text-2xl sm:text-3xl"></i>
+                  </div>
+                  <h4 class="text-lg sm:text-xl font-bold text-white mb-2 text-center">
+                    Stream Preview
+                  </h4>
+                  <p class="text-xs sm:text-sm text-gray-400 text-center max-w-sm">
+                    Enter an RTSP URL and click "Start Stream" to view your live camera feed here
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Technology Stack Section -->
-      <section class="py-16 sm:py-20 lg:py-24 bg-white dark:bg-gray-900">
+      <!-- Technology Stack Section (cards wrap nicely) -->
+      <section class="py-12 sm:py-20 lg:py-24 bg-white dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="text-center mb-12">
+          <div class="text-center mb-10 sm:mb-12">
             <span
               class="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 text-sm font-medium mb-4"
             >
               <i class="fas fa-microchip mr-2"></i>
               Technology Stack
             </span>
-            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
+            <h2 class="text-2xl sm:text-4xl lg:text-5xl font-bold mb-3 sm:mb-6">
               Powered by
               <span class="gradient-text">Modern Technology</span>
             </h2>
-            <p class="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+            <p class="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto px-4">
               StreamVision leverages cutting-edge open-source technologies for exceptional
               performance and reliability
             </p>
           </div>
-
-          <!-- Tech Cards -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            <!-- FFmpeg Card -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12">
             <div
-              class="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 border border-blue-100 dark:border-gray-700 card-hover"
+              class="bg-gray-50 dark:bg-gray-800 rounded-2xl p-5 sm:p-6 border border-blue-100 dark:border-gray-700 card-hover text-center"
             >
               <div
                 class="w-16 h-16 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mb-6 mx-auto tech-icon"
               >
                 <i class="fas fa-video text-[#3182ce] dark:text-blue-400 text-2xl"></i>
               </div>
-              <h3 class="text-xl font-bold text-gray-900 dark:text-white text-center mb-2">
-                FFmpeg
-              </h3>
-              <p class="text-gray-600 dark:text-gray-400 text-center text-sm">
+              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">FFmpeg</h3>
+              <p class="text-gray-600 dark:text-gray-400 text-sm">
                 High-performance video processing and transcoding
               </p>
             </div>
-
-            <!-- HLS Card -->
             <div
-              class="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 border border-blue-100 dark:border-gray-700 card-hover"
+              class="bg-gray-50 dark:bg-gray-800 rounded-2xl p-5 sm:p-6 border border-blue-100 dark:border-gray-700 card-hover text-center"
             >
               <div
                 class="w-16 h-16 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mb-6 mx-auto tech-icon"
               >
                 <i class="fas fa-broadcast-tower text-[#3182ce] dark:text-blue-400 text-2xl"></i>
               </div>
-              <h3 class="text-xl font-bold text-gray-900 dark:text-white text-center mb-2">
-                HLS Protocol
-              </h3>
-              <p class="text-gray-600 dark:text-gray-400 text-center text-sm">
+              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">HLS Protocol</h3>
+              <p class="text-gray-600 dark:text-gray-400 text-sm">
                 Adaptive streaming for smooth playback across devices
               </p>
             </div>
-
-            <!-- Node.js Card -->
             <div
-              class="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 border border-blue-100 dark:border-gray-700 card-hover"
+              class="bg-gray-50 dark:bg-gray-800 rounded-2xl p-5 sm:p-6 border border-blue-100 dark:border-gray-700 card-hover text-center"
             >
               <div
                 class="w-16 h-16 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mb-6 mx-auto tech-icon"
               >
                 <i class="fab fa-node-js text-[#3182ce] dark:text-blue-400 text-2xl"></i>
               </div>
-              <h3 class="text-xl font-bold text-gray-900 dark:text-white text-center mb-2">
-                Node.js
-              </h3>
-              <p class="text-gray-600 dark:text-gray-400 text-center text-sm">
+              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Node.js</h3>
+              <p class="text-gray-600 dark:text-gray-400 text-sm">
                 Scalable backend runtime for real-time processing
               </p>
             </div>
-
-            <!-- Express Card -->
             <div
-              class="bg-gray-50 dark:bg-gray-800 rounded-2xl p-6 border border-blue-100 dark:border-gray-700 card-hover"
+              class="bg-gray-50 dark:bg-gray-800 rounded-2xl p-5 sm:p-6 border border-blue-100 dark:border-gray-700 card-hover text-center"
             >
               <div
                 class="w-16 h-16 rounded-xl bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mb-6 mx-auto tech-icon"
               >
                 <i class="fas fa-bolt text-[#3182ce] dark:text-blue-400 text-2xl"></i>
               </div>
-              <h3 class="text-xl font-bold text-gray-900 dark:text-white text-center mb-2">
-                Express.js
-              </h3>
-              <p class="text-gray-600 dark:text-gray-400 text-center text-sm">
+              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Express.js</h3>
+              <p class="text-gray-600 dark:text-gray-400 text-sm">
                 Fast and minimalist web application framework
               </p>
             </div>
           </div>
-
-          <!-- Open Source Call-to-Action -->
           <div
-            class="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/20 rounded-2xl p-8 border border-blue-200 dark:border-blue-800"
+            class="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/20 rounded-2xl p-6 sm:p-8 border border-blue-200 dark:border-blue-800"
           >
-            <div class="flex flex-col lg:flex-row items-center justify-between">
-              <div class="mb-6 lg:mb-0 lg:mr-8">
-                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+            <div class="flex flex-col lg:flex-row items-center justify-between gap-4">
+              <div class="text-center lg:text-left">
+                <h3 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">
                   Open Source Community
                 </h3>
-                <p class="text-gray-700 dark:text-gray-300">
+                <p class="text-sm sm:text-base text-gray-700 dark:text-gray-300">
                   StreamVision is an open-source project. Join our community to contribute, suggest
                   features, or report issues.
                 </p>
@@ -524,7 +583,7 @@
               <a
                 href="https://github.com/codebyamrit/StreamVision"
                 target="_blank"
-                class="btn-gradient text-white font-medium rounded-xl px-8 py-3.5 inline-flex items-center whitespace-nowrap"
+                class="btn-gradient text-white font-medium rounded-xl px-6 py-2.5 sm:px-8 sm:py-3.5 inline-flex items-center whitespace-nowrap text-sm sm:text-base w-full sm:w-auto justify-center"
               >
                 <i class="fab fa-github mr-2"></i>
                 Contribute on GitHub
@@ -534,117 +593,120 @@
         </div>
       </section>
 
-      <!-- Features Section -->
-      <section class="py-16 sm:py-20 lg:py-24 bg-gray-50 dark:bg-gray-800/50">
+      <!-- Features Section (cards keep padding tight on small screens) -->
+      <section class="py-12 sm:py-20 lg:py-24 bg-gray-50 dark:bg-gray-800/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="text-center mb-12">
+          <div class="text-center mb-10 sm:mb-12">
             <span
               class="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 text-sm font-medium mb-4"
             >
               <i class="fas fa-star mr-2"></i>
               Key Features
             </span>
-            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
+            <h2 class="text-2xl sm:text-4xl lg:text-5xl font-bold mb-3 sm:mb-6">
               Why Choose
               <span class="gradient-text">StreamVision?</span>
             </h2>
-            <p class="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+            <p class="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto px-4">
               A comprehensive streaming solution built for performance, security, and ease of use
             </p>
           </div>
-
-          <!-- Features Grid -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Feature 1 -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             <div
-              class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-blue-100 dark:border-gray-700 card-hover"
+              class="bg-white dark:bg-gray-800 rounded-2xl p-5 sm:p-6 border border-blue-100 dark:border-gray-700 card-hover"
             >
               <div
-                class="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mb-6"
+                class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mb-4"
               >
-                <i class="fas fa-bolt text-[#3182ce] dark:text-blue-400"></i>
+                <i class="fas fa-bolt text-[#3182ce] dark:text-blue-400 text-lg sm:text-xl"></i>
               </div>
-              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Low Latency</h3>
-              <p class="text-gray-600 dark:text-gray-400">
+              <h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2">
+                Low Latency
+              </h3>
+              <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">
                 Real-time streaming with minimal delay, perfect for live surveillance and monitoring
                 applications.
               </p>
             </div>
-
-            <!-- Feature 2 -->
             <div
-              class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-blue-100 dark:border-gray-700 card-hover"
+              class="bg-white dark:bg-gray-800 rounded-2xl p-5 sm:p-6 border border-blue-100 dark:border-gray-700 card-hover"
             >
               <div
-                class="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mb-6"
+                class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mb-4"
               >
-                <i class="fas fa-shield-alt text-[#3182ce] dark:text-blue-400"></i>
+                <i
+                  class="fas fa-shield-alt text-[#3182ce] dark:text-blue-400 text-lg sm:text-xl"
+                ></i>
               </div>
-              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Secure Streaming</h3>
-              <p class="text-gray-600 dark:text-gray-400">
+              <h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2">
+                Secure Streaming
+              </h3>
+              <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">
                 Encrypted streams with SSL/TLS and secure authentication to protect your video
                 feeds.
               </p>
             </div>
-
-            <!-- Feature 3 -->
             <div
-              class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-blue-100 dark:border-gray-700 card-hover"
+              class="bg-white dark:bg-gray-800 rounded-2xl p-5 sm:p-6 border border-blue-100 dark:border-gray-700 card-hover"
             >
               <div
-                class="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mb-6"
+                class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mb-4"
               >
-                <i class="fas fa-link text-[#3182ce] dark:text-blue-400"></i>
+                <i class="fas fa-link text-[#3182ce] dark:text-blue-400 text-lg sm:text-xl"></i>
               </div>
-              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Shareable Links</h3>
-              <p class="text-gray-600 dark:text-gray-400">
+              <h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2">
+                Shareable Links
+              </h3>
+              <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">
                 Generate time-limited public links to share streams without compromising security.
               </p>
             </div>
-
-            <!-- Feature 4 -->
             <div
-              class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-blue-100 dark:border-gray-700 card-hover"
+              class="bg-white dark:bg-gray-800 rounded-2xl p-5 sm:p-6 border border-blue-100 dark:border-gray-700 card-hover"
             >
               <div
-                class="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mb-6"
+                class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mb-4"
               >
-                <i class="fas fa-mobile-alt text-[#3182ce] dark:text-blue-400"></i>
+                <i
+                  class="fas fa-mobile-alt text-[#3182ce] dark:text-blue-400 text-lg sm:text-xl"
+                ></i>
               </div>
-              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Cross-Platform</h3>
-              <p class="text-gray-600 dark:text-gray-400">
+              <h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2">
+                Cross-Platform
+              </h3>
+              <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">
                 Access streams from any device - desktop, tablet, or mobile with responsive design.
               </p>
             </div>
-
-            <!-- Feature 5 -->
             <div
-              class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-blue-100 dark:border-gray-700 card-hover"
+              class="bg-white dark:bg-gray-800 rounded-2xl p-5 sm:p-6 border border-blue-100 dark:border-gray-700 card-hover"
             >
               <div
-                class="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mb-6"
+                class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mb-4"
               >
-                <i class="fas fa-sync text-[#3182ce] dark:text-blue-400"></i>
+                <i class="fas fa-sync text-[#3182ce] dark:text-blue-400 text-lg sm:text-xl"></i>
               </div>
-              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">Auto Reconnect</h3>
-              <p class="text-gray-600 dark:text-gray-400">
+              <h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2">
+                Auto Reconnect
+              </h3>
+              <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">
                 Automatic reconnection attempts if the stream drops, ensuring continuous monitoring.
               </p>
             </div>
-
-            <!-- Feature 6 -->
             <div
-              class="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-blue-100 dark:border-gray-700 card-hover"
+              class="bg-white dark:bg-gray-800 rounded-2xl p-5 sm:p-6 border border-blue-100 dark:border-gray-700 card-hover"
             >
               <div
-                class="w-12 h-12 rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mb-6"
+                class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center mb-4"
               >
-                <i class="fas fa-chart-line text-[#3182ce] dark:text-blue-400"></i>
+                <i
+                  class="fas fa-chart-line text-[#3182ce] dark:text-blue-400 text-lg sm:text-xl"
+                ></i>
               </div>
-              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+              <h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2">
                 Performance Analytics
               </h3>
-              <p class="text-gray-600 dark:text-gray-400">
+              <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">
                 Monitor stream health, bandwidth usage, and performance metrics in real-time.
               </p>
             </div>
@@ -652,30 +714,28 @@
         </div>
       </section>
 
-      <!-- About Developer Section -->
-      <section class="py-16 sm:py-20 lg:py-24 bg-white dark:bg-gray-900">
+      <!-- About Developer Section (stacked, padding adjusted) -->
+      <section class="py-12 sm:py-20 lg:py-24 bg-white dark:bg-gray-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="text-center mb-12">
+          <div class="text-center mb-10 sm:mb-12">
             <span
               class="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 text-sm font-medium mb-4"
             >
               <i class="fas fa-user-tie mr-2"></i>
               About the Developer
             </span>
-            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
+            <h2 class="text-2xl sm:text-4xl lg:text-5xl font-bold mb-4">
               Meet the
               <span class="gradient-text">Creator</span>
             </h2>
           </div>
-
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <!-- Developer Info -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
             <div>
               <div
-                class="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-blue-100 dark:border-gray-700 shadow-lg"
+                class="bg-white dark:bg-gray-800 rounded-2xl p-5 sm:p-8 border border-blue-100 dark:border-gray-700 shadow-lg"
               >
-                <div class="flex items-center mb-6">
-                  <div class="relative">
+                <div class="flex flex-col xs:flex-row items-center xs:items-start mb-6">
+                  <div class="relative shrink-0 mb-4 xs:mb-0">
                     <img
                       src="https://avatars.githubusercontent.com/u/35948782?v=4"
                       alt="Amrit Sharma"
@@ -687,10 +747,14 @@
                       <i class="fas fa-code text-white text-sm"></i>
                     </div>
                   </div>
-                  <div class="ml-6">
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Amrit Sharma</h3>
-                    <p class="text-blue-600 dark:text-blue-400 font-medium">Full-Stack Developer</p>
-                    <div class="flex items-center mt-2">
+                  <div class="xs:ml-6 text-center xs:text-left">
+                    <h3 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+                      Amrit Sharma
+                    </h3>
+                    <p class="text-blue-600 dark:text-blue-400 font-medium text-sm sm:text-base">
+                      Full-Stack Developer
+                    </p>
+                    <div class="flex items-center justify-center xs:justify-start mt-2">
                       <div class="w-3 h-3 rounded-full bg-green-500 animate-pulse mr-2"></div>
                       <span class="text-sm text-gray-600 dark:text-gray-400">
                         Available for collaborations
@@ -698,15 +762,12 @@
                     </div>
                   </div>
                 </div>
-
-                <p class="text-gray-700 dark:text-gray-300 mb-6">
+                <p class="text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-6">
                   Specializing in real-time video streaming, Node.js backend development, and
                   scalable system architecture. With expertise in FFmpeg, WebRTC, and HLS
                   technologies, I build secure and high-performance streaming solutions.
                 </p>
-
-                <!-- Social Links -->
-                <div class="flex space-x-4">
+                <div class="flex space-x-4 justify-center xs:justify-start">
                   <a
                     href="https://github.com/CodeByAmrit/"
                     target="_blank"
@@ -731,11 +792,9 @@
                 </div>
               </div>
             </div>
-
-            <!-- Project Info -->
             <div>
               <div
-                class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/10 rounded-2xl p-8 border border-blue-200 dark:border-blue-800"
+                class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/10 rounded-2xl p-5 sm:p-8 border border-blue-200 dark:border-blue-800"
               >
                 <div class="flex items-center mb-6">
                   <div
@@ -744,16 +803,18 @@
                     <i class="fas fa-users text-white text-2xl"></i>
                   </div>
                   <div>
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Netwon Team</h3>
-                    <p class="text-gray-600 dark:text-gray-400">Project Collaborators</p>
+                    <h3 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+                      Netwon Team
+                    </h3>
+                    <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">
+                      Project Collaborators
+                    </p>
                   </div>
                 </div>
-
-                <p class="text-gray-700 dark:text-gray-300 mb-6">
+                <p class="text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-6">
                   StreamVision was developed in collaboration with Netwon Team, focusing on creating
                   innovative solutions for real-time surveillance and video streaming applications.
                 </p>
-
                 <div class="space-y-4">
                   <div class="flex items-center">
                     <div
@@ -770,7 +831,6 @@
                       </p>
                     </div>
                   </div>
-
                   <div class="flex items-center">
                     <div
                       class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mr-4"
@@ -784,7 +844,6 @@
                       </p>
                     </div>
                   </div>
-
                   <div class="flex items-center">
                     <div
                       class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mr-4"
@@ -805,86 +864,146 @@
             </div>
           </div>
         </div>
-      <!-- Contact Form Section -->
-      <section id="contact" class="py-16 sm:py-20 lg:py-24 bg-gray-50 dark:bg-gray-800/50 border-t border-blue-100 dark:border-gray-800">
+      </section>
+
+      <!-- Contact Form Section (responsive spacing) -->
+      <section
+        id="contact"
+        class="py-12 sm:py-20 lg:py-24 bg-gray-50 dark:bg-gray-800/50 border-t border-blue-100 dark:border-gray-800"
+      >
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="text-center mb-12">
-            <span class="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 text-sm font-medium mb-4">
+          <div class="text-center mb-8 sm:mb-12">
+            <span
+              class="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 text-sm font-medium mb-4"
+            >
               <i class="fas fa-paper-plane mr-2"></i>
               Get in Touch
             </span>
-            <h2 class="text-3xl sm:text-4xl font-bold mb-4">
-              Contact <span class="gradient-text">Us</span>
+            <h2 class="text-2xl sm:text-4xl font-bold mb-3">
+              Contact
+              <span class="gradient-text">Us</span>
             </h2>
             <p class="text-lg text-gray-600 dark:text-gray-400">
               Have questions or need assistance? Send us a message below.
             </p>
           </div>
-
-          <!-- Replace the ACTION URL with your specific Google Form response endpoint later -->
-          <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-blue-100 dark:border-gray-700 shadow-sm card-hover">
-            <script type="text/javascript">var submitted=false;</script>
-            <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted){document.getElementById('contact-form').style.display='none';document.getElementById('success-message').style.display='block';}"></iframe>
-            
-            <form id="contact-form" action="https://docs.google.com/forms/d/e/1FAIpQLSf_ujbJbkQYEQw55NtsDSPnlD5uklRQMnVXoelCbu38ioUYQw/formResponse" method="POST" 
-            onsubmit="submitted=true;" class="space-y-6">
-              
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div
+            class="bg-white dark:bg-gray-800 rounded-2xl p-5 sm:p-8 border border-blue-100 dark:border-gray-700 shadow-sm card-hover"
+          >
+            <iframe
+              name="hidden_iframe"
+              id="hidden_iframe"
+              style="display: none"
+            ></iframe>
+            <form
+              id="contact-form"
+              action="https://docs.google.com/forms/d/e/1FAIpQLSf_ujbJbkQYEQw55NtsDSPnlD5uklRQMnVXoelCbu38ioUYQw/formResponse"
+              method="POST"
+              class="space-y-6"
+            >
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
                 <div>
-                  <label for="entry.1217913432" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Name</label>
-                  <input type="text" name="entry.1217913432" id="entry.1217913432" required class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-blue-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:text-white transition-all" placeholder="John Doe">
+                  <label
+                    for="entry.1217913432"
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    name="entry.1217913432"
+                    id="entry.1217913432"
+                    required
+                    class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-blue-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:text-white transition-all"
+                    placeholder="John Doe"
+                  />
                 </div>
                 <div>
-                  <label for="entry.1126553980" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
-                  <input type="email" name="entry.1126553980" id="entry.1126553980" required class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-blue-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:text-white transition-all" placeholder="john@example.com">
+                  <label
+                    for="entry.1126553980"
+                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    name="entry.1126553980"
+                    id="entry.1126553980"
+                    required
+                    class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-blue-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:text-white transition-all"
+                    placeholder="john@example.com"
+                  />
                 </div>
               </div>
-
               <div>
-                <label for="entry.1917831420" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Message</label>
-                <textarea name="entry.1917831420" id="entry.1917831420" rows="5" required class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-blue-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:text-white transition-all" placeholder="How can we help you?"></textarea>
+                <label
+                  for="entry.1917831420"
+                  class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                >
+                  Message
+                </label>
+                <textarea
+                  name="entry.1917831420"
+                  id="entry.1917831420"
+                  rows="5"
+                  required
+                  class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-blue-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:text-white transition-all"
+                  placeholder="How can we help you?"
+                ></textarea>
               </div>
-
-              <button type="submit" class="w-full btn-gradient text-white font-medium rounded-xl px-6 py-4 flex justify-center items-center shadow-md">
-                <i class="fas fa-paper-plane mr-2"></i> Send Message
+              <button
+                type="submit"
+                class="w-full btn-gradient text-white font-medium rounded-xl px-6 py-4 flex justify-center items-center shadow-md"
+              >
+                <i class="fas fa-paper-plane mr-2"></i>
+                Send Message
               </button>
             </form>
-
             <div id="success-message" class="hidden text-center py-10">
-              <div class="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-4">
+              <div
+                class="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-4"
+              >
                 <i class="fas fa-check text-green-500 text-2xl"></i>
               </div>
-              <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Thank You!</h3>
-              <p class="text-gray-600 dark:text-gray-400">Your message has been sent successfully. We will get back to you soon.</p>
-              <button onclick="document.getElementById('success-message').style.display='none'; document.getElementById('contact-form').style.display='block'; document.getElementById('contact-form').reset(); submitted=false;" class="mt-6 text-blue-600 dark:text-blue-400 hover:underline font-medium text-sm">Send another message</button>
+              <h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2">
+                Thank You!
+              </h3>
+              <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">
+                Your message has been sent successfully. We will get back to you soon.
+              </p>
+              <button
+                id="reset-contact-form"
+                class="mt-6 text-blue-600 dark:text-blue-400 hover:underline font-medium text-sm"
+              >
+                Send another message
+              </button>
             </div>
           </div>
         </div>
       </section>
     </main>
 
-    <!-- Footer -->
+    <!-- Footer (optimized stacking) -->
     <footer class="bg-gray-50 dark:bg-gray-900 border-t border-blue-100 dark:border-gray-800">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="flex flex-col md:flex-row justify-between items-center">
-          <div class="mb-6 md:mb-0">
-            <div class="flex items-center mb-4">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div class="text-center md:text-left">
+            <div class="flex items-center justify-center md:justify-start mb-4">
               <div
                 class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#63b3ed] to-[#3182ce] flex items-center justify-center mr-3"
               >
                 <img src="/images/netwon.svg" alt="Logo" class="w-8 h-8 rounded-xl" />
               </div>
               <div>
-                <div class="text-xl font-bold gradient-text">StreamVision</div>
-                <p class="text-sm text-gray-600 dark:text-gray-400">by Netwon Team</p>
+                <div class="text-lg sm:text-xl font-bold gradient-text">StreamVision</div>
+                <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">by Netwon Team</p>
               </div>
             </div>
             <p class="text-sm text-gray-600 dark:text-gray-400">
               © 2025 StreamVision <%= appVersion %>. All rights reserved.
             </p>
           </div>
-
-          <div class="flex space-x-6">
+          <div class="flex flex-wrap justify-center gap-4 sm:space-x-6">
             <a
               href="/privacy"
               class="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
@@ -908,18 +1027,44 @@
       </div>
     </footer>
 
-    <!-- Integrated JavaScript -->
+    <!-- Integrated JavaScript (unchanged) -->
     <script nonce="<%= nonce %>">
+      // Form Submission Logic
+      let submitted = false;
+      const contactForm = document.getElementById('contact-form');
+      const hiddenIframe = document.getElementById('hidden_iframe');
+      const successMessage = document.getElementById('success-message');
+      const resetFormBtn = document.getElementById('reset-contact-form');
+
+      if (contactForm && hiddenIframe) {
+        contactForm.addEventListener('submit', () => {
+          submitted = true;
+        });
+
+        hiddenIframe.addEventListener('load', () => {
+          if (submitted) {
+            contactForm.style.display = 'none';
+            successMessage.style.display = 'block';
+          }
+        });
+      }
+
+      if (resetFormBtn) {
+        resetFormBtn.addEventListener('click', () => {
+          successMessage.style.display = 'none';
+          contactForm.style.display = 'block';
+          contactForm.reset();
+          submitted = false;
+        });
+      }
+
       // Theme Toggle
       const themeToggle = document.getElementById("theme-toggle");
       const htmlElement = document.documentElement;
-
       themeToggle.addEventListener("click", () => {
         htmlElement.classList.toggle("dark");
         localStorage.setItem("theme", htmlElement.classList.contains("dark") ? "dark" : "light");
       });
-
-      // Set initial theme
       const savedTheme = localStorage.getItem("theme") || "light";
       if (savedTheme === "dark") {
         htmlElement.classList.add("dark");
@@ -927,7 +1072,7 @@
         htmlElement.classList.remove("dark");
       }
 
-      // --- Stream Control Logic ---
+      // Stream Control Logic
       const rtspInput = document.getElementById("rtspInput");
       const playBtn = document.getElementById("playBtn");
       const stopBtn = document.getElementById("stopBtn");
@@ -938,7 +1083,6 @@
       let currentRtspUrl = "";
       let hls = null;
 
-      // Autoplay from URL Parameter
       window.addEventListener("DOMContentLoaded", () => {
         const params = new URLSearchParams(window.location.search);
         const rtsp = params.get("rtsp");
@@ -948,38 +1092,30 @@
         }
       });
 
-      // Main Play Logic
       playBtn.addEventListener("click", async function () {
         const rtspUrl = rtspInput.value.trim();
-
         if (!rtspUrl.startsWith("rtsp://")) {
           alert("Please enter a valid RTSP link starting with rtsp://");
           return;
         }
-
-        // Show video container and hide placeholder
         videoContainer.classList.remove("hidden");
         videoPlaceholder.classList.add("hidden");
         loader.classList.remove("hidden");
         video.classList.add("hidden");
         playBtn.disabled = true;
-
         try {
           const response = await fetch("/api/start-stream", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ rtspUrl }),
           });
-
           if (!response.ok) {
             const errorData = await response.json();
             throw new Error(errorData.error || "Failed to start stream");
           }
-
           const data = await response.json();
           const hlsUrl = data.hlsUrl;
           if (!hlsUrl) throw new Error("No HLS URL returned from server");
-
           currentRtspUrl = rtspUrl;
           loadHlsStream(hlsUrl);
         } catch (err) {
@@ -989,21 +1125,17 @@
         }
       });
 
-      // HLS Stream Loading
       function loadHlsStream(hlsUrl) {
         const maxAttempts = 8;
         let attempts = 0;
-
         const tryLoad = async () => {
           try {
-            // Check if the manifest file is available
             const probe = await fetch(hlsUrl, { method: "HEAD" });
             if (probe.ok) {
               loader.classList.add("hidden");
               video.classList.remove("hidden");
               stopBtn.classList.remove("hidden");
               playBtn.disabled = false;
-
               if (Hls.isSupported()) {
                 hls = new Hls();
                 hls.loadSource(hlsUrl);
@@ -1018,10 +1150,7 @@
               }
               return;
             }
-          } catch (e) {
-            // Expected while waiting for file
-          }
-
+          } catch (e) {}
           if (++attempts < maxAttempts) {
             setTimeout(tryLoad, 2000);
           } else {
@@ -1031,14 +1160,11 @@
             resetPlayerUI();
           }
         };
-
         tryLoad();
       }
 
-      // Stop Button Logic
       stopBtn.addEventListener("click", async function () {
         if (!currentRtspUrl) return;
-
         try {
           const response = await fetch("/api/stop-stream", {
             method: "POST",
@@ -1057,7 +1183,6 @@
         }
       });
 
-      // Reset UI Function
       function resetPlayerUI() {
         if (hls) {
           hls.destroy();
@@ -1074,11 +1199,8 @@
         videoPlaceholder.classList.remove("hidden");
       }
 
-      // Initialize GSAP animations
       if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
         gsap.registerPlugin(ScrollTrigger);
-
-        // Animate elements with slide-up effect
         gsap.utils.toArray(".card-hover").forEach((elem, i) => {
           gsap.from(elem, {
             scrollTrigger: {
@@ -1093,8 +1215,6 @@
             ease: "power3.out",
           });
         });
-
-        // Animate headings
         gsap.utils.toArray("h1, h2, h3").forEach((elem) => {
           gsap.from(elem, {
             scrollTrigger: {

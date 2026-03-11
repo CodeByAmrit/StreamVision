@@ -233,6 +233,10 @@ app.use("/", (req, res, next) => {
   if (req.path.startsWith("/api/public") && req.method === "GET") {
     return next();
   }
+  // Skip CSRF for public preview APIs on the index page
+  if (req.path === "/api/start-stream" || req.path === "/api/stop-stream") {
+    return next();
+  }
   // Skip CSRF for public DVR pages
   if (req.path.startsWith("/public/")) {
     return next();
