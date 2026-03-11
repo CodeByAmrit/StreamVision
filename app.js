@@ -29,6 +29,10 @@ const pkg = require("./package.json");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Trust Proxy: Essential for AWS Load Balancers and Cloudflare
+// Ensures req.ip, rate limiting, and audit logs use the real client IP
+app.set("trust proxy", true);
+
 // Global App Version (Injected via Docker Build ARG / System Env or package.json)
 app.locals.appVersion = process.env.APP_VERSION || `v${pkg.version}`;
 
@@ -156,8 +160,10 @@ app.use((req, res, next) => {
 });
 
 // =================== Static ===================
+// Allow Cloudflare to cache static assets aggressively (1 day) to reduce AWS bandwidth
 app.use(
   express.static(path.join(__dirname, "public"), {
+    maxAge: "1d",
     setHeaders: (res, filePath) => {
       if (filePath.endsWith(".svg")) {
         res.setHeader("Content-Type", "image/svg+xml");
