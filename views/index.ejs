@@ -890,11 +890,7 @@
           <div
             class="bg-white dark:bg-gray-800 rounded-2xl p-5 sm:p-8 border border-blue-100 dark:border-gray-700 shadow-sm card-hover"
           >
-            <iframe
-              name="hidden_iframe"
-              id="hidden_iframe"
-              style="display: none"
-            ></iframe>
+            <iframe name="hidden_iframe" id="hidden_iframe" style="display: none"></iframe>
             <form
               id="contact-form"
               action="https://docs.google.com/forms/d/e/1FAIpQLSf_ujbJbkQYEQw55NtsDSPnlD5uklRQMnVXoelCbu38ioUYQw/formResponse"
@@ -1031,28 +1027,28 @@
     <script nonce="<%= nonce %>">
       // Form Submission Logic
       let submitted = false;
-      const contactForm = document.getElementById('contact-form');
-      const hiddenIframe = document.getElementById('hidden_iframe');
-      const successMessage = document.getElementById('success-message');
-      const resetFormBtn = document.getElementById('reset-contact-form');
+      const contactForm = document.getElementById("contact-form");
+      const hiddenIframe = document.getElementById("hidden_iframe");
+      const successMessage = document.getElementById("success-message");
+      const resetFormBtn = document.getElementById("reset-contact-form");
 
       if (contactForm && hiddenIframe) {
-        contactForm.addEventListener('submit', () => {
+        contactForm.addEventListener("submit", () => {
           submitted = true;
         });
 
-        hiddenIframe.addEventListener('load', () => {
+        hiddenIframe.addEventListener("load", () => {
           if (submitted) {
-            contactForm.style.display = 'none';
-            successMessage.style.display = 'block';
+            contactForm.style.display = "none";
+            successMessage.style.display = "block";
           }
         });
       }
 
       if (resetFormBtn) {
-        resetFormBtn.addEventListener('click', () => {
-          successMessage.style.display = 'none';
-          contactForm.style.display = 'block';
+        resetFormBtn.addEventListener("click", () => {
+          successMessage.style.display = "none";
+          contactForm.style.display = "block";
           contactForm.reset();
           submitted = false;
         });

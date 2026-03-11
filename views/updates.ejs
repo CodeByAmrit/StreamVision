@@ -268,24 +268,23 @@
                     <span
                       class="px-3 py-1 rounded-full btn-gradient text-primary-700 text-sm font-medium"
                     >
-                      v2.1.0
+                      v4.1.3
                     </span>
                   </div>
                   <h2 class="text-2xl font-bold text-gray-900">
-                    Enhanced RTSP Processing & Analytics Dashboard
+                    Military-Grade Security & Stream Optimization
                   </h2>
                 </div>
                 <div class="text-right">
                   <div class="text-sm text-gray-500 mb-1">Released</div>
-                  <div class="text-lg font-bold text-primary-600">April 27, 2025</div>
+                  <div class="text-lg font-bold text-primary-600">March 11, 2026</div>
                 </div>
               </div>
               <p class="text-gray-600 mb-6">
-                Major performance improvements with new analytics capabilities and enhanced security
-                features for enterprise RTSP streaming.
+                Massive performance upgrades for mobile viewing, introducing batch API requests, and enterprise-level security hardening behind Cloudflare & AWS.
               </p>
               <a
-                href="#v2-1-0"
+                href="#v4-1-3"
                 class="inline-flex items-center text-primary-600 hover:text-primary-700 font-medium"
               >
                 <span>View Release Details</span>
@@ -296,8 +295,8 @@
 
           <!-- Updates Timeline -->
           <div class="max-w-4xl mx-auto">
-            <!-- Version 2.1.0 -->
-            <div id="v2-1-0" class="relative timeline-line pl-8 md:pl-12 mb-16 pt-8">
+            <!-- Version 4.1.3 -->
+            <div id="v4-1-3" class="relative timeline-line pl-8 md:pl-12 mb-16 pt-8">
               <div class="absolute left-0 top-8 z-10">
                 <div class="w-4 h-4 rounded-full btn-gradient ring-8 ring-white pulse-ring"></div>
               </div>
@@ -311,23 +310,23 @@
                       <span
                         class="px-3 py-1 rounded-full btn-gradient text-white text-sm font-bold"
                       >
-                        v2.1.0
+                        v4.1.3
                       </span>
                       <span class="text-sm text-gray-500">
                         <i class="far fa-calendar mr-1"></i>
-                        April 27, 2025
+                        March 11, 2026
                       </span>
                     </div>
                     <h2 class="text-2xl font-bold text-gray-900">
-                      <i class="fas fa-rocket text-primary-500 mr-2"></i>
-                      Quick RTSP View Launched
+                      <i class="fas fa-shield-alt text-primary-500 mr-2"></i>
+                      Military-Grade Security & Mobile Optimization
                     </h2>
                   </div>
                   <div class="flex flex-wrap gap-2">
                     <span
                       class="px-3 py-1 rounded-full bg-primary-100 text-primary-700 text-xs font-semibold border border-primary-200"
                     >
-                      New Feature
+                      Security
                     </span>
                     <span
                       class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold border border-blue-200"
@@ -338,23 +337,21 @@
                 </div>
 
                 <p class="text-gray-600 mb-6">
-                  Instantly test your RTSP URL streams before adding them to your dashboard. Just
-                  paste the URL and see the live feed in seconds with enhanced preview capabilities.
+                  A massive overhaul to our streaming infrastructure. We've introduced batch API processing to reduce server load and adjusted FFmpeg parameters for a buttery-smooth viewing experience on mobile devices. Under the hood, we've locked down the application with enterprise-grade security policies.
                 </p>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                   <div class="p-4 rounded-xl bg-white border border-gray-200 shadow-soft">
                     <div class="flex items-center mb-2">
                       <div
-                        class="w-8 h-8 rounded-lg bg-primary-100 flex items-center justify-center mr-3"
+                        class="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center mr-3"
                       >
-                        <i class="fas fa-play text-primary-600"></i>
+                        <i class="fas fa-lock text-red-600"></i>
                       </div>
-                      <h4 class="font-bold text-gray-900">Instant Preview</h4>
+                      <h4 class="font-bold text-gray-900">Production Security</h4>
                     </div>
                     <p class="text-sm text-gray-600">
-                      Test RTSP streams without dashboard configuration. Real-time validation and
-                      format detection.
+                      Added strict Rate-Limiting, Brute-Force protection on auth endpoints, and full CSRF token validation to block malicious actors. Fully optimized for AWS & Cloudflare "Trust Proxy".
                     </p>
                   </div>
 
@@ -363,34 +360,33 @@
                       <div
                         class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center mr-3"
                       >
-                        <i class="fas fa-chart-line text-blue-600"></i>
+                        <i class="fas fa-bolt text-blue-600"></i>
                       </div>
-                      <h4 class="font-bold text-gray-900">Stream Analytics</h4>
+                      <h4 class="font-bold text-gray-900">Batch API Streaming</h4>
                     </div>
                     <p class="text-sm text-gray-600">
-                      New dashboard with performance metrics, bandwidth usage, and stream health
-                      monitoring.
+                      The frontend now pulls all camera streams in a single, batched `/hls-batch` request. FFmpeg segment sizes increased to 3 seconds for heavily improved mobile buffering.
                     </p>
                   </div>
                 </div>
 
                 <div class="p-4 rounded-xl bg-gradient-light border border-primary-100">
                   <h4 class="font-bold text-gray-900 mb-2 flex items-center">
-                    <i class="fas fa-star text-yellow-500 mr-2"></i>
-                    Key Improvements
+                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                    Additional Improvements
                   </h4>
                   <ul class="space-y-2 text-sm text-gray-600">
                     <li class="flex items-start">
                       <i class="fas fa-check text-primary-600 text-xs mt-1 mr-2"></i>
-                      <span>30% faster stream initialization with optimized FFmpeg processing</span>
+                      <span>Audited and upgraded dependencies (`csurf`, `express-rate-limit`) to patch deep NPM vulnerabilities.</span>
                     </li>
                     <li class="flex items-start">
                       <i class="fas fa-check text-primary-600 text-xs mt-1 mr-2"></i>
-                      <span>Enhanced stream format detection and compatibility handling</span>
+                      <span>Cookies are now secured with `HttpOnly`, `Secure`, and `Strict` SameSite policies.</span>
                     </li>
                     <li class="flex items-start">
                       <i class="fas fa-check text-primary-600 text-xs mt-1 mr-2"></i>
-                      <span>Improved error reporting for connection issues</span>
+                      <span>UI Layout adjustments for perfect symmetry on the landing page grids.</span>
                     </li>
                   </ul>
                 </div>

@@ -24,20 +24,29 @@
     <!-- ================= HEADER ================= -->
     <!-- Header -->
     <header
-      class="flex items-center justify-between px-4 sm:px-8 py-3 sm:py-4 bg-gray-900 shadow-md"
+      class="flex flex-col sm:flex-row items-center justify-center sm:justify-between px-4 sm:px-8 py-4 sm:py-4 bg-gray-900 shadow-md gap-3 sm:gap-0"
     >
       <!-- Left: Logo + Title -->
-      <div class="flex items-center space-x-3">
+      <div
+        class="flex flex-col sm:flex-row items-center sm:space-x-4 space-y-2 sm:space-y-0 text-center sm:text-left w-full sm:w-auto"
+      >
         <img
           src="/images/fci.png"
           alt="Logo"
-          class="h-8 w-8 sm:h-10 sm:w-10 rounded-lg shadow-md"
+          class="h-10 w-10 sm:h-12 sm:w-12 rounded-lg shadow-lg border border-gray-700 object-cover"
         />
         <div>
-          <h1 class="text-lg sm:text-xl font-bold text-white leading-tight">
+          <h1
+            class="text-base sm:text-lg md:text-xl font-bold text-white tracking-wide leading-tight drop-shadow-sm"
+          >
             <%= dvr.dvr_name %> - Live Camera Streams
           </h1>
-          <p class="text-xs sm:text-sm text-gray-400">📍 <%= dvr.location_name %></p>
+          <p
+            class="text-[11px] sm:text-xs md:text-sm text-gray-400 font-medium tracking-wider uppercase mt-1 flex items-center justify-center sm:justify-start"
+          >
+            <i class="fas fa-map-marker-alt text-red-500 mr-1.5"></i>
+            <%= dvr.location_name %>
+          </p>
         </div>
       </div>
 
@@ -67,22 +76,27 @@
     <!-- Mobile: Fixed Support Button -->
     <a
       href="https://cctvcameralive.in/#contact"
-      class="sm:hidden fixed bottom-0 right-0 w-full py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold text-center shadow-[0_-2px_10px_rgba(0,0,0,0.3)] hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 z-50"
+      class="sm:hidden fixed bottom-6 right-4 py-3 px-6 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold text-sm rounded-full shadow-[0_4px_14px_rgba(59,130,246,0.39)] hover:shadow-[0_6px_20px_rgba(59,130,246,0.23)] hover:-translate-y-1 transition-all duration-300 z-50 flex items-center justify-center gap-2"
     >
-      💬 Support
+      <i class="fas fa-headset text-lg"></i>
+      Support
     </a>
 
     <!-- ================= GRID ================= -->
     <main
       id="grid"
-      class="flex-1 p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+      class="flex-1 p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pb-24"
     >
       <!-- Cameras injected dynamically -->
     </main>
 
     <!-- ================= FOOTER ================= -->
-    <footer class="bg-gray-900 text-center py-3 text-xs text-gray-500">
-      © StreamVision <%= appVersion %>
+    <footer class="bg-gray-900 text-center py-4 text-xs text-gray-500 border-t border-gray-800">
+      <div class="flex items-center justify-center gap-2 mb-1">
+        <img src="/images/netwon.svg" alt="Netwon" class="h-4 w-4 opacity-70" />
+        <span class="font-medium">Netwon Team</span>
+      </div>
+      © <%= new Date().getFullYear() %> StreamVision <%= appVersion %>
     </footer>
 
     <!-- ================= CLIENT JS ================= -->
