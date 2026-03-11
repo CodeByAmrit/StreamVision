@@ -153,6 +153,16 @@ app.set("views", path.join(__dirname, "views"));
 const streamDir = path.join(__dirname, "streams");
 if (!fs.existsSync(streamDir)) fs.mkdirSync(streamDir);
 
+// Heartbeat Middleware: Every request to /hls resets the 4-minute timeout for that stream
+app.use("/hls", (req, res, next) => {
+  const parts = req.path.split("/").filter(Boolean);
+  if (parts.length > 0) {
+    const streamId = parts[0];
+    streamStore.resetStreamTimeout(streamId);
+  }
+  next();
+});
+
 app.use(
   "/hls",
   express.static(streamDir, {
@@ -262,3 +272,22 @@ const server = http.createServer(app);
 server.listen(PORT, () => {
   logger.info(`🚀 Server running at http://localhost:${PORT}`);
 });
+
+// =================== Graceful Shutdown ===================
+const gracefulShutdown = () => {
+  logger.info("Termination signal received. Shutting down gracefully...");
+  streamStore.cleanupAll();
+  server.close(() => {
+    logger.info("HTTP server closed.");
+    process.exit(0);
+  });
+  
+  // Force exit if server doesn't close in 5 seconds
+  setTimeout(() => {
+    logger.error("Could not close connections in time, forcefully shutting down");
+    process.exit(1);
+  }, 5000);
+};
+
+process.on("SIGINT", gracefulShutdown);
+process.on("SIGTERM", gracefulShutdown);

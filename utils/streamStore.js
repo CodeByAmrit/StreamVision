@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const logger = require("./logger");
 
-const STREAM_DURATION_LIMIT = 10 * 60 * 1000; // 10 minutes in milliseconds
+const STREAM_DURATION_LIMIT = 4 * 60 * 1000; // 4 minutes in milliseconds
 const streamDir = path.join(__dirname, "..", "streams");
 
 // In-memory store of active FFmpeg streams
@@ -48,7 +48,7 @@ function startHlsStream(rtspUrl, cameraId, dvrId) {
 
     const streamId = hashRtspUrl(rtspUrl);
     const hlsUrl = `/hls/${streamId}/index.m3u8`;
-    
+
     // Check if stream is already active
     if (activeStreams.has(streamId)) {
       return resolve({ hlsUrl, isNew: false });
@@ -61,7 +61,7 @@ function startHlsStream(rtspUrl, cameraId, dvrId) {
       if (!fs.existsSync(streamDir)) {
         fs.mkdirSync(streamDir, { recursive: true });
       }
-      
+
       // CRITICAL: Clear older data if it exists to avoid stale footage
       if (fs.existsSync(outputPath)) {
         fs.rmSync(outputPath, { recursive: true, force: true });
@@ -118,19 +118,13 @@ function startHlsStream(rtspUrl, cameraId, dvrId) {
       logger.info(`FFmpeg stream for ${rtspUrl} exited with code ${code}`);
       activeStreams.delete(streamId);
       try {
-          if (fs.existsSync(outputPath)) {
-              fs.rmSync(outputPath, { recursive: true, force: true });
-          }
+        if (fs.existsSync(outputPath)) {
+          fs.rmSync(outputPath, { recursive: true, force: true });
+        }
       } catch (e) {
-          logger.error(`Failed to cleanup stream output directory ${outputPath}:`, e);
+        logger.error(`Failed to cleanup stream output directory ${outputPath}:`, e);
       }
     });
-
-    // Auto stop stream after duration limit
-    const timeout = setTimeout(() => {
-      logger.info(`Auto-stopping stream ${streamId} after ${STREAM_DURATION_LIMIT / 60000} minutes`);
-      ffmpeg.kill("SIGINT");
-    }, STREAM_DURATION_LIMIT);
 
     activeStreams.set(streamId, {
       ffmpeg,
@@ -139,20 +133,39 @@ function startHlsStream(rtspUrl, cameraId, dvrId) {
       cameraId,
       dvrId,
       startedAt: new Date(),
-      timeout,
+      timeout: null, // Initialized via resetStreamTimeout
     });
 
     // Wait for the playlist to actually be created by FFmpeg before responding
     waitForFile(playlistPath, 15000).then(() => {
-        resolve({ hlsUrl, isNew: true });
+      // Initialize the timeout upon start
+      resetStreamTimeout(streamId);
+      resolve({ hlsUrl, isNew: true });
     });
   });
+}
+
+function resetStreamTimeout(streamId) {
+  const stream = activeStreams.get(streamId);
+  if (stream) {
+    if (stream.timeout) {
+      clearTimeout(stream.timeout);
+    }
+
+    stream.timeout = setTimeout(() => {
+      logger.info(`Auto-stopping stream ${streamId} after ${STREAM_DURATION_LIMIT / 60000} minutes of inactivity`);
+      stream.ffmpeg.kill("SIGINT");
+    }, STREAM_DURATION_LIMIT);
+
+    return true;
+  }
+  return false;
 }
 
 function stopHlsStream(rtspUrl) {
   const streamId = hashRtspUrl(rtspUrl);
   const stream = activeStreams.get(streamId);
-  
+
   if (stream) {
     stream.ffmpeg.kill("SIGINT");
     clearTimeout(stream.timeout);
@@ -161,10 +174,31 @@ function stopHlsStream(rtspUrl) {
   return false;
 }
 
+function cleanupAll() {
+  logger.info("Cleaning up all active streams and removing streams directory...");
+  for (const [streamId, stream] of activeStreams) {
+    logger.info(`Stopping stream ${streamId}`);
+    stream.ffmpeg.kill("SIGINT");
+    clearTimeout(stream.timeout);
+  }
+  activeStreams.clear();
+
+  try {
+    if (fs.existsSync(streamDir)) {
+      fs.rmSync(streamDir, { recursive: true, force: true });
+      logger.info("Streams directory deleted successfully.");
+    }
+  } catch (err) {
+    logger.error("Error during global streams cleanup:", err);
+  }
+}
+
 module.exports = {
   getStreamById,
   getAllStreams,
   startHlsStream,
   stopHlsStream,
-  hashRtspUrl
+  cleanupAll,
+  resetStreamTimeout,
+  hashRtspUrl,
 };

@@ -43,7 +43,7 @@
 
       <!-- Desktop: Support Button -->
       <a
-        href="https://service.cctvcameralive.in/"
+        href="https://service.cctvcameralive.inhttps://cctvcameralive.in/#contact/"
         class="hidden sm:flex bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold px-5 py-2 rounded-xl shadow-md hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 items-center space-x-2 z-50"
       >
         <svg
@@ -66,7 +66,7 @@
 
     <!-- Mobile: Fixed Support Button -->
     <a
-      href="https://service.cctvcameralive.in/"
+      href="https://service.cctvcameralive.inhttps://cctvcameralive.in/#contact/"
       class="sm:hidden fixed bottom-0 right-0 w-full py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold text-center shadow-[0_-2px_10px_rgba(0,0,0,0.3)] hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 z-50"
     >
       💬 Support
@@ -179,30 +179,32 @@
         const cameras = await res.json();
 
         const grid = document.getElementById("grid");
-        
+
         // Dynamic Grid Columns based on camera count
         const count = cameras.length;
-        grid.className = "flex-1 p-4 grid gap-4";
-        
+        // Base classes: Center the grid and provide tighter spacing
+        grid.className = "flex-1 p-2 sm:p-4 grid gap-3 mx-auto w-full max-w-[1920px]";
+
         if (count === 1) {
-          grid.classList.add("grid-cols-1");
+          // Single camera: Don't let it span more than ~1024px to prevent massive black bars
+          grid.classList.add("grid-cols-1", "max-w-4xl");
         } else if (count === 2) {
-          grid.classList.add("grid-cols-1", "md:grid-cols-2");
+          // Dual cameras: Max width around ~1280px (640px each)
+          grid.classList.add("grid-cols-1", "md:grid-cols-2", "max-w-6xl");
         } else if (count <= 4) {
-          grid.classList.add("grid-cols-1", "sm:grid-cols-2");
+          grid.classList.add("grid-cols-1", "sm:grid-cols-2", "max-w-7xl");
         } else {
-          grid.classList.add("grid-cols-1", "sm:grid-cols-2", "md:grid-cols-3", "lg:grid-cols-4");
+          // Many cameras: Allow a wider layout but still constrained for ultra-wide monitors
+          grid.classList.add("grid-cols-2", "md:grid-cols-3", "lg:grid-cols-4");
         }
 
         cameras.forEach((cam, i) => {
           const wrapper = document.createElement("div");
-          wrapper.className = "relative bg-black rounded-lg overflow-hidden border border-gray-800 shadow-xl aspect-video";
+          wrapper.className =
+            "relative bg-black rounded-lg overflow-hidden border border-gray-800 shadow-xl";
 
           wrapper.innerHTML = `
-            <div class="absolute top-2 left-2 bg-black/50 backdrop-blur-md px-2 py-1 text-[10px] uppercase tracking-wider font-bold rounded text-white z-10 border border-white/10">
-              ${cam.camera_name}
-            </div>
-            <video class="w-full h-full object-contain bg-black" muted autoplay playsinline controls></video>
+            <video class="w-full h-auto bg-black block" muted autoplay playsinline controls></video>
           `;
 
           grid.appendChild(wrapper);
