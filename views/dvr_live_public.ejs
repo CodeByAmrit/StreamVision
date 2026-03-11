@@ -100,11 +100,19 @@
       const RETRY_INTERVAL = 500;
       const MAX_RETRIES = 30;
       let isTabActive = true;
+      const hlsInstances = [];
 
       document.addEventListener("visibilitychange", () => {
         if (document.hidden) {
           isTabActive = false;
-          console.log("Tab hidden - stopping background retries");
+          console.log("Tab hidden - killing active streams");
+          // 1. Destroy all HLS.js instances
+          while (hlsInstances.length > 0) {
+            const hls = hlsInstances.pop();
+            if (hls) hls.destroy();
+          }
+          // 2. Pause all video elements
+          document.querySelectorAll("video").forEach((v) => v.pause());
         } else {
           console.log("Tab active - refreshing page to get latest content");
           window.location.reload();
@@ -112,6 +120,7 @@
       });
 
       function tryLoadStream(camera, index, retriesLeft = MAX_RETRIES) {
+        if (!isTabActive) return;
         const video = document.getElementById(`video${index + 1}`);
         const source = `/streams/dvr_${dvrId}/cam_${camera.id}/index.m3u8`;
 
@@ -120,6 +129,7 @@
             if (response.ok) {
               if (Hls.isSupported()) {
                 const hls = new Hls({ lowLatencyMode: true });
+                hlsInstances.push(hls);
                 hls.loadSource(source);
                 hls.attachMedia(video);
                 hls.on(Hls.Events.MANIFEST_PARSED, () => {

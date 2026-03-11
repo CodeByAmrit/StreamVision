@@ -104,8 +104,11 @@
     ===================================================== */
       const RETRY_INTERVAL = 500;
       const MAX_RETRIES = 30;
+      const hlsInstances = [];
 
       function tryLoadHlsStream(video, cameraId, retriesLeft = MAX_RETRIES) {
+        if (!isTabActive) return;
+
         fetch(`/api/public/camera/${cameraId}/hls`)
           .then((res) => res.json())
           .then((data) => {
@@ -123,6 +126,7 @@
                 levelLoadingMaxRetry: 1,
                 lowLatencyMode: true,
               });
+              hlsInstances.push(hls);
               hls.loadSource(source);
               hls.attachMedia(video);
               hls.on(Hls.Events.MANIFEST_PARSED, () => {
@@ -132,7 +136,6 @@
                 if (data.fatal) {
                   switch (data.type) {
                     case Hls.ErrorTypes.NETWORK_ERROR:
-                      // A 404 means the stream dropped from the server. Destroy and rebuild via the API.
                       hls.destroy();
                       handleRetry();
                       break;
@@ -222,7 +225,14 @@
       document.addEventListener("visibilitychange", () => {
         if (document.hidden) {
           isTabActive = false;
-          log("Tab hidden - stopping background retries");
+          log("Tab hidden - killing active streams");
+          // 1. Destroy all HLS.js instances
+          while (hlsInstances.length > 0) {
+            const hls = hlsInstances.pop();
+            if (hls) hls.destroy();
+          }
+          // 2. Pause all video elements to be sure
+          document.querySelectorAll("video").forEach((v) => v.pause());
         } else {
           log("Tab active - refreshing page to get latest content");
           window.location.reload();
