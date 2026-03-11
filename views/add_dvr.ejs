@@ -8,6 +8,7 @@
     </h2>
 
     <form action="/dvr/add" method="POST" class="space-y-4">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
       <!-- DVR Name -->
       <div>
         <label

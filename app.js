@@ -7,6 +7,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const favicon = require("serve-favicon");
 const fs = require("fs");
+const csrf = require("csurf");
 
 const http = require("http");
 
@@ -22,12 +23,14 @@ const streamStore = require("./utils/streamStore");
 const { getRecentActivities } = require("./utils/activityLogger");
 const logger = require("./utils/logger");
 const morgan = require("morgan");
+const { apiLimiter, authLimiter } = require("./middleware/security");
 
+const pkg = require("./package.json");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Global App Version (Injected via Docker Build ARG / System Env)
-app.locals.appVersion = process.env.APP_VERSION || "v4.0.0";
+// Global App Version (Injected via Docker Build ARG / System Env or package.json)
+app.locals.appVersion = process.env.APP_VERSION || `v${pkg.version}`;
 
 // =================== Security & Middleware ===================
 
@@ -35,6 +38,9 @@ app.use((req, res, next) => {
   res.locals.nonce = crypto.randomBytes(16).toString("base64");
   next();
 });
+
+// Apply general API rate limiting to all requests
+app.use("/api/", apiLimiter);
 
 // Middleware to inject Recent Activities into every render
 app.use(async (req, res, next) => {
@@ -133,6 +139,16 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cookieParser());
 
+// CSRF Protection Initialization (Cookie-based)
+const csrfProtection = csrf({ cookie: true });
+
+// Pass CSRF token and nonce to all views
+app.use((req, res, next) => {
+  // Use a helper to only apply CSRF to non-API routes if needed
+  // For now, we apply it globally but handle the token generation
+  next();
+});
+
 // =================== Static ===================
 app.use(
   express.static(path.join(__dirname, "public"), {
@@ -196,7 +212,22 @@ app.use(
 );
 
 // =================== Routes ===================
-app.use("/", userRouter);
+// Apply CSRF protection to routes that render forms or handle POSTs
+app.use("/", (req, res, next) => {
+  // Skip CSRF for purely public streaming APIs if they are GET only
+  if (req.path.startsWith("/api/public") && req.method === "GET") {
+    return next();
+  }
+  csrfProtection(req, res, next);
+});
+
+// Middleware to inject CSRF token into all views
+app.use((req, res, next) => {
+  res.locals.csrfToken = req.csrfToken();
+  next();
+});
+
+app.use("/", authLimiter, userRouter); 
 app.use("/camera", checkAuth, cameraRoutes);
 app.use("/dvr", checkAuth, dvrRoutes);
 app.use(settingsRoutes);

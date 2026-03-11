@@ -3,10 +3,11 @@ const router = express.Router();
 const dvrController = require("../controllers/dvrController");
 const db = require("../config/db");
 const dvrManager = require("../utils/streamManager");
+const { dvrSchema, validate } = require("../middleware/validation");
 
 router.get("/", dvrController.getAllDvrsPaginated);
-router.post("/add", dvrController.addDvr);
-router.put("/:id", dvrController.updateDvr);
+router.post("/add", dvrSchema, validate, dvrController.addDvr);
+router.put("/:id", dvrSchema, validate, dvrController.updateDvr);
 router.delete("/:id", dvrController.deleteDvr);
 
 router.get("/edit/:id", async (req, res) => {

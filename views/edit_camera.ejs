@@ -14,6 +14,7 @@
         </h2>
 
         <form action="/camera/edit/<%= camera.id %>" method="POST" class="space-y-4">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
           <!-- Hidden camera ID -->
           <input type="hidden" name="id" value="<%= camera.id %>" />
 

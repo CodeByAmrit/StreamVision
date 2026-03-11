@@ -9,6 +9,7 @@ include('./partials/navbar.ejs', {activePage: 'cameras'}) %>
     </h2>
 
     <form action="/camera/add" method="POST" class="space-y-4">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
       <!-- Hidden DVR ID -->
       <input type="hidden" name="dvr_id" value="<%= dvr.id %>" />
 

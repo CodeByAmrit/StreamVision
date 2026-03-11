@@ -18,6 +18,7 @@
           <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
             <h2 class="text-xl font-bold mb-4">General Settings</h2>
             <form action="/settings" method="POST">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
               <div class="mb-4">
                 <label
                   for="app_name"
@@ -47,6 +48,7 @@
           <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
             <h2 class="text-xl font-bold mb-4">Change Password</h2>
             <form action="/change-password" method="POST">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
               <div class="mb-4">
                 <label
                   for="current_password"
@@ -54,13 +56,13 @@
                 >
                   Current Password
                 </label>
-                <input
-                  type="password"
-                  id="current_password"
-                  name="current_password"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required
-                />
+                  <input
+                    type="password"
+                    id="currentPassword"
+                    name="currentPassword"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    required
+                  />
               </div>
               <div class="mb-4">
                 <label
@@ -69,13 +71,13 @@
                 >
                   New Password
                 </label>
-                <input
-                  type="password"
-                  id="new_password"
-                  name="new_password"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required
-                />
+                  <input
+                    type="password"
+                    id="newPassword"
+                    name="newPassword"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    required
+                  />
               </div>
               <div class="mb-4">
                 <label
@@ -84,13 +86,13 @@
                 >
                   Confirm New Password
                 </label>
-                <input
-                  type="password"
-                  id="confirm_password"
-                  name="confirm_password"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required
-                />
+                  <input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    required
+                  />
               </div>
               <button
                 type="submit"

@@ -56,7 +56,12 @@ router.get("/auth/google/callback", async (req, res) => {
         school_phone: teacher.school_phone,
       });
 
-      res.cookie("token", token, { httpOnly: true, secure: process.env.NODE_ENV === "production" });
+      res.cookie("token", token, { 
+        httpOnly: true, 
+        secure: true, 
+        sameSite: "Strict",
+        maxAge: 3600000 * 8 // 8 hours
+      });
 
       return res.redirect("/dashboard"); // Redirect to the dashboard
     } else {

@@ -4,15 +4,20 @@ const logger = require("./logger");
 /**
  * Logs an action to the recent activity tracking table.
  * 
- * @param {string} type - 'dvr', 'camera', 'system', etc.
- * @param {string} action - 'added', 'updated', 'deleted'
+ * @param {string} type - 'dvr', 'camera', 'system', 'security', etc.
+ * @param {string} action - 'added', 'updated', 'deleted', 'login_fail', 'config_change'
  * @param {string} description - Human readable sentence of what happened
+ * @param {string} ip - (Optional) IP address of the requester
  */
-async function logActivity(type, action, description) {
+async function logActivity(type, action, description, ip = null) {
   try {
+    const finalDescription = ip ? `[IP: ${ip}] ${description}` : description;
+    // Truncate to 255 to fit DB schema
+    const truncatedDescription = finalDescription.substring(0, 255);
+
     await db.execute(
       `INSERT INTO activity_logs (source_type, action, description) VALUES (?, ?, ?)`,
-      [type, action, description]
+      [type, action, truncatedDescription]
     );
   } catch (error) {
     logger.error("Failed to insert into activity_logs:", error);

@@ -7,6 +7,7 @@ const dvrManager = require("../utils/streamManager");
 const bcrypt = require("bcrypt");
 const os = require("os");
 require("dotenv").config();
+const { loginSchema, passwordChangeSchema, validate } = require("../middleware/validation");
 
 // Get all users
 router.get("/login", (req, res) => {
@@ -112,7 +113,7 @@ router.get("/privacy", (req, res) => {
   res.render("privacy");
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", loginSchema, validate, async (req, res) => {
   try {
     const { username, password } = req.body;
     const result = await User.login(req, res);
@@ -122,7 +123,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.post("/change-password", checkAuth, async (req, res) => {
+router.post("/change-password", checkAuth, passwordChangeSchema, validate, async (req, res) => {
   try {
     const id = req.user.id;
     const { currentPassword, newPassword, confirmPassword } = req.body;

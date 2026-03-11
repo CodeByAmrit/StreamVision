@@ -1,6 +1,6 @@
 {
   "name": "rtsp-streaming-server",
-  "version": "2.0.0",
+  "version": "4.1.2",
   "main": "app.js",
   "scripts": {
     "start": "node app",
@@ -21,10 +21,12 @@
     "child_process": "^1.0.2",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
+    "csurf": "^1.11.0",
     "dotenv": "^17.3.1",
     "ejs": "^5.0.1",
     "encrypt": "^0.0.1",
     "express": "^5.2.1",
+    "express-rate-limit": "^8.3.1",
     "express-validator": "^7.3.1",
     "ffprobe-static": "^3.1.0",
     "fluent-ffmpeg": "^2.1.3",
@@ -40,6 +42,11 @@
     "serve-favicon": "^2.5.1",
     "uuid": "^13.0.0",
     "winston": "^3.19.0"
+  },
+  "overrides": {
+    "csurf": {
+      "cookie": "^0.7.0"
+    }
   },
   "devDependencies": {
     "flowbite": "^4.0.1",

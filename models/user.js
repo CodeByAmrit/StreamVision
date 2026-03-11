@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const { setUser } = require("../services/aouth");
 const db = require("../config/db"); // Your MySQL db connection wrapper
+const { logActivity } = require("../utils/activityLogger");
 
 class User {
   // Create a new user
@@ -73,6 +74,7 @@ class User {
 
     try {
       await db.execute(query, [hashedPassword, id]);
+      await logActivity("security", "password_change", `User ID ${id} changed their password`);
       return await this.findById(id);
     } catch (error) {
       throw new Error("Error updating password: " + error.message);
@@ -105,9 +107,11 @@ class User {
 
       const isMatch = bcrypt.compareSync(password, user.password);
       if (!isMatch) {
+        await logActivity("security", "login_fail", `Failed login attempt for email: ${email}`, req.ip);
         return res.status(403).json({ status: "Invalid Password" });
       }
 
+      await logActivity("security", "login_success", `User logged in: ${email}`, req.ip);
       const token = setUser(user);
       res.cookie("token", token, {
         httpOnly: true,

@@ -13,7 +13,7 @@ function setUser(user) {
       email: user.email,
     },
     chabi,
-    { expiresIn: "24h" } // Token expires in 24 hours
+    { expiresIn: "8h" } // Token expires in 8 hours for better security
   );
 }
 
