@@ -32,7 +32,7 @@
     <%- include('./partials/dashboardContent.ejs')%>
 
     <!-- Integrated JavaScript -->
-    <script src="/js/dashboard.js" nonce="<%= nonce %>"></script>
+    <script src="/js/dashboard.js?v=<%= appVersion %>" nonce="<%= nonce %>"></script>
     <%- include('./partials/footer.ejs') %>
   </body>
 </html>
