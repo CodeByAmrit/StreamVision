@@ -61,10 +61,15 @@ function startHlsStream(rtspUrl, cameraId, dvrId) {
       if (!fs.existsSync(streamDir)) {
         fs.mkdirSync(streamDir, { recursive: true });
       }
+      
+      // CRITICAL: Clear older data if it exists to avoid stale footage
+      if (fs.existsSync(outputPath)) {
+        fs.rmSync(outputPath, { recursive: true, force: true });
+      }
       fs.mkdirSync(outputPath, { recursive: true });
     } catch (err) {
-      logger.error(`Error creating directories for stream ${streamId}:`, err);
-      return reject(new Error("Failed to create stream directories"));
+      logger.error(`Error creating/clearing directories for stream ${streamId}:`, err);
+      return reject(new Error("Failed to prepare stream directories"));
     }
 
     const ffmpeg = spawn(

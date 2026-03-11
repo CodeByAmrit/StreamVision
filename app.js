@@ -157,6 +157,12 @@ app.use(
   "/hls",
   express.static(streamDir, {
     setHeaders: (res, filePath) => {
+      // Prevent caching of HLS files to avoid stale footage
+      res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+      res.setHeader("Pragma", "no-cache");
+      res.setHeader("Expires", "0");
+      res.setHeader("Surrogate-Control", "no-store");
+
       if (filePath.endsWith(".m3u8")) {
         res.setHeader("Content-Type", "application/vnd.apple.mpegurl");
       } else if (filePath.endsWith(".ts")) {
