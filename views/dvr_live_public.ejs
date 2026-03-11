@@ -99,6 +99,17 @@
       const dvrId = <%= dvr.id %>;
       const RETRY_INTERVAL = 500;
       const MAX_RETRIES = 30;
+      let isTabActive = true;
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+          isTabActive = false;
+          console.log("Tab hidden - stopping background retries");
+        } else {
+          console.log("Tab active - refreshing page to get latest content");
+          window.location.reload();
+        }
+      });
 
       function tryLoadStream(camera, index, retriesLeft = MAX_RETRIES) {
         const video = document.getElementById(`video${index + 1}`);
@@ -135,7 +146,7 @@
           });
 
         function handleRetry() {
-          if (retriesLeft > 0) {
+          if (retriesLeft > 0 && isTabActive) {
             setTimeout(() => tryLoadStream(camera, index, retriesLeft - 1), RETRY_INTERVAL);
           }
         }

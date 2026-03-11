@@ -43,7 +43,7 @@
 
       <!-- Desktop: Support Button -->
       <a
-        href="https://service.cctvcameralive.inhttps://cctvcameralive.in/#contact/"
+        href="https://cctvcameralive.in/#contact"
         class="hidden sm:flex bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold px-5 py-2 rounded-xl shadow-md hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 items-center space-x-2 z-50"
       >
         <svg
@@ -66,7 +66,7 @@
 
     <!-- Mobile: Fixed Support Button -->
     <a
-      href="https://service.cctvcameralive.inhttps://cctvcameralive.in/#contact/"
+      href="https://cctvcameralive.in/#contact"
       class="sm:hidden fixed bottom-0 right-0 w-full py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold text-center shadow-[0_-2px_10px_rgba(0,0,0,0.3)] hover:from-blue-600 hover:to-cyan-600 transition-all duration-300 z-50"
     >
       💬 Support
@@ -162,7 +162,7 @@
           });
 
         function handleRetry() {
-          if (retriesLeft > 0) {
+          if (retriesLeft > 0 && isTabActive) {
             setTimeout(() => tryLoadHlsStream(video, cameraId, retriesLeft - 1), RETRY_INTERVAL);
           }
         }
@@ -217,6 +217,18 @@
       /* =====================================================
        INIT
     ===================================================== */
+      let isTabActive = true;
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+          isTabActive = false;
+          log("Tab hidden - stopping background retries");
+        } else {
+          log("Tab active - refreshing page to get latest content");
+          window.location.reload();
+        }
+      });
+
       document.addEventListener("DOMContentLoaded", loadCameras);
     </script>
   </body>
