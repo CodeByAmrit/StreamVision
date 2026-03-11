@@ -2,7 +2,7 @@
 <nav
   class="fixed top-0 right-0 z-30 w-full sm:w-[calc(100%-16rem)] bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-b border-blue-100 dark:border-gray-700"
 >
-  <div class="px-6">
+  <div class="px-3 sm:px-6">
     <div class="flex items-center justify-between h-16">
       <!-- Left Section -->
       <div class="flex items-center">
@@ -16,8 +16,8 @@
         </button>
 
         <!-- Page Title -->
-        <div class="ml-4">
-          <h1 class="text-xl font-bold gradient-text">
+        <div class="ml-2 sm:ml-4">
+          <h1 class="text-lg sm:text-xl font-bold gradient-text truncate max-w-[140px] sm:max-w-none">
             <%= title ? title : 'Dashboard Overview' %>
           </h1>
           <p class="text-sm text-gray-600 dark:text-gray-400 hidden sm:block">
@@ -27,7 +27,7 @@
       </div>
 
       <!-- Right Section -->
-      <div class="flex items-center space-x-4">
+      <div class="flex items-center space-x-2 sm:space-x-4">
         <!-- Theme Toggle -->
         <button
           id="theme-toggle"
