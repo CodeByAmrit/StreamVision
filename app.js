@@ -39,8 +39,14 @@ app.use((req, res, next) => {
   next();
 });
 
-// Apply general API rate limiting to all requests
-app.use("/api/", apiLimiter);
+// Apply general API rate limiting (Exempting public API endpoints)
+app.use("/api/", (req, res, next) => {
+  // Check against originalUrl to be absolutely sure
+  if (req.originalUrl.includes("/api/public/")) {
+    return next();
+  }
+  apiLimiter(req, res, next);
+});
 
 // Middleware to inject Recent Activities into every render
 app.use(async (req, res, next) => {
@@ -211,11 +217,18 @@ app.use(
   express.static(path.join(__dirname, "public", "streams"))
 );
 
-// =================== Routes ===================
+// 1. Public Routes (No Auth, No strict Rate Limiting)
+app.use(publicRoutes);
+
+// 2. Specific Security Middleware for Admin/API
 // Apply CSRF protection to routes that render forms or handle POSTs
 app.use("/", (req, res, next) => {
   // Skip CSRF for purely public streaming APIs if they are GET only
   if (req.path.startsWith("/api/public") && req.method === "GET") {
+    return next();
+  }
+  // Skip CSRF for public DVR pages
+  if (req.path.startsWith("/public/")) {
     return next();
   }
   csrfProtection(req, res, next);
@@ -223,16 +236,22 @@ app.use("/", (req, res, next) => {
 
 // Middleware to inject CSRF token into all views
 app.use((req, res, next) => {
-  res.locals.csrfToken = req.csrfToken();
+  // Only try to generate token if csurf was initialized for this request
+  if (typeof req.csrfToken === "function") {
+    res.locals.csrfToken = req.csrfToken();
+  } else {
+    res.locals.csrfToken = null;
+  }
   next();
 });
 
-app.use("/", authLimiter, userRouter); 
+// 3. Admin/Protected Routes
+// Note: Sensitive rate limiting is now applied inside userRouter specifically for login/password
+app.use("/", userRouter); 
 app.use("/camera", checkAuth, cameraRoutes);
 app.use("/dvr", checkAuth, dvrRoutes);
 app.use(settingsRoutes);
 app.use(analyticsRoutes);
-app.use(publicRoutes);
 // =================== API Endpoints ===================
 
 app.post("/api/start-stream", async (req, res) => {
