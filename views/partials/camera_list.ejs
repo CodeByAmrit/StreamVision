@@ -1,11 +1,11 @@
 <section class="p-4 sm:ml-64 dark:bg-gray-900 dark:text-white">
   <div class="w-full h-full mt-16">
     <!-- DVR Header -->
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="text-2xl font-semibold">Location: <%= dvr.location_name %></h2>
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+      <h2 class="text-xl sm:text-2xl font-semibold break-words">Location: <%= dvr.location_name %></h2>
       <a
         href="/camera/add/<%= dvr.id %>"
-        class="btn-gradient hover:bg-blue-700 text-white px-4 py-2 rounded text-sm"
+        class="inline-flex justify-center btn-gradient hover:bg-blue-700 text-white px-4 py-2 rounded text-sm whitespace-nowrap"
       >
         + Add Camera
       </a>
@@ -36,16 +36,16 @@
           <p class="mb-3 font-normal text-sm text-gray-700 dark:text-gray-400 break-words">
             <!-- <span class="font-semibold">RTSP:</span> <%= camera.rtsp_url %> -->
           </p>
-          <div class="flex justify-between space-x-2">
+          <div class="flex justify-between space-x-2 mt-auto">
             <a
               href="/camera/edit/<%= camera.id %>"
-              class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+              class="inline-flex justify-center flex-1 items-center px-3 py-1.5 text-xs sm:text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700"
             >
               Edit
             </a>
             <a
               href="/camera/delete/<%= camera.id %>"
-              class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700"
+              class="inline-flex justify-center flex-1 items-center px-3 py-1.5 text-xs sm:text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700"
             >
               Delete
             </a>

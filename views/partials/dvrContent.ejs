@@ -125,12 +125,12 @@
     <div
       class="px-4 py-3 border-b border-blue-50 dark:border-gray-700 bg-blue-50/50 dark:bg-blue-900/20"
     >
-      <div class="grid grid-cols-12 gap-4 text-sm font-semibold text-gray-700 dark:text-gray-300">
-        <div class="col-span-1">#</div>
-        <div class="col-span-3">DVR Name</div>
-        <div class="col-span-3">Location</div>
-        <div class="col-span-2">Status</div>
-        <div class="col-span-3 text-right">Actions</div>
+      <div class="grid grid-cols-12 gap-2 sm:gap-4 text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300">
+        <div class="col-span-1 hidden sm:block">#</div>
+        <div class="col-span-7 sm:col-span-3">DVR Name</div>
+        <div class="col-span-3 hidden md:block">Location</div>
+        <div class="col-span-3 hidden sm:block md:col-span-2">Status</div>
+        <div class="col-span-5 sm:col-span-3 text-right">Actions</div>
       </div>
     </div>
 
@@ -147,27 +147,27 @@
         <div class="grid grid-cols-12 gap-4 items-center">
 
           <!-- Index -->
-          <div class="col-span-1">
+          <div class="col-span-1 hidden sm:block">
             <span class="inline-flex items-center justify-center w-7 h-7 text-xs rounded-md bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 font-medium">
               <%= (currentPage - 1) * limit + index + 1 %>
             </span>
           </div>
 
           <!-- DVR Name -->
-          <div class="col-span-3">
+          <div class="col-span-7 sm:col-span-3">
             <div class="flex items-center space-x-2.5">
               <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center shrink-0">
                 <i class="fas fa-server text-sm text-blue-600 dark:text-blue-400"></i>
               </div>
               <div class="min-w-0">
                 <h4 class="font-bold text-sm text-gray-900 dark:text-white truncate" title="<%= dvr.dvr_name %>"><%= dvr.dvr_name %></h4>
-                <p class="text-[11px] text-gray-500 dark:text-gray-400">ID: <%= dvr.id %></p>
+                <p class="text-[11px] text-gray-500 dark:text-gray-400 hidden sm:block">ID: <%= dvr.id %></p>
               </div>
             </div>
           </div>
 
           <!-- Location -->
-          <div class="col-span-3">
+          <div class="col-span-3 hidden md:block">
             <div class="flex items-center text-sm">
               <i class="fas fa-map-marker-alt text-gray-400 mr-1.5 shrink-0"></i>
               <span class="text-gray-700 dark:text-gray-300 truncate" title="<%= dvr.location_name %>"><%= dvr.location_name %></span>
@@ -175,7 +175,7 @@
           </div>
 
           <!-- Status -->
-          <div class="col-span-2">
+          <div class="col-span-3 md:col-span-2 hidden sm:block">
             <%
               const isOnline = dvr.isOnline === true;
               const statusClass = isOnline
@@ -186,43 +186,43 @@
             %>
 
             <!-- ✅ STATUS BADGE -->
-            <div class="status-badge inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= statusClass %> border border-transparent dark:border-current/10">
-              <i class="fas <%= statusIcon %> mr-1.5 opacity-80"></i>
+            <div class="status-badge inline-flex items-center px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-medium <%= statusClass %> border border-transparent dark:border-current/10">
+              <i class="fas <%= statusIcon %> mr-1 sm:mr-1.5 opacity-80"></i>
               <%= isOnline ? "Online" : "Offline" %>
               <% if (isOnline && activeCameras > 0) { %>
-                <span class="ml-1.5 pl-1.5 border-l border-current/20 text-[10px] uppercase font-bold tracking-wider opacity-90"><%= activeCameras %> Cam</span>
+                <span class="ml-1 sm:ml-1.5 pl-1 sm:pl-1.5 border-l border-current/20 text-[9px] sm:text-[10px] uppercase font-bold tracking-wider opacity-90"><%= activeCameras %> Cam</span>
               <% } %>
             </div>
           </div>
 
           <!-- Actions -->
-          <div class="col-span-3">
-            <div class="flex items-center justify-end space-x-1.5">
+          <div class="col-span-5 sm:col-span-3">
+            <div class="flex items-center justify-end space-x-1 sm:space-x-1.5">
               <a
                 href="/public/dvr/<%= dvr.id %>"
                 target="_blank"
-                class="inline-flex items-center px-2.5 py-1.5 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 rounded hover:bg-green-200 dark:hover:bg-green-800/50 transition-colors text-xs font-medium"
+                class="inline-flex items-center px-2 sm:px-2.5 py-1 sm:py-1.5 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 rounded hover:bg-green-200 dark:hover:bg-green-800/50 transition-colors text-[10px] sm:text-xs font-medium"
               >
-                <i class="fas fa-eye mr-1.5"></i>
-                <%= isOnline ? "Live" : "View" %>
+                <i class="fas fa-eye mr-1 sm:mr-1.5"></i>
+                <span class="hidden sm:inline"><%= isOnline ? "Live" : "View" %></span>
               </a>
 
               <a
                 href="/dvr/edit/<%= dvr.id %>"
-                class="inline-flex items-center justify-center w-8 h-8 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/50 transition-colors"
+                class="inline-flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/50 transition-colors"
                 title="Edit DVR"
               >
-                <i class="fas fa-edit text-sm"></i>
+                <i class="fas fa-edit text-xs sm:text-sm"></i>
               </a>
 
               <button
                 type="button"
                 data-dvr-id="<%= dvr.id %>"
                 data-dvr-name="<%= dvr.dvr_name %>"
-                class="delete-dvr-btn inline-flex items-center justify-center w-8 h-8 rounded bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-800/50 transition-colors"
+                class="delete-dvr-btn inline-flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-800/50 transition-colors"
                 title="Delete DVR"
               >
-                <i class="fas fa-trash text-sm"></i>
+                <i class="fas fa-trash text-xs sm:text-sm"></i>
               </button>
             </div>
           </div>

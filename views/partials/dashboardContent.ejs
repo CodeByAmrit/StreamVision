@@ -7,10 +7,10 @@
       <div class="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/10 rounded-xl p-4 border border-blue-200 dark:border-blue-800 h-full flex flex-col justify-center">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
           <div>
-            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-1">
+            <h2 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-1">
               Welcome back, <span class="gradient-text">Admin!</span>
             </h2>
-            <p class="text-sm text-gray-600 dark:text-gray-400">
+            <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
               Monitor your live streams and manage equipment.
             </p>
           </div>
@@ -56,7 +56,7 @@
           <i class="fas fa-building text-blue-600 dark:text-blue-400 text-sm"></i>
         </div>
       </div>
-      <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-1"><%= total_dvrs || 0 %></h3>
+      <h3 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-1"><%= total_dvrs || 0 %></h3>
       <div class="flex items-center text-xs space-x-2">
         <span class="text-green-600 dark:text-green-400 font-medium bg-green-50 dark:bg-green-900/30 px-1.5 py-0.5 rounded"><i class="fas fa-arrow-up mr-1 invisible"></i><%= activeDvrs.length %> Online</span>
         <span class="text-red-500 dark:text-red-400"><%= total_dvrs - activeDvrs.length %> Offline</span>
@@ -71,7 +71,7 @@
           <i class="fas fa-video text-purple-600 dark:text-purple-400 text-sm"></i>
         </div>
       </div>
-      <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-1"><%= total_cameras || 0 %></h3>
+      <h3 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-1"><%= total_cameras || 0 %></h3>
       <p class="text-xs text-gray-500 dark:text-gray-400 truncate">Total connected devices</p>
     </div>
 
@@ -83,7 +83,7 @@
            <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse absolute"></div>
         </div>
       </div>
-      <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-1"><%= active_streams || 0 %></h3>
+      <h3 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-1"><%= active_streams || 0 %></h3>
       <p class="text-xs text-green-600 dark:text-green-400 font-medium">Streaming active</p>
     </div>
 
@@ -95,7 +95,7 @@
           <i class="fas fa-memory text-orange-600 dark:text-orange-400 text-sm"></i>
         </div>
       </div>
-      <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-1"><%= systemStats.memoryUsagePercent %>%</h3>
+      <h3 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-1"><%= systemStats.memoryUsagePercent %>%</h3>
       <div class="w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-700 mt-1">
         <div class="bg-gradient-to-r from-orange-400 to-red-500 h-1.5 rounded-full" style="width: <%= systemStats.memoryUsagePercent %>%"></div>
       </div>
@@ -131,7 +131,7 @@
                     <p class="text-xs text-gray-500 dark:text-gray-400 truncate max-w-[150px] sm:max-w-xs"><i class="fas fa-map-marker-alt mr-1 opacity-70"></i><%= dvr.location_name %></p>
                   </div>
                 </div>
-                <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-2 sm:space-x-4">
                   <div class="text-right hidden sm:block">
                      <p class="text-xs font-medium text-gray-900 dark:text-white"><%= dvr.activeCameraCount %> cams</p>
                      <p class="text-[10px] text-green-600 dark:text-green-400 uppercase font-semibold tracking-wider">Live View</p>
