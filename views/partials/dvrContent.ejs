@@ -118,180 +118,100 @@
   </div>
 
   <!-- DVR List Card -->
-  <div
-    class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-blue-100 dark:border-gray-700 overflow-hidden"
-  >
-    <!-- Table Header -->
-    <div
-      class="px-4 py-3 border-b border-blue-50 dark:border-gray-700 bg-blue-50/50 dark:bg-blue-900/20"
-    >
-      <div class="grid grid-cols-12 gap-2 sm:gap-4 text-xs sm:text-sm font-semibold text-gray-700 dark:text-gray-300">
-        <div class="col-span-1 hidden sm:block">#</div>
-        <div class="col-span-7 sm:col-span-3">DVR Name</div>
-        <div class="col-span-3 hidden md:block">Location</div>
-        <div class="col-span-3 hidden sm:block md:col-span-2">Status</div>
-        <div class="col-span-5 sm:col-span-3 text-right">Actions</div>
-      </div>
-    </div>
-
-    <!-- DVR List -->
-    <div class="divide-y divide-blue-50 dark:divide-gray-700">
-      <% if (dvrsWithCameras && dvrsWithCameras.length > 0) { %>
-      <% dvrsWithCameras.forEach((dvr, index) => { %>
-
-      <!-- ✅ DVR ROW ROOT -->
-      <div
-        class="px-4 py-3 hover:bg-blue-50/30 dark:hover:bg-gray-700/30 transition-colors"
-        data-dvr-id="<%= dvr.id %>"
-      >
-        <div class="grid grid-cols-12 gap-4 items-center">
-
-          <!-- Index -->
-          <div class="col-span-1 hidden sm:block">
-            <span class="inline-flex items-center justify-center w-7 h-7 text-xs rounded-md bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400 font-medium">
-              <%= (currentPage - 1) * limit + index + 1 %>
-            </span>
-          </div>
-
-          <!-- DVR Name -->
-          <div class="col-span-7 sm:col-span-3">
-            <div class="flex items-center space-x-2.5">
-              <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-100 to-blue-50 dark:from-blue-900/30 dark:to-blue-800/20 flex items-center justify-center shrink-0">
-                <i class="fas fa-server text-sm text-blue-600 dark:text-blue-400"></i>
+  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-x-auto">
+    <table class="w-full text-left text-sm whitespace-nowrap">
+      <thead class="text-xs text-gray-500 dark:text-gray-400 font-medium border-b border-gray-100 dark:border-gray-700/50 bg-gray-50/30 dark:bg-gray-800/30">
+        <tr>
+          <th scope="col" class="px-5 py-4 w-12 text-center rounded-tl-2xl">
+             <i class="far fa-check-circle text-gray-300 dark:text-gray-600 text-base"></i>
+          </th>
+          <th scope="col" class="px-4 py-4 w-28">DVR ID <span class="text-gray-300 dark:text-gray-600 ml-1">⋮</span></th>
+          <th scope="col" class="px-4 py-4">Name <span class="text-gray-300 dark:text-gray-600 ml-1">⋮</span></th>
+          <th scope="col" class="px-4 py-4">Location <span class="text-gray-300 dark:text-gray-600 ml-1">⋮</span></th>
+          <th scope="col" class="px-4 py-4">Cameras <span class="text-gray-300 dark:text-gray-600 ml-1">⋮</span></th>
+          <th scope="col" class="px-4 py-4 text-center">Status <span class="text-gray-300 dark:text-gray-600 ml-1">⋮</span></th>
+          <th scope="col" class="px-5 py-4 w-14 rounded-tr-2xl text-center"></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100 dark:divide-gray-700/50">
+        <% if (dvrsWithCameras && dvrsWithCameras.length > 0) { %>
+        <% dvrsWithCameras.forEach((dvr, index) => { %>
+          <%
+            const isOnline = dvr.isOnline === true;
+            const statusClass = isOnline
+              ? "text-green-600 border-green-200 bg-white dark:bg-green-900/10 dark:text-green-400 dark:border-green-800/30"
+              : "text-red-500 border-red-200 bg-white dark:bg-red-900/10 dark:text-red-400 dark:border-red-800/30";
+            const statusText = isOnline ? "Online" : "Offline";
+            const activeCameras = dvr.activeCameras || 0;
+            const totalCameras = dvr.totalCameras || 0;
+          %>
+        <tr class="hover:bg-gray-50/50 dark:hover:bg-gray-800/50 transition-colors group" data-dvr-id="<%= dvr.id %>">
+          <td class="px-5 py-3.5 text-center">
+             <i class="far fa-check-circle text-gray-300 dark:text-gray-600 group-hover:text-blue-500 transition-colors text-base cursor-pointer"></i>
+          </td>
+          <td class="px-4 py-3.5 text-gray-500 dark:text-gray-400 font-medium">
+            <%= dvr.id %>
+          </td>
+          <td class="px-4 py-3.5">
+            <div class="flex items-center gap-3">
+              <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(dvr.dvr_name) %>&background=e0e7ff&color=4f46e5&rounded=true&bold=true&size=32" alt="Avatar" class="w-8 h-8 rounded-full shadow-sm">
+              <span class="font-semibold text-gray-900 dark:text-white"><%= dvr.dvr_name %></span>
+            </div>
+          </td>
+          <td class="px-4 py-3.5 text-gray-600 dark:text-gray-300">
+            <%= dvr.location_name || 'Unassigned' %>
+          </td>
+          <td class="px-4 py-3.5">
+            <div class="flex items-center gap-1.5">
+              <span class="text-gray-900 dark:text-gray-200 font-medium"><%= activeCameras %></span>
+              <span class="text-gray-400 dark:text-gray-500 text-xs">/ <%= totalCameras %></span>
+            </div>
+          </td>
+          <td class="px-4 py-3.5 text-center">
+             <span class="inline-flex items-center justify-center px-4 py-1 text-[11px] font-semibold tracking-wide border rounded-full <%= statusClass %>">
+                <%= statusText %>
+             </span>
+          </td>
+          <td class="px-5 py-3.5 text-center">
+            <div class="relative inline-block text-left opacity-0 group-hover:opacity-100 transition-opacity hidden md:block">
+              <div class="flex items-center justify-center gap-2">
+                <a href="/public/dvr/<%= dvr.id %>" target="_blank" class="w-7 h-7 inline-flex items-center justify-center text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-full transition-colors dark:hover:bg-gray-700" title="<%= isOnline ? 'Live' : 'View' %>">
+                   <i class="fas fa-eye text-xs"></i>
+                </a>
+                <a href="/dvr/edit/<%= dvr.id %>" class="w-7 h-7 inline-flex items-center justify-center text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors dark:hover:bg-gray-700" title="Edit">
+                   <i class="fas fa-pen text-xs"></i>
+                </a>
+                <button type="button" data-dvr-id="<%= dvr.id %>" data-dvr-name="<%= dvr.dvr_name %>" class="delete-dvr-btn w-7 h-7 inline-flex items-center justify-center text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors dark:hover:bg-gray-700" title="Delete">
+                   <i class="fas fa-trash text-xs"></i>
+                </button>
+                <button type="button" class="w-7 h-7 inline-flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors dark:hover:bg-gray-700 dark:hover:text-gray-300" title="More options">
+                   <i class="fas fa-ellipsis-v text-xs"></i>
+                </button>
               </div>
-              <div class="min-w-0">
-                <h4 class="font-bold text-sm text-gray-900 dark:text-white truncate" title="<%= dvr.dvr_name %>"><%= dvr.dvr_name %></h4>
-                <p class="text-[11px] text-gray-500 dark:text-gray-400 hidden sm:block">ID: <%= dvr.id %></p>
-              </div>
             </div>
-          </div>
-
-          <!-- Location -->
-          <div class="col-span-3 hidden md:block">
-            <div class="flex items-center text-sm">
-              <i class="fas fa-map-marker-alt text-gray-400 mr-1.5 shrink-0"></i>
-              <span class="text-gray-700 dark:text-gray-300 truncate" title="<%= dvr.location_name %>"><%= dvr.location_name %></span>
+            <!-- Mobile fallback for actions -->
+            <div class="flex md:hidden items-center justify-center gap-3">
+                 <button type="button" class="text-gray-400 hover:text-gray-600"><i class="fas fa-ellipsis-v"></i></button>
             </div>
-          </div>
-
-          <!-- Status -->
-          <div class="col-span-3 md:col-span-2 hidden sm:block">
-            <%
-              const isOnline = dvr.isOnline === true;
-              const statusClass = isOnline
-                ? "bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400"
-                : "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400";
-              const statusIcon = isOnline ? "fa-circle-check" : "fa-circle-exclamation";
-              const activeCameras = dvr.activeCameras || 0;
-            %>
-
-            <!-- ✅ STATUS BADGE -->
-            <div class="status-badge inline-flex items-center px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-medium <%= statusClass %> border border-transparent dark:border-current/10">
-              <i class="fas <%= statusIcon %> mr-1 sm:mr-1.5 opacity-80"></i>
-              <%= isOnline ? "Online" : "Offline" %>
-              <% if (isOnline && activeCameras > 0) { %>
-                <span class="ml-1 sm:ml-1.5 pl-1 sm:pl-1.5 border-l border-current/20 text-[9px] sm:text-[10px] uppercase font-bold tracking-wider opacity-90"><%= activeCameras %> Cam</span>
-              <% } %>
-            </div>
-          </div>
-
-          <!-- Actions -->
-          <div class="col-span-5 sm:col-span-3">
-            <div class="flex items-center justify-end space-x-1 sm:space-x-1.5">
-              <a
-                href="/public/dvr/<%= dvr.id %>"
-                target="_blank"
-                class="inline-flex items-center px-2 sm:px-2.5 py-1 sm:py-1.5 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 rounded hover:bg-green-200 dark:hover:bg-green-800/50 transition-colors text-[10px] sm:text-xs font-medium"
-              >
-                <i class="fas fa-eye mr-1 sm:mr-1.5"></i>
-                <span class="hidden sm:inline"><%= isOnline ? "Live" : "View" %></span>
-              </a>
-
-              <a
-                href="/dvr/edit/<%= dvr.id %>"
-                class="inline-flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/50 transition-colors"
-                title="Edit DVR"
-              >
-                <i class="fas fa-edit text-xs sm:text-sm"></i>
-              </a>
-
-              <button
-                type="button"
-                data-dvr-id="<%= dvr.id %>"
-                data-dvr-name="<%= dvr.dvr_name %>"
-                class="delete-dvr-btn inline-flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-800/50 transition-colors"
-                title="Delete DVR"
-              >
-                <i class="fas fa-trash text-xs sm:text-sm"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Additional Info -->
-        <div class="mt-3 pt-3 border-t border-blue-100 dark:border-gray-700 hidden additional-info">
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
-
-            <!-- ✅ LIVE STREAM INFO -->
-            <div class="live-stream-info">
-              <p class="text-gray-500 dark:text-gray-400 mb-1">Live Streams</p>
-
-              <% if (dvr.streamCameras && dvr.streamCameras.length) { %>
-                <% dvr.streamCameras.forEach(cam => { %>
-                  <p class="text-xs text-gray-700 dark:text-gray-300">
-                    <%= cam.resolution || '—' %> · <%= cam.fps || '--' %> FPS · <%= cam.bitrate || '--' %> kbps
-                  </p>
-                <% }) %>
-              <% } else { %>
-                <p class="text-xs text-gray-400">No active streams</p>
-              <% } %>
-            </div>
-
-            <div>
-              <p class="text-gray-500 dark:text-gray-400 mb-1">Cameras</p>
-              <p class="font-medium text-gray-900 dark:text-white">
-                <%= dvr.totalCameras || 0 %> Total
-                <% if (dvr.activeCameras > 0) { %>
-                  <span class="text-green-600 dark:text-green-400 ml-1">
-                    (<%= dvr.activeCameras %> Active)
-                  </span>
-                <% } %>
-              </p>
-            </div>
-
-            <div>
-              <p class="text-gray-500 dark:text-gray-400 mb-1">Status</p>
-              <p class="font-medium text-gray-900 dark:text-white">
-                <%= isOnline ? "Online ✓" : "Offline" %>
-              </p>
-            </div>
-
-            <div>
-              <p class="text-gray-500 dark:text-gray-400 mb-1">DVR Location</p>
-              <p class="font-medium text-gray-900 dark:text-white"><%= dvr.location_name %></p>
-            </div>
-          </div>
-        </div>
-
-        <button
-          type="button"
-          class="show-more-btn mt-2 inline-flex items-center text-blue-600 dark:text-blue-400 text-xs font-semibold hover:underline bg-transparent"
-        >
-          <i class="fas fa-chevron-down mr-1"></i>
-          Expand Details
-        </button>
-      </div>
-
-      <% }); %>
-      <% } else { %>
-
-      <!-- Empty State -->
-      <div class="px-6 py-12 text-center">
-        <p class="text-gray-500">No DVRs Found</p>
-      </div>
-
-      <% } %>
-    </div>
+          </td>
+        </tr>
+        <% }); %>
+        <% } else { %>
+        <tr>
+          <td colspan="7" class="px-6 py-16 text-center">
+             <div class="flex flex-col items-center justify-center opacity-60">
+                <div class="w-16 h-16 mb-4 rounded-full bg-gray-50 dark:bg-gray-800 flex items-center justify-center border border-gray-200 dark:border-gray-700 shadow-sm">
+                  <i class="fas fa-server text-2xl text-gray-400"></i>
+                </div>
+                <p class="text-base font-medium text-gray-600 dark:text-gray-300">No DVRs Found</p>
+                <p class="text-sm text-gray-400 mt-1">Add a new DVR to get started</p>
+             </div>
+          </td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
 
 
     <!-- Pagination Footer -->

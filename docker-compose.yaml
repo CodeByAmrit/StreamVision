@@ -2,6 +2,7 @@ services:
   streamvision:
     image: codebyamrit/streamvision:latest
     container_name: streamvision_app
+    command: ["node", "cluster.js"]
     expose:
       - "3000"
     env_file:
@@ -18,28 +19,13 @@ services:
         max-file: "5"
     networks:
       - streamvision-net
-
-  nginx:
-    image: nginx:alpine
-    container_name: streamvision_nginx
-    volumes:
-      - ./config.nginx:/etc/nginx/conf.d/default.conf:ro
-
-    depends_on:
-      - streamvision
-
-    restart: unless-stopped
-
-    networks:
-      - streamvision-net
       - proxy
-
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.streamvision.rule=Host(`cctvcameralive.in`)"
       - "traefik.http.routers.streamvision.entrypoints=websecure"
       - "traefik.http.routers.streamvision.tls.certresolver=letsencrypt"
-      - "traefik.http.services.streamvision.loadbalancer.server.port=80"
+      - "traefik.http.services.streamvision.loadbalancer.server.port=3000"
 
 
 networks:

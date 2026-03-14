@@ -7,7 +7,7 @@ const getClientIp = (req) => req.headers["cf-connecting-ip"] || req.ip;
 // General API Rate Limiter: 100 requests per 15 minutes
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100,
+  max: 2000, // Increased from 100 to support high throughput
   standardHeaders: true,
   legacyHeaders: false,
   keyGenerator: getClientIp,

@@ -52,12 +52,21 @@ app.use("/api/", (req, res, next) => {
   apiLimiter(req, res, next);
 });
 
-// Middleware to inject Recent Activities into every render
+// Middleware to inject Recent Activities into every render with simple caching
+let cachedActivities = null;
+let lastFetchTime = 0;
+const CACHE_DURATION = 30000; // 30 seconds
+
 app.use(async (req, res, next) => {
   try {
     // Only fetch for pages that might render the navbar
     if (req.method === 'GET' && !req.path.startsWith('/api/') && !req.path.startsWith('/public/dvr/')) {
-       res.locals.recentActivities = await getRecentActivities(5);
+       const now = Date.now();
+       if (!cachedActivities || (now - lastFetchTime > CACHE_DURATION)) {
+         cachedActivities = await getRecentActivities(5);
+         lastFetchTime = now;
+       }
+       res.locals.recentActivities = cachedActivities;
     }
   } catch(err) {
     res.locals.recentActivities = [];
