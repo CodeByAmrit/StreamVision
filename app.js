@@ -188,7 +188,7 @@ app.set("views", path.join(__dirname, "views"));
 
 // =================== HLS Stream Serving ===================
 const streamDir = path.join(__dirname, "streams");
-if (!fs.existsSync(streamDir)) fs.mkdirSync(streamDir);
+if (!fs.existsSync(streamDir)) fs.mkdirSync(streamDir, { recursive: true });
 
 // Heartbeat Middleware: Every request to /hls resets the 4-minute timeout for that stream
 app.use("/hls", (req, res, next) => {
