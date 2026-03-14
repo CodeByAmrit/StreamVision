@@ -19,6 +19,7 @@
     "body-parser": "^2.2.2",
     "buffer-equal-constant-time": "^1.0.1",
     "child_process": "^1.0.2",
+    "compression": "^1.7.4",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "csurf": "^1.11.0",

@@ -4,6 +4,7 @@ const helmet = require("helmet");
 const cors = require("cors");
 const crypto = require("crypto");
 const path = require("path");
+const compression = require("compression");
 const cookieParser = require("cookie-parser");
 const favicon = require("serve-favicon");
 const fs = require("fs");
@@ -38,8 +39,17 @@ app.locals.appVersion = process.env.APP_VERSION || `v${pkg.version}`;
 
 // =================== Security & Middleware ===================
 
+// =================== Global Performance & Security ===================
+app.use(compression()); // Compress all responses
+
+// Optimize nonce generation: Only for HTML/EJS requests to reduce crypto overhead
 app.use((req, res, next) => {
-  res.locals.nonce = crypto.randomBytes(16).toString("base64");
+  const isHtml = req.accepts('html');
+  if (isHtml) {
+    res.locals.nonce = crypto.randomBytes(16).toString("base64");
+  } else {
+    res.locals.nonce = '';
+  }
   next();
 });
 
@@ -80,21 +90,13 @@ const skipVideo = (req, res) => {
 
 app.use(
   morgan(
-    (tokens, req, res) => {
-      return JSON.stringify({
-        method: tokens.method(req, res),
-        url: tokens.url(req, res),
-        status: tokens.status(req, res),
-        "response-time": tokens["response-time"](req, res, "ms"),
-        "user-agent": tokens["user-agent"](req, res),
-      });
-    },
+    process.env.NODE_ENV === "production" ? "combined" : "dev", // Use faster 'combined' or 'tiny' in prod
     {
       skip: skipVideo,
       stream: {
         write: (message) => {
-          const data = JSON.parse(message);
-          logger.info(`HTTP Request: ${data.method} ${data.url} - Status: ${data.status}`, data);
+          // Log to winston only if it's not a generic asset or use a faster logger format
+          logger.info(message.trim());
         },
       },
     }
@@ -103,6 +105,7 @@ app.use(
 
 app.disable("x-powered-by");
 
+// Consolidated Helmet Configuration
 app.use(
   helmet({
     contentSecurityPolicy: {
@@ -112,9 +115,9 @@ app.use(
         "script-src": [
           "'self'",
           "https://cdn.jsdelivr.net",
-          "https://cdnjs.cloudflare.com", // <-- This line allows GSAP
-          (req, res) => `'nonce-${res.locals.nonce}'`,
-        ],
+          "https://cdnjs.cloudflare.com",
+          (req, res) => res.locals.nonce ? `'nonce-${res.locals.nonce}'` : '',
+        ].filter(Boolean),
         "worker-src": ["'self'", "blob:"],
         "style-src": [
           "'self'",
@@ -138,14 +141,14 @@ app.use(
       },
     },
     referrerPolicy: { policy: "strict-origin-when-cross-origin" },
+    frameguard: { action: "deny" },
+    xssFilter: true,
+    noSniff: true,
+    hsts: { maxAge: 31536000 },
   })
 );
 
 app.use(favicon(path.join(__dirname, "public", "images", "fci.png")));
-app.use(helmet.frameguard({ action: "deny" }));
-app.use(helmet.noSniff());
-app.use(helmet.xssFilter());
-app.use(helmet.hsts({ maxAge: 31536000 }));
 
 app.use(
   cors({
@@ -168,12 +171,13 @@ app.use((req, res, next) => {
   next();
 });
 
-// =================== Static ===================
-// Allow Cloudflare to cache static assets aggressively (1 day) to reduce AWS bandwidth
+// Allow Cloudflare and browsers to cache static assets aggressively (30 days)
 app.use(
   express.static(path.join(__dirname, "public"), {
-    maxAge: "1d",
+    maxAge: "30d",
+    immutable: true,
     setHeaders: (res, filePath) => {
+      res.setHeader("Cache-Control", "public, max-age=2592000, immutable");
       if (filePath.endsWith(".svg")) {
         res.setHeader("Content-Type", "image/svg+xml");
       }
@@ -185,6 +189,11 @@ app.use("/flowbite", express.static(path.join(__dirname, "node_modules/flowbite/
 // =================== View Engine ===================
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+
+// Enable view caching in production to improve RPS
+if (process.env.NODE_ENV === "production") {
+  app.set("view cache", true);
+}
 
 // =================== HLS Stream Serving ===================
 const streamDir = path.join(__dirname, "streams");
@@ -337,6 +346,11 @@ app.get("/api/public/camera/:id/hls", async (req, res) => {
 
 // =================== Start Server ===================
 const server = http.createServer(app);
+
+// Performance Tuning: Keep-Alive
+// Set timeout higher than proxy (Cloudflare/Traefik) to reuse connections efficiently
+server.keepAliveTimeout = 65000;
+server.headersTimeout = 66000;
 
 server.listen(PORT, () => {
   logger.info(`🚀 Server running at http://localhost:${PORT}`);
