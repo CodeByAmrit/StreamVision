@@ -27,7 +27,7 @@ router.get("/dashboard", checkAuth, async (req, res) => {
 
     // 2. Build active DVR summary from DB/streamStore
     const activeDvrsSummary = {};
-    const allStreams = streamStore.getAllStreams();
+    const allStreams = await streamStore.getAllStreams();
 
     for (const stream of allStreams) {
       const dvrId = stream.dvrId;

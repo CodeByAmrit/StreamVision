@@ -6,7 +6,7 @@ exports.getAnalyticsPage = async (req, res) => {
     const dvrs = await getAllDvrs();
 
     const activeDvrsSummary = {};
-    const allStreams = streamStore.getAllStreams();
+    const allStreams = await streamStore.getAllStreams();
     
     for (const stream of allStreams) {
       const dvrId = stream.dvrId;
@@ -78,7 +78,7 @@ exports.getAnalyticsData = async (req, res) => {
     const dvrs = await getAllDvrs();
 
     const activeDvrsSummary = {};
-    const allStreams = streamStore.getAllStreams();
+    const allStreams = await streamStore.getAllStreams();
     
     for (const stream of allStreams) {
       const dvrId = stream.dvrId;

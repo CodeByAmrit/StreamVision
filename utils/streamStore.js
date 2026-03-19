@@ -16,7 +16,7 @@ const pendingRequests = new Map();
 
 if (cluster.isWorker) {
   process.on("message", (msg) => {
-    if (msg.type === "STREAM_STARTED_RES") {
+    if (msg.type === "STREAM_STARTED_RES" || msg.type === "GET_ALL_STREAMS_RES") {
       const pending = pendingRequests.get(msg.msgId);
       if (pending) {
         pendingRequests.delete(msg.msgId);
@@ -37,6 +37,15 @@ function setupPrimaryHandlers(worker) {
       if (msg.type === "START_STREAM_REQ") {
         const result = await startHlsStream(msg.rtspUrl, msg.cameraId, msg.dvrId);
         worker.send({ type: "STREAM_STARTED_RES", msgId: msg.msgId, result });
+      } else if (msg.type === "GET_ALL_STREAMS_REQ") {
+        const streamArray = Array.from(activeStreams.values()).map(s => ({
+          rtspUrl: s.rtspUrl,
+          hlsUrl: s.hlsUrl,
+          cameraId: s.cameraId,
+          dvrId: s.dvrId,
+          startedAt: s.startedAt,
+        }));
+        worker.send({ type: "GET_ALL_STREAMS_RES", msgId: msg.msgId, result: streamArray });
       } else if (msg.type === "RESET_TIMEOUT_REQ") {
         resetStreamTimeout(msg.streamId);
       } else if (msg.type === "STOP_STREAM_REQ") {
@@ -75,7 +84,23 @@ function getStreamById(rtspUrl) {
   return activeStreams.get(streamId);
 }
 
-function getAllStreams() {
+async function getAllStreams() {
+  if (cluster.isWorker) {
+    return new Promise((resolve) => {
+      const msgId = crypto.randomUUID();
+      // On error/rejection, we just return empty array so UI doesn't crash
+      pendingRequests.set(msgId, { resolve, reject: resolve });
+      process.send({ type: "GET_ALL_STREAMS_REQ", msgId });
+      
+      // Auto-resolve empty if master hangs
+      setTimeout(() => {
+        if (pendingRequests.has(msgId)) {
+          pendingRequests.delete(msgId);
+          resolve([]);
+        }
+      }, 2000);
+    });
+  }
   return Array.from(activeStreams.values());
 }
 
