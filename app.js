@@ -39,16 +39,25 @@ app.locals.appVersion = process.env.APP_VERSION || `v${pkg.version}`;
 
 // =================== Security & Middleware ===================
 
+// Disable ETag to reduce server overhead
+app.set("etag", false);
+
+// Global connection optimization
+app.use((req, res, next) => {
+  res.setHeader("Connection", "keep-alive");
+  next();
+});
+
 // =================== Global Performance & Security ===================
 app.use(compression()); // Compress all responses
 
 // Optimize nonce generation: Only for HTML/EJS requests to reduce crypto overhead
 app.use((req, res, next) => {
-  const isHtml = req.accepts('html');
+  const isHtml = req.accepts("html");
   if (isHtml) {
     res.locals.nonce = crypto.randomBytes(16).toString("base64");
   } else {
-    res.locals.nonce = '';
+    res.locals.nonce = "";
   }
   next();
 });
@@ -70,15 +79,19 @@ const CACHE_DURATION = 30000; // 30 seconds
 app.use(async (req, res, next) => {
   try {
     // Only fetch for pages that might render the navbar
-    if (req.method === 'GET' && !req.path.startsWith('/api/') && !req.path.startsWith('/public/dvr/')) {
-       const now = Date.now();
-       if (!cachedActivities || (now - lastFetchTime > CACHE_DURATION)) {
-         cachedActivities = await getRecentActivities(5);
-         lastFetchTime = now;
-       }
-       res.locals.recentActivities = cachedActivities;
+    if (
+      req.method === "GET" &&
+      !req.path.startsWith("/api/") &&
+      !req.path.startsWith("/public/dvr/")
+    ) {
+      const now = Date.now();
+      if (!cachedActivities || now - lastFetchTime > CACHE_DURATION) {
+        cachedActivities = await getRecentActivities(5);
+        lastFetchTime = now;
+      }
+      res.locals.recentActivities = cachedActivities;
     }
-  } catch(err) {
+  } catch (err) {
     res.locals.recentActivities = [];
   }
   next();
@@ -90,7 +103,7 @@ const skipVideo = (req, res) => {
 
 app.use(
   morgan(
-    process.env.NODE_ENV === "production" ? "combined" : "dev", // Use faster 'combined' or 'tiny' in prod
+    process.env.NODE_ENV === "production" ? "tiny" : "dev", // Use faster 'tiny' in prod
     {
       skip: skipVideo,
       stream: {
@@ -116,7 +129,7 @@ app.use(
           "'self'",
           "https://cdn.jsdelivr.net",
           "https://cdnjs.cloudflare.com",
-          (req, res) => res.locals.nonce ? `'nonce-${res.locals.nonce}'` : '',
+          (req, res) => (res.locals.nonce ? `'nonce-${res.locals.nonce}'` : ""),
         ].filter(Boolean),
         "worker-src": ["'self'", "blob:"],
         "style-src": [
@@ -157,8 +170,8 @@ app.use(
   })
 );
 
-app.use(express.json({ limit: "10mb" }));
-app.use(express.urlencoded({ extended: true, limit: "10mb" }));
+app.use(express.json({ limit: "1mb" }));
+app.use(express.urlencoded({ extended: true, limit: "1mb" }));
 app.use(cookieParser());
 
 // CSRF Protection Initialization (Cookie-based)
@@ -213,29 +226,26 @@ app.use(
   "/hls",
   express.static(streamDir, {
     setHeaders: (res, filePath) => {
-      // Prevent caching of HLS files to avoid stale footage
-      res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
-      res.setHeader("Pragma", "no-cache");
-      res.setHeader("Expires", "0");
-      res.setHeader("Surrogate-Control", "no-store");
-
       if (filePath.endsWith(".m3u8")) {
+        res.setHeader("Cache-Control", "no-cache");
         res.setHeader("Content-Type", "application/vnd.apple.mpegurl");
       } else if (filePath.endsWith(".ts")) {
+        res.setHeader("Cache-Control", "public, max-age=60");
         res.setHeader("Content-Type", "video/mp2t");
       }
     },
   })
 );
 
-// =================== Disable HLS Cache ===================
+// =================== Optimal HLS Caching strategy ===================
 app.use(
   "/streams",
   (req, res, next) => {
-    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
-    res.setHeader("Pragma", "no-cache");
-    res.setHeader("Expires", "0");
-    res.setHeader("Surrogate-Control", "no-store");
+    if (req.path.endsWith(".m3u8")) {
+      res.setHeader("Cache-Control", "no-cache");
+    } else if (req.path.endsWith(".ts")) {
+      res.setHeader("Cache-Control", "public, max-age=60");
+    }
     next();
   },
   express.static(path.join(__dirname, "public", "streams"))
@@ -245,8 +255,10 @@ app.use(
 app.use(publicRoutes);
 
 // 2. Specific Security Middleware for Admin/API
-// Apply CSRF protection to routes that render forms or handle POSTs
 app.use("/", (req, res, next) => {
+  if (["GET", "HEAD", "OPTIONS"].includes(req.method)) {
+    return next();
+  }
   // Skip CSRF for purely public streaming APIs if they are GET only
   if (req.path.startsWith("/api/public") && req.method === "GET") {
     return next();
@@ -275,7 +287,7 @@ app.use((req, res, next) => {
 
 // 3. Admin/Protected Routes
 // Note: Sensitive rate limiting is now applied inside userRouter specifically for login/password
-app.use("/", userRouter); 
+app.use("/", userRouter);
 app.use("/camera", checkAuth, cameraRoutes);
 app.use("/dvr", checkAuth, dvrRoutes);
 app.use(settingsRoutes);
@@ -297,7 +309,6 @@ app.post("/api/start-stream", async (req, res) => {
     res.status(500).json({ error: "Failed to start stream" });
   }
 });
-
 
 app.post("/api/stop-stream", (req, res) => {
   const { rtspUrl } = req.body;
@@ -340,10 +351,6 @@ app.get("/api/public/camera/:id/hls", async (req, res) => {
   }
 });
 
-
-
-
-
 // =================== Start Server ===================
 const server = http.createServer(app);
 
@@ -364,7 +371,7 @@ const gracefulShutdown = () => {
     logger.info("HTTP server closed.");
     process.exit(0);
   });
-  
+
   // Force exit if server doesn't close in 5 seconds
   setTimeout(() => {
     logger.error("Could not close connections in time, forcefully shutting down");
