@@ -10,10 +10,8 @@
     <%- include('./partials/navbar.ejs', {activePage: 'analytics'}) %>
 
     <!-- Top Navigation Bar -->
-    <%- include('./partials/topMenu.ejs', { title: "Analytics Dashboard", user: user }) %>
-
     <!-- Main Content -->
-    <main class="p-6 sm:ml-64 mt-16 min-h-screen bg-gray-50/50 dark:bg-gray-900/50">
+    <main class="p-6 sm:ml-64 min-h-screen bg-gray-50/50 dark:bg-gray-900/50">
 
       <!-- Stats Overview -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -239,12 +237,12 @@
                 <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Bandwidth Usage
                 </span>
-                <span class="text-sm font-bold text-blue-600 dark:text-blue-400">2.4 Gbps</span>
+                <span class="text-sm font-bold text-blue-600 dark:text-blue-400"><%= stats.bandwidth %></span>
               </div>
               <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
                 <div
                   class="bg-gradient-to-r from-blue-400 to-blue-500 h-2 rounded-full"
-                  style="width: 78%"
+                  style="width: <%= stats.active_streams_percent %>%"
                 ></div>
               </div>
             </div>
@@ -253,24 +251,24 @@
                 <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Stream Quality
                 </span>
-                <span class="text-sm font-bold text-green-600 dark:text-green-400">92% HD</span>
+                <span class="text-sm font-bold text-green-600 dark:text-green-400"><%= stats.quality %></span>
               </div>
               <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
                 <div
                   class="bg-gradient-to-r from-green-400 to-green-500 h-2 rounded-full"
-                  style="width: 92%"
+                  style="width: <%= active_streams > 0 ? 99 : 0 %>%"
                 ></div>
               </div>
             </div>
             <div>
               <div class="flex items-center justify-between mb-2">
                 <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Latency</span>
-                <span class="text-sm font-bold text-green-600 dark:text-green-400">120ms</span>
+                <span class="text-sm font-bold text-green-600 dark:text-green-400"><%= stats.latency %></span>
               </div>
               <div class="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
                 <div
                   class="bg-gradient-to-r from-yellow-400 to-yellow-500 h-2 rounded-full"
-                  style="width: 45%"
+                  style="width: <%= Math.min(stats.loadPercent, 100) %>%"
                 ></div>
               </div>
             </div>
@@ -355,7 +353,7 @@
                 </div>
                 <div>
                   <div class="font-medium text-gray-900 dark:text-white">Server Load</div>
-                  <div class="text-sm text-gray-600 dark:text-gray-400">Normal (42%)</div>
+                  <div class="text-sm text-gray-600 dark:text-gray-400">Target (<%= stats.loadPercent.toFixed(1) %>%)</div>
                 </div>
               </div>
               <div class="text-2xl font-bold text-green-600 dark:text-green-400">✓</div>

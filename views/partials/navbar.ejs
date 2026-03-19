@@ -1,137 +1,89 @@
-<!-- Sidebar Navigation -->
-<aside
-  id="logo-sidebar"
-  class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-white dark:bg-gray-800 border-r border-blue-100 dark:border-gray-700"
-  aria-label="Sidebar"
->
-  <div class="h-full flex flex-col">
-    <!-- Logo Section -->
-    <a
-      href="/dashboard"
-      class="flex items-center justify-center p-4 border-b border-blue-50 dark:border-gray-700"
-    >
-      <div class="flex items-center space-x-3 w-full justify-center">
-        <div
-          class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#63b3ed] to-[#3182ce] flex items-center justify-center shadow-md shrink-0"
-        >
-          <img src="/images/netwon.svg" alt="Logo" class="w-8 h-8 rounded-xl" />
-        </div>
-        <div class="text-left hidden sm:block">
-          <div class="text-lg font-bold gradient-text leading-tight">StreamVision</div>
-          <p class="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">Admin Dashboard</p>
-        </div>
-      </div>
-    </a>
+<!-- Mobile Header (Visible only on small screens) -->
+<div class="sm:hidden fixed top-0 left-0 w-full h-14 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 z-30 flex items-center justify-between px-4">
+  <div class="flex items-center gap-2">
+    <img src="/images/netwon.svg" alt="Logo" class="w-6 h-6 rounded-md">
+    <span class="font-bold text-gray-900 dark:text-white tracking-tight text-sm">StreamVision</span>
+  </div>
+  <button id="sidebar-toggle" class="p-2 -mr-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
+    <i class="fas fa-bars"></i>
+  </button>
+</div>
 
-    <!-- Navigation Menu -->
-    <div class="flex-grow overflow-y-auto px-3 py-4">
-      <!-- Quick Action Button -->
-      <a
-        href="/dvr/add"
-        class="w-full mb-4 btn-gradient text-white font-medium rounded-lg px-3 py-2 text-sm text-center inline-flex items-center justify-center shadow-sm"
-      >
-        <i class="fas fa-plus mr-1.5"></i>
-        Add DVR
-      </a>
-
-      <!-- Navigation Links -->
-      <ul class="space-y-1.5 text-sm font-medium">
-        <li>
-          <a
-            href="/dashboard"
-            class="flex items-center p-2.5 rounded-lg group <%= activePage === 'dashboard' ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30' : 'text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700/50 transition-colors' %>"
-          >
-            <div
-              class="w-7 h-7 rounded-md bg-gradient-to-br <%= activePage === 'dashboard' ? 'from-blue-100 to-blue-50 dark:from-blue-900/40 dark:to-blue-800/20' : 'from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600' %> flex items-center justify-center mr-2.5"
-            >
-              <i
-                class="fas fa-home <%= activePage === 'dashboard' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400' %>"
-              ></i>
-            </div>
-            <span class="font-medium">Dashboard</span>
-          </a>
-        </li>
-
-        <li>
-          <a
-            href="/dvr"
-            class="flex items-center p-2.5 rounded-lg group <%= activePage === 'dvr' ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30' : 'text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700/50 transition-colors' %>"
-          >
-            <div
-              class="w-7 h-7 rounded-md bg-gradient-to-br <%= activePage === 'dvr' ? 'from-blue-100 to-blue-50 dark:from-blue-900/40 dark:to-blue-800/20' : 'from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600' %> flex items-center justify-center mr-2.5"
-            >
-              <i
-                class="fas fa-server <%= activePage === 'dvr' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400' %>"
-              ></i>
-            </div>
-            <span class="font-medium">DVRs / Locations</span>
-          </a>
-        </li>
-
-        <li>
-          <a
-            href="/settings"
-            class="flex items-center p-2.5 rounded-lg group <%= activePage === 'settings' ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30' : 'text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700/50 transition-colors' %>"
-          >
-            <div
-              class="w-7 h-7 rounded-md bg-gradient-to-br <%= activePage === 'settings' ? 'from-blue-100 to-blue-50 dark:from-blue-900/40 dark:to-blue-800/20' : 'from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600' %> flex items-center justify-center mr-2.5"
-            >
-              <i
-                class="fas fa-cog <%= activePage === 'settings' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400' %>"
-              ></i>
-            </div>
-            <span class="font-medium">Settings</span>
-          </a>
-        </li>
-
-        <li>
-          <a
-            href="/analytics"
-            class="flex items-center p-2.5 rounded-lg group <%= activePage === 'analytics' ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30' : 'text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-700/50 transition-colors' %>"
-          >
-            <div
-              class="w-7 h-7 rounded-md bg-gradient-to-br <%= activePage === 'analytics' ? 'from-blue-100 to-blue-50 dark:from-blue-900/40 dark:to-blue-800/20' : 'from-gray-100 to-gray-50 dark:from-gray-700 dark:to-gray-600' %> flex items-center justify-center mr-2.5"
-            >
-              <i
-                class="fas fa-chart-line <%= activePage === 'analytics' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400' %>"
-              ></i>
-            </div>
-            <span class="font-medium">Analytics</span>
-          </a>
-        </li>
-      </ul>
-
-      <!-- Recent Activity Section -->
-      <div class="mt-6 pt-4 border-t border-blue-100 dark:border-gray-700">
-        <h3
-          class="text-[10px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2"
-        >
-          Recent Activity
-        </h3>
-        <div class="space-y-2">
-          <% if (typeof recentActivities !== 'undefined' && recentActivities.length > 0) { %>
-            <% recentActivities.forEach(activity => { 
-                let colorClass = "bg-gray-500";
-                if (activity.source_type === "camera") colorClass = "bg-blue-500";
-                else if (activity.source_type === "dvr") colorClass = "bg-green-500";
-                else if (activity.source_type === "system") colorClass = "bg-purple-500";
-                else if (activity.action === "deleted") colorClass = "bg-red-500";
-            %>
-              <div class="flex items-center text-xs" title="<%= new Date(activity.created_at).toLocaleString() %>">
-                <div class="w-1.5 h-1.5 rounded-full <%= colorClass %> mr-2 flex-shrink-0"></div>
-                <span class="text-gray-600 dark:text-gray-300 truncate" title="<%= activity.description %>"><%= activity.description %></span>
-              </div>
-            <% }); %>
-          <% } else { %>
-            <div class="text-sm text-gray-500 italic">No recent activity</div>
-          <% } %>
-        </div>
-      </div>
+<!-- Compact Sidebar Navigation -->
+<aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-14 sm:pt-0 transition-transform -translate-x-full sm:translate-x-0 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col shadow-sm">
+  
+  <!-- Logo Section (Desktop) -->
+  <div class="hidden sm:flex items-center gap-3 px-6 h-16 border-b border-gray-100 dark:border-gray-800 shrink-0">
+    <img src="/images/netwon.svg" alt="Logo" class="w-7 h-7 rounded-lg shadow-sm">
+    <div class="flex flex-col pb-0.5">
+      <span class="text-sm font-bold text-gray-900 dark:text-white tracking-tight leading-tight">StreamVision</span>
+      <span class="text-[9px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Admin Pro</span>
     </div>
+  </div>
 
-    <!-- Footer -->
-    <div class="p-4 border-t border-blue-100 dark:border-gray-700">
-      <div class="text-xs text-gray-500 dark:text-gray-400 text-center">StreamVision <%= appVersion %></div>
+  <!-- Navigation Links -->
+  <div class="flex-1 overflow-y-auto px-3 py-5">
+    
+    <div class="text-[10px] font-bold text-gray-400 dark:text-gray-500/70 uppercase tracking-widest mb-3 px-3">Main Menu</div>
+    
+    <ul class="space-y-1 text-sm font-medium">
+      <li>
+        <a href="/dashboard" class="flex items-center px-3 py-2.5 rounded-lg group transition-all <%= activePage === 'dashboard' ? 'bg-blue-50 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-gray-200' %>">
+          <i class="fas fa-home w-5 text-center mr-2.5 <%= activePage === 'dashboard' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-400' %>"></i>
+          Overview
+        </a>
+      </li>
+      <li>
+        <a href="/dvr" class="flex items-center px-3 py-2.5 rounded-lg group transition-all <%= activePage === 'dvr' ? 'bg-blue-50 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-gray-200' %>">
+          <i class="fas fa-server w-5 text-center mr-2.5 <%= activePage === 'dvr' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-400' %>"></i>
+          DVR Servers
+        </a>
+      </li>
+      <li>
+        <a href="/analytics" class="flex items-center px-3 py-2.5 rounded-lg group transition-all <%= activePage === 'analytics' ? 'bg-blue-50 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-gray-200' %>">
+          <i class="fas fa-chart-line w-5 text-center mr-2.5 <%= activePage === 'analytics' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-400' %>"></i>
+          Analytics
+        </a>
+      </li>
+      <li>
+        <a href="/settings" class="flex items-center px-3 py-2.5 rounded-lg group transition-all <%= activePage === 'settings' ? 'bg-blue-50 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-gray-200' %>">
+          <i class="fas fa-cog w-5 text-center mr-2.5 <%= activePage === 'settings' ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-400' %>"></i>
+          Settings
+        </a>
+      </li>
+    </ul>
+
+    <!-- Quick Actions -->
+    <div class="mt-8">
+      <div class="text-[10px] font-bold text-gray-400 dark:text-gray-500/70 uppercase tracking-widest mb-3 px-3">Actions</div>
+      <a href="/dvr/add" class="mx-3 flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+        <i class="fas fa-plus opacity-70"></i> Add New DVR
+      </a>
+      <a href="/camera/add" class="mx-3 mt-2 flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/70 transition-colors">
+        <i class="fas fa-video opacity-70"></i> Add Camera
+      </a>
+    </div>
+  </div>
+
+  <!-- Bottom User Profile & Theme Controls -->
+  <div class="p-4 border-t border-gray-100 dark:border-gray-800 shrink-0 bg-gray-50/30 dark:bg-gray-900/30">
+    <div class="flex items-center justify-between">
+      <!-- User Info -->
+      <div class="flex items-center gap-3 min-w-0">
+        <div class="w-8 h-8 rounded border border-blue-200 dark:border-blue-800/50 bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-sm shrink-0">
+          <%= (typeof user !== "undefined" && user && user.name) ? user.name.charAt(0).toUpperCase() : 'A' %>
+        </div>
+        <div class="flex flex-col min-w-0 pr-2">
+          <span class="text-xs font-bold text-gray-900 dark:text-gray-200 truncate leading-tight mt-0.5"><%= (typeof user !== "undefined" && user && user.name) ? user.name : 'Administrator' %></span>
+          <a href="/logout" class="text-[10px] font-bold text-gray-400 hover:text-red-600 dark:text-gray-500 dark:hover:text-red-400 transition-colors mt-0.5 uppercase tracking-wide">Sign Out</a>
+        </div>
+      </div>
+      
+      <!-- Theme Toggle -->
+      <button id="theme-toggle" type="button" class="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-gray-900 hover:bg-gray-200 dark:hover:text-white dark:hover:bg-gray-800 transition-colors shrink-0" title="Toggle Theme">
+        <i class="fas fa-moon dark:hidden text-[13px]"></i>
+        <i class="fas fa-sun hidden dark:inline text-[13px]"></i>
+      </button>
     </div>
   </div>
 </aside>

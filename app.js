@@ -256,9 +256,6 @@ app.use(publicRoutes);
 
 // 2. Specific Security Middleware for Admin/API
 app.use("/", (req, res, next) => {
-  if (["GET", "HEAD", "OPTIONS"].includes(req.method)) {
-    return next();
-  }
   // Skip CSRF for purely public streaming APIs if they are GET only
   if (req.path.startsWith("/api/public") && req.method === "GET") {
     return next();

@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require("../models/user");
 const checkAuth = require("../services/checkauth");
 const { getAllDvrs } = require("../controllers/dvrController");
-const dvrManager = require("../utils/streamManager");
+const streamStore = require("../utils/streamStore");
 const bcrypt = require("bcrypt");
 const os = require("os");
 require("dotenv").config();
@@ -25,21 +25,19 @@ router.get("/dashboard", checkAuth, async (req, res) => {
     // 1. Fetch all DVRs from DB
     const dvrs = await getAllDvrs();
 
-    // 2. Build active DVR summary from Map
+    // 2. Build active DVR summary from DB/streamStore
     const activeDvrsSummary = {};
+    const allStreams = streamStore.getAllStreams();
 
-    for (const [cameraId, streamInstance] of dvrManager.streams.entries()) {
-      // Only count actively online streams
-      if (!streamInstance.isOnline()) continue;
-
-      const dvrId = streamInstance.dvrId;
+    for (const stream of allStreams) {
+      const dvrId = stream.dvrId;
       if (!dvrId) continue;
       
       if (!activeDvrsSummary[dvrId]) {
         activeDvrsSummary[dvrId] = {
           dvr_id: dvrId,
           activeCameraCount: 0,
-          lastActivity: streamInstance.meta.lastFrameAt || streamInstance.meta.startedAt || Date.now(),
+          lastActivity: stream.startedAt || Date.now(),
         };
       }
       activeDvrsSummary[dvrId].activeCameraCount += 1;
@@ -56,7 +54,7 @@ router.get("/dashboard", checkAuth, async (req, res) => {
     // 4. Dashboard statistics
     const total_dvrs = dvrs.length;
     const total_cameras = dvrs.reduce((count, dvr) => count + (dvr.total_cameras || 0), 0);
-    const active_streams = dvrManager.streams.size;
+    const active_streams = allStreams.length;
 
     // 5. Calculate Real System Metrics
     const totalMem = os.totalmem();
