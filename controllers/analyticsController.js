@@ -1,6 +1,9 @@
 const { getAllDvrs } = require("../controllers/dvrController");
 const streamStore = require("../utils/streamStore");
 const os = require("os");
+const monitoringClient = require("../utils/monitoringClient");
+const reportGenerator = require("../utils/reportGenerator");
+const logger = require("../utils/logger");
 exports.getAnalyticsPage = async (req, res) => {
   try {
     const dvrs = await getAllDvrs();
@@ -142,4 +145,35 @@ exports.getAnalyticsData = async (req, res) => {
     console.error("Analytics data loading error:", error);
     res.status(500).json({ error: "Something went wrong loading analytics data." });
   }
+};
+
+/**
+ * Export PDF Report
+ * Generates an internal performance report from Prometheus & Loki
+ */
+exports.exportPdfReport = async (req, res) => {
+    try {
+        const timeframe = req.query.timeframe || 'now-30d';
+        logger.info(`Generating executive PDF report for timeframe: ${timeframe}`);
+
+        // 1. Fetch Metrics & Logs in parallel
+        const [metrics, logs] = await Promise.all([
+            monitoringClient.getReportMetrics(timeframe),
+            monitoringClient.getLogSummary(timeframe)
+        ]);
+
+        const combinedData = { ...metrics, ...logs };
+
+        // 2. Generate PDF Buffer
+        const pdfBuffer = await reportGenerator.generate(combinedData, timeframe.replace('now-', 'Last '));
+
+        // 3. Send Response
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `attachment; filename=StreamVision_Report_${new Date().toISOString().split('T')[0]}.pdf`);
+        res.send(pdfBuffer);
+
+    } catch (error) {
+        logger.error(`Failed to export PDF report: ${error.message}`);
+        res.status(500).send('Error generating report. Please check if Prometheus and Loki are reachable.');
+    }
 };

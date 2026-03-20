@@ -247,54 +247,37 @@ function initializeTimeRangeSelector() {
   }
 }
 
-// Generate report functionality
+// Generate report functionality (Internal PDF Report Engine)
 function initializeReportGenerator() {
-  const generateReportBtn = document.getElementById("generate-report");
+  const generatePdfBtn = document.getElementById("generate-grafana-pdf");
+  const timeframeSelect = document.getElementById("report-timeframe");
 
-  if (generateReportBtn) {
-    generateReportBtn.addEventListener("click", async function () {
-      // Show loading state
+  if (generatePdfBtn && timeframeSelect) {
+    generatePdfBtn.addEventListener("click", function () {
+      // 1. Show UI Interaction State
       const originalText = this.innerHTML;
       this.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Generating...';
       this.disabled = true;
 
       try {
-        // Simulate report generation
-        await new Promise((resolve) => setTimeout(resolve, 1500));
+        // 2. Extract selected Date-Range parameters
+        const timeframe = timeframeSelect.value; // e.g., 'now-30d'
 
-        // Create a simple report using the window.analyticsData
-        const reportData = {
-          timestamp: new Date().toISOString(),
-          totalDvrs: window.analyticsData?.totalDvrs || 0,
-          totalCameras: window.analyticsData?.totalCameras || 0,
-          activeStreams: window.analyticsData?.activeCameras || 0,
-          activeDvrs: window.analyticsData?.activeDvrsCount || 0,
-          utilizationRate:
-            Math.round(
-              (window.analyticsData?.activeCameras / window.analyticsData?.totalCameras) * 100
-            ) || 0,
-        };
+        // 3. Trigger Backend PDF Generation via direct download
+        // We use window.location.href to trigger a real file download response
+        showNotification("Generating Internal Performance Report...", "success");
+        
+        window.location.href = `/analytics/export-pdf?timeframe=${timeframe}`;
 
-        // Create and download report
-        const reportBlob = new Blob([JSON.stringify(reportData, null, 2)], {
-          type: "application/json",
-        });
+        // Reset button after a reasonable delay (since we can't easily track binary download completion)
+        setTimeout(() => {
+          this.innerHTML = originalText;
+          this.disabled = false;
+        }, 2000);
 
-        const downloadUrl = URL.createObjectURL(reportBlob);
-        const a = document.createElement("a");
-        a.href = downloadUrl;
-        a.download = `streamvision-analytics-${new Date().toISOString().split("T")[0]}.json`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(downloadUrl);
-
-        showNotification("Analytics report generated successfully", "success");
       } catch (error) {
-        console.error("Error generating report:", error);
-        showNotification("Failed to generate report", "error");
-      } finally {
-        // Reset button state
+        console.error("Error triggering Report engine:", error);
+        showNotification("Failed to connect to internal Reporting Service", "error");
         this.innerHTML = originalText;
         this.disabled = false;
       }
@@ -606,7 +589,7 @@ window.StreamVisionAnalytics = {
     if (refreshBtn) refreshBtn.click();
   },
   exportReport: () => {
-    const reportBtn = document.getElementById("generate-report");
+    const reportBtn = document.getElementById("generate-grafana-pdf");
     if (reportBtn) reportBtn.click();
   },
   simulateUpdate: () => updateLiveData(),

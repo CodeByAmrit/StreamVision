@@ -4,5 +4,6 @@ const analyticsController = require("../controllers/analyticsController");
 const checkAuth = require("../services/checkauth");
 
 router.get("/analytics", checkAuth, analyticsController.getAnalyticsPage);
+router.get("/analytics/export-pdf", checkAuth, analyticsController.exportPdfReport);
 
 module.exports = router;
