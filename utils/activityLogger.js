@@ -3,7 +3,7 @@ const logger = require("./logger");
 
 /**
  * Logs an action to the recent activity tracking table.
- * 
+ *
  * @param {string} type - 'dvr', 'camera', 'system', 'security', etc.
  * @param {string} action - 'added', 'updated', 'deleted', 'login_fail', 'config_change'
  * @param {string} description - Human readable sentence of what happened
@@ -26,7 +26,7 @@ async function logActivity(type, action, description, ip = null) {
 
 /**
  * Gets the most recent activities.
- * 
+ *
  * @param {number} limit - Number of logs to fetch
  * @returns {Array} List of recent activities
  */
@@ -48,5 +48,5 @@ async function getRecentActivities(limit = 5) {
 
 module.exports = {
   logActivity,
-  getRecentActivities
+  getRecentActivities,
 };

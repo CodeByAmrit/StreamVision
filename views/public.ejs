@@ -120,68 +120,70 @@
       const MAX_RETRIES = 30;
       const hlsInstances = [];
 
-      function tryLoadHlsStream(video, cameraId, retriesLeft = MAX_RETRIES) {
+      function tryLoadHlsStream(video, cameraId) {
         if (!isTabActive) return;
 
+        // Step 1: Get the HLS URL from the API (returns immediately now)
         fetch(`/api/public/camera/${cameraId}/hls`)
           .then((res) => res.json())
           .then((data) => {
-            if (data.error) {
-              throw new Error(data.error);
-            }
-
+            if (data.error) throw new Error(data.error);
             const source = data.hlsUrl;
 
-            if (Hls.isSupported()) {
-              const hls = new Hls({
-                manifestLoadingTimeOut: 2000,
-                manifestLoadingMaxRetry: 1,
-                levelLoadingTimeOut: 2000,
-                levelLoadingMaxRetry: 1,
-                lowLatencyMode: true,
-              });
-              hlsInstances.push(hls);
-              hls.loadSource(source);
-              hls.attachMedia(video);
-              hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                video.play().catch(() => {});
-              });
-              hls.on(Hls.Events.ERROR, function (event, data) {
-                if (data.fatal) {
-                  switch (data.type) {
-                    case Hls.ErrorTypes.NETWORK_ERROR:
-                      hls.destroy();
-                      handleRetry();
-                      break;
-                    case Hls.ErrorTypes.MEDIA_ERROR:
-                      hls.recoverMediaError();
-                      break;
-                    default:
-                      hls.destroy();
-                      handleRetry();
-                      break;
+            // Step 2: Poll the manifest until it's actually ready on disk
+            let retries = 0;
+            const checkManifest = () => {
+              if (!isTabActive) return;
+
+              fetch(source, { method: "HEAD" })
+                .then((res) => {
+                  if (res.ok) {
+                    // Step 3: Initialize HLS.js ONLY when file is ready
+                    initializePlayer(video, source);
+                  } else if (retries < MAX_RETRIES) {
+                    retries++;
+                    setTimeout(checkManifest, RETRY_INTERVAL);
                   }
-                }
-              });
-            } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
-              video.src = source;
-              video.addEventListener("loadedmetadata", () => {
-                video.play().catch(() => {});
-              });
-              video.addEventListener("error", () => {
-                handleRetry();
-              });
-            }
+                })
+                .catch(() => {
+                  if (retries < MAX_RETRIES) {
+                    retries++;
+                    setTimeout(checkManifest, RETRY_INTERVAL);
+                  }
+                });
+            };
+            checkManifest();
           })
           .catch((err) => {
             console.error(`Error for cam ${cameraId}:`, err);
-            handleRetry();
+            // Retry the whole process in case of API failure
+            setTimeout(() => tryLoadHlsStream(video, cameraId), 2000);
           });
+      }
 
-        function handleRetry() {
-          if (retriesLeft > 0 && isTabActive) {
-            setTimeout(() => tryLoadHlsStream(video, cameraId, retriesLeft - 1), RETRY_INTERVAL);
-          }
+      function initializePlayer(video, source) {
+        if (Hls.isSupported()) {
+          const hls = new Hls({
+            manifestLoadingTimeOut: 10000,
+            manifestLoadingMaxRetry: 10,
+            lowLatencyMode: true,
+          });
+          hlsInstances.push(hls);
+          hls.loadSource(source);
+          hls.attachMedia(video);
+          hls.on(Hls.Events.MANIFEST_PARSED, () => {
+            video.play().catch(() => {});
+          });
+          hls.on(Hls.Events.ERROR, (event, data) => {
+            if (data.fatal) {
+              hls.destroy();
+              // Back to polling if it died
+              tryLoadHlsStream(video, source.split("/")[3]); // Extract ID or just restart
+            }
+          });
+        } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+          video.src = source;
+          video.addEventListener("loadedmetadata", () => video.play().catch(() => {}));
         }
       }
 

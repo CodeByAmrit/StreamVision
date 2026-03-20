@@ -38,7 +38,7 @@ function setupPrimaryHandlers(worker) {
         const result = await startHlsStream(msg.rtspUrl, msg.cameraId, msg.dvrId);
         worker.send({ type: "STREAM_STARTED_RES", msgId: msg.msgId, result });
       } else if (msg.type === "GET_ALL_STREAMS_REQ") {
-        const streamArray = Array.from(activeStreams.values()).map(s => ({
+        const streamArray = Array.from(activeStreams.values()).map((s) => ({
           rtspUrl: s.rtspUrl,
           hlsUrl: s.hlsUrl,
           cameraId: s.cameraId,
@@ -91,7 +91,7 @@ async function getAllStreams() {
       // On error/rejection, we just return empty array so UI doesn't crash
       pendingRequests.set(msgId, { resolve, reject: resolve });
       process.send({ type: "GET_ALL_STREAMS_REQ", msgId });
-      
+
       // Auto-resolve empty if master hangs
       setTimeout(() => {
         if (pendingRequests.has(msgId)) {
@@ -145,20 +145,38 @@ async function startHlsStream(rtspUrl, cameraId, dvrId) {
   const ffmpeg = spawn(
     "ffmpeg",
     [
-      "-rtsp_transport", "tcp",
-      "-fflags", "nobuffer",
-      "-flags", "low_delay",
-      "-strict", "experimental",
-      "-i", rtspUrl,
-      "-c:v", "copy",
-      "-preset", "ultrafast",
-      "-tune", "zerolatency",
-      "-f", "hls",
-      "-hls_time", "1",
-      "-hls_list_size", "2",
-      "-hls_flags", "delete_segments+omit_endlist+discont_start",
-      "-hls_segment_type", "mpegts",
-      "-hls_segment_filename", `${outputPath}/segment_%03d.ts`,
+      "-rtsp_transport",
+      "tcp",
+      "-probesize",
+      "32",
+      "-analyzeduration",
+      "0",
+      "-fflags",
+      "nobuffer",
+      "-flags",
+      "low_delay",
+      "-strict",
+      "experimental",
+      "-i",
+      rtspUrl,
+      "-c:v",
+      "copy",
+      "-preset",
+      "ultrafast",
+      "-tune",
+      "zerolatency",
+      "-f",
+      "hls",
+      "-hls_time",
+      "1",
+      "-hls_list_size",
+      "2",
+      "-hls_flags",
+      "delete_segments+omit_endlist+discont_start",
+      "-hls_segment_type",
+      "mpegts",
+      "-hls_segment_filename",
+      `${outputPath}/segment_%03d.ts`,
       playlistPath,
     ],
     { stdio: "ignore" }
@@ -190,13 +208,8 @@ async function startHlsStream(rtspUrl, cameraId, dvrId) {
     timeout: null,
   });
 
-  const fileExists = await waitForFile(playlistPath, 15000);
-  if (fileExists) {
-    resetStreamTimeout(streamId);
-    return { hlsUrl, isNew: true };
-  } else {
-    throw new Error("FFmpeg failed to produce playlist in time");
-  }
+  resetStreamTimeout(streamId);
+  return { hlsUrl, isNew: true };
 }
 
 function resetStreamTimeout(streamId) {
@@ -212,7 +225,9 @@ function resetStreamTimeout(streamId) {
     }
 
     stream.timeout = setTimeout(() => {
-      logger.info(`Auto-stopping stream ${streamId} after ${STREAM_DURATION_LIMIT / 60000} minutes of inactivity`);
+      logger.info(
+        `Auto-stopping stream ${streamId} after ${STREAM_DURATION_LIMIT / 60000} minutes of inactivity`
+      );
       stream.ffmpeg.kill("SIGINT");
     }, STREAM_DURATION_LIMIT);
 
