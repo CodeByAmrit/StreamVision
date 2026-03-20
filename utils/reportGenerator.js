@@ -9,27 +9,30 @@ class ReportGenerator {
   }
 
   drawCard(doc, x, y, title, value, status, color) {
-    doc.roundedRect(x, y, 120, 70, 8).fillAndStroke("#f9fafb", "#e5e7eb");
+    const safeX = x || 50;
+    const safeY = y || 110;
+    doc.roundedRect(safeX, safeY, 120, 70, 8).fillAndStroke("#f9fafb", "#e5e7eb");
     doc
       .fillColor("#6b7280")
       .fontSize(9)
       .font("Helvetica")
-      .text(title, x + 10, y + 10, { width: 100 });
+      .text(title, safeX + 10, safeY + 10, { width: 100 });
     doc
       .fillColor("#111827")
       .fontSize(16)
       .font("Helvetica-Bold")
-      .text(value, x + 10, y + 28, { width: 100 });
+      .text(value, safeX + 10, safeY + 28, { width: 100 });
     doc
       .fillColor(color)
       .fontSize(9)
       .font("Helvetica-Bold")
-      .text(status, x + 10, y + 50, { width: 100 });
+      .text(status, safeX + 10, safeY + 50, { width: 100 });
   }
 
   drawSignatures(doc, y) {
     const lineLength = 180;
-    const startY = y + 40;
+    const currentY = y || doc.y || 500;
+    const startY = currentY + 40;
 
     doc
       .moveTo(50, startY)
@@ -169,9 +172,9 @@ class ReportGenerator {
           x: 50,
           width: 495,
           prepareHeader: () => doc.font("Helvetica-Bold").fontSize(10).fillColor("#111827"),
-          prepareRow: (row, i) => {
+          prepareRow: (row, indexColumn, indexRow, rectRow) => {
             doc.font("Helvetica").fontSize(9).fillColor("#374151");
-            if (i % 2 === 0) doc.addBackground([50, doc.y, 495, 20], "#f9fafb");
+            if (indexRow % 2 === 0) doc.addBackground(rectRow, "#f9fafb", 0.8);
           },
         });
 
