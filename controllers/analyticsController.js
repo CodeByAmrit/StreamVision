@@ -169,7 +169,7 @@ exports.exportPdfReport = async (req, res) => {
 
     } catch (error) {
         logger.error(`Failed to export PDF report: ${error.message}`);
-        res.status(500).send('Error generating report. Please check if Prometheus and Loki are reachable.');
+        res.status(500).send(`Error generating report: ${error.message}. Please check if Prometheus (${monitoringClient.prometheusUrl}) and Loki (${monitoringClient.lokiUrl}) are reachable from the app container.`);
     }
 };
 

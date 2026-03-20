@@ -158,7 +158,11 @@ class ReportGenerator {
             { label: "Status", width: 70 },
             { label: "Performance Metadata", width: 260 },
           ],
-          rows: (data.services || []).map((s) => [s.name, s.status.toUpperCase(), s.details]),
+          rows: (data.services || []).map((s) => [
+            s.name || "Unknown", 
+            (s.status || "UNKNOWN").toUpperCase(), 
+            s.details || "No telemetry data available"
+          ]),
         };
 
         await doc.table(servicesTable, {
