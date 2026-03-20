@@ -250,37 +250,40 @@ function initializeTimeRangeSelector() {
 // Generate report functionality (Internal PDF Report Engine)
 function initializeReportGenerator() {
   const generatePdfBtn = document.getElementById("generate-grafana-pdf");
+  const generateTestBtn = document.getElementById("generate-test-pdf");
   const timeframeSelect = document.getElementById("report-timeframe");
 
+  // Helper for triggering download
+  const triggerDownload = (btn, url, msg) => {
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Generating...';
+    btn.disabled = true;
+
+    try {
+      showNotification(msg, "success");
+      window.location.href = url;
+      setTimeout(() => {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }, 2500);
+    } catch (e) {
+      console.error("Download Error:", e);
+      showNotification("Report engine connection failed", "error");
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+    }
+  };
+
   if (generatePdfBtn && timeframeSelect) {
-    generatePdfBtn.addEventListener("click", function () {
-      // 1. Show UI Interaction State
-      const originalText = this.innerHTML;
-      this.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Generating...';
-      this.disabled = true;
+    generatePdfBtn.addEventListener("click", () => {
+      const timeframe = timeframeSelect.value;
+      triggerDownload(generatePdfBtn, `/analytics/export-pdf?timeframe=${timeframe}`, "Generating Performance Report...");
+    });
+  }
 
-      try {
-        // 2. Extract selected Date-Range parameters
-        const timeframe = timeframeSelect.value; // e.g., 'now-30d'
-
-        // 3. Trigger Backend PDF Generation via direct download
-        // We use window.location.href to trigger a real file download response
-        showNotification("Generating Internal Performance Report...", "success");
-        
-        window.location.href = `/analytics/export-pdf?timeframe=${timeframe}`;
-
-        // Reset button after a reasonable delay (since we can't easily track binary download completion)
-        setTimeout(() => {
-          this.innerHTML = originalText;
-          this.disabled = false;
-        }, 2000);
-
-      } catch (error) {
-        console.error("Error triggering Report engine:", error);
-        showNotification("Failed to connect to internal Reporting Service", "error");
-        this.innerHTML = originalText;
-        this.disabled = false;
-      }
+  if (generateTestBtn) {
+    generateTestBtn.addEventListener("click", () => {
+      triggerDownload(generateTestBtn, "/analytics/test-pdf", "Generating Diagnostic Test Report...");
     });
   }
 }

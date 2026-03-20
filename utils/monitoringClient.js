@@ -65,19 +65,20 @@ class MonitoringClient {
             this.getLogSummary(timeframe)
         ]);
 
-        const avgCpu = parseFloat(cpuRes[0]?.value[1] || 0);
-        const avgRam = parseFloat(ramRes[0]?.value[1] || 0);
-        const totalRequests = Math.round(parseFloat(reqRes[0]?.value[1] || 0));
-        const errorRate = totalRequests > 0 ? (parseFloat(err5xxRes[0]?.value[1] || 0) / totalRequests * 100).toFixed(2) : 0;
+        const avgCpu = Number(cpuRes[0]?.value?.[1]) || 0;
+        const avgRam = Number(ramRes[0]?.value?.[1]) || 0;
+        const totalRequests = Math.round(Number(reqRes[0]?.value?.[1]) || 0);
+        const errCount = Number(err5xxRes[0]?.value?.[1]) || 0;
+        const errorRate = totalRequests > 0 ? ((errCount / totalRequests) * 100).toFixed(2) : "0.00";
 
         return {
             avgCpu: avgCpu.toFixed(1),
             avgRam: avgRam.toFixed(1),
             totalRequests,
             errorRate,
-            criticalErrors: logsSummary.criticalErrors,
+            criticalErrors: logsSummary.criticalErrors || 0,
             services: [
-                { name: "Traefik Router", status: errorRate < 1 ? "healthy" : "warning", details: `${totalRequests.toLocaleString()} req handled with ${errorRate}% error rate.`},
+                { name: "Traefik Router", status: Number(errorRate) < 1 ? "healthy" : "warning", details: `${totalRequests.toLocaleString()} req handled with ${errorRate}% error rate.`},
                 { name: "API Cluster", status: avgCpu < 70 ? "healthy" : "warning", details: `Core cluster responsive with ${avgCpu.toFixed(1)}% avg load.`},
                 { name: "FFmpeg Workers", status: "healthy", details: "Streaming pipelines operational. Hardware transcoding active." }
             ],
