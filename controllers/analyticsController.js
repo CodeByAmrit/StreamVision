@@ -154,13 +154,15 @@ exports.getAnalyticsData = async (req, res) => {
 exports.exportPdfReport = async (req, res) => {
     try {
         const timeframe = req.query.timeframe || 'now-30d';
-        logger.info(`Generating executive PDF report for timeframe: ${timeframe}`);
+        logger.info(`🔍 PDF Export: Fetching telemetry from ${monitoringClient.prometheusUrl} and ${monitoringClient.lokiUrl}...`);
 
         // 1. Fetch Structured Report Data (Internal Engine)
         const reportData = await monitoringClient.asyncGetStructuredReport(timeframe);
+        logger.info(`✅ Telemetry Received. CPU: ${reportData.avgCpu}%, RAM: ${reportData.avgRam}%, Req: ${reportData.totalRequests}`);
 
         // 2. Generate PDF Buffer using the new card-based template
         const pdfBuffer = await reportGenerator.generate(reportData, timeframe.replace('now-', 'Last '));
+        logger.info(`📄 PDF Generated successfully.`);
 
         // 3. Send Response
         res.setHeader('Content-Type', 'application/pdf');

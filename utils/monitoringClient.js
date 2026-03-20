@@ -6,10 +6,10 @@ const logger = require('./logger');
  */
 class MonitoringClient {
     constructor() {
-        this.prometheusUrl = process.env.PROMETHEUS_URL || 'https://prometheus.amritsharma.dev';
-        this.lokiUrl = process.env.LOKI_URL || 'https://loki.amritsharma.dev';
+        this.prometheusUrl = process.env.PROMETHEUS_URL || 'http://prometheus:9090';
+        this.lokiUrl = process.env.LOKI_URL || 'http://loki:3100';
         
-        // Basic Auth support for Traefik-protected public endpoints
+        // Basic Auth support (still available via ENV if needed)
         this.promAuth = process.env.PROMETHEUS_USER && process.env.PROMETHEUS_PASS 
             ? 'Basic ' + Buffer.from(`${process.env.PROMETHEUS_USER}:${process.env.PROMETHEUS_PASS}`).toString('base64') 
             : null;
