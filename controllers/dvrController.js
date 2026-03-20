@@ -51,10 +51,10 @@ const addDvr = async (req, res) => {
     }
 
     // Insert DVR
-    const [result] = await db.execute(
-      `INSERT INTO dvrs (location_id, dvr_name) VALUES (?, ?)`,
-      [location_id, dvr_name]
-    );
+    const [result] = await db.execute(`INSERT INTO dvrs (location_id, dvr_name) VALUES (?, ?)`, [
+      location_id,
+      dvr_name,
+    ]);
 
     logActivity("dvr", "added", `Created new DVR: ${dvr_name}`);
 
@@ -187,7 +187,7 @@ const getAllDvrsPaginated = async (req, res) => {
     // Build DVR-level aggregation
     const dvrStreamStats = new Map();
 
-    const activeStreams = streamStore.getAllStreams();
+    const activeStreams = await streamStore.getAllStreams();
 
     for (const stream of activeStreams) {
       const dvrId = stream.dvrId;
