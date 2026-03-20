@@ -156,24 +156,34 @@ exports.exportPdfReport = async (req, res) => {
         const timeframe = req.query.timeframe || 'now-30d';
         logger.info(`Generating executive PDF report for timeframe: ${timeframe}`);
 
-        // 1. Fetch Metrics & Logs in parallel
-        const [metrics, logs] = await Promise.all([
-            monitoringClient.getReportMetrics(timeframe),
-            monitoringClient.getLogSummary(timeframe)
-        ]);
+        // 1. Fetch Structured Report Data (Internal Engine)
+        const reportData = await monitoringClient.asyncGetStructuredReport(timeframe);
 
-        const combinedData = { ...metrics, ...logs };
-
-        // 2. Generate PDF Buffer
-        const pdfBuffer = await reportGenerator.generate(combinedData, timeframe.replace('now-', 'Last '));
+        // 2. Generate PDF Buffer using the new card-based template
+        const pdfBuffer = await reportGenerator.generate(reportData, timeframe.replace('now-', 'Last '));
 
         // 3. Send Response
         res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', `attachment; filename=StreamVision_Report_${new Date().toISOString().split('T')[0]}.pdf`);
+        res.setHeader('Content-Disposition', `attachment; filename=StreamVision_Infrastructure_Report_${new Date().toISOString().split('T')[0]}.pdf`);
         res.send(pdfBuffer);
 
     } catch (error) {
         logger.error(`Failed to export PDF report: ${error.message}`);
         res.status(500).send('Error generating report. Please check if Prometheus and Loki are reachable.');
+    }
+};
+
+/**
+ * Monthly Report API (JSON)
+ * Returns structured infrastructure metrics
+ */
+exports.getMonthlyReportApi = async (req, res) => {
+    try {
+        const timeframe = req.query.timeframe || 'now-30d';
+        const reportData = await monitoringClient.asyncGetStructuredReport(timeframe);
+        res.json(reportData);
+    } catch (error) {
+        logger.error(`API Report error: ${error.message}`);
+        res.status(500).json({ error: "Failed to compile monitoring data" });
     }
 };
