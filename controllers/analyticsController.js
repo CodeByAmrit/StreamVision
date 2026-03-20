@@ -10,11 +10,11 @@ exports.getAnalyticsPage = async (req, res) => {
 
     const activeDvrsSummary = {};
     const allStreams = await streamStore.getAllStreams();
-    
+
     for (const stream of allStreams) {
       const dvrId = stream.dvrId;
       if (!dvrId) continue;
-      
+
       if (!activeDvrsSummary[dvrId]) {
         activeDvrsSummary[dvrId] = {
           dvr_id: dvrId,
@@ -36,27 +36,29 @@ exports.getAnalyticsPage = async (req, res) => {
     const total_cameras = dvrs.reduce((count, dvr) => count + (dvr.total_cameras || 0), 0);
 
     const active_streams = allStreams.length;
-    
+
     // Calculate realistic derived metrics
     const loadAvg = os.loadavg()[0];
     const cpuCount = os.cpus().length || 1;
-    const loadPercent = Math.min(((loadAvg / cpuCount) * 100), 100);
-    
-    let bandwidthDisplay = '0 Mbps';
+    const loadPercent = Math.min((loadAvg / cpuCount) * 100, 100);
+
+    let bandwidthDisplay = "0 Mbps";
     if (active_streams > 0) {
-      const mbps = active_streams * 2.5; 
-      bandwidthDisplay = mbps > 1000 ? (mbps / 1024).toFixed(2) + ' Gbps' : mbps.toFixed(1) + ' Mbps';
+      const mbps = active_streams * 2.5;
+      bandwidthDisplay =
+        mbps > 1000 ? (mbps / 1024).toFixed(2) + " Gbps" : mbps.toFixed(1) + " Mbps";
     }
-    
-    const latencyDisplay = active_streams > 0 ? `${Math.round(loadPercent * 1.5 + 20)}ms` : '0ms';
-    const qualityDisplay = active_streams > 0 ? `99% HD` : '0% HD';
+
+    const latencyDisplay = active_streams > 0 ? `${Math.round(loadPercent * 1.5 + 20)}ms` : "0ms";
+    const qualityDisplay = active_streams > 0 ? `99% HD` : "0% HD";
 
     const stats = {
       bandwidth: bandwidthDisplay,
       latency: latencyDisplay,
       quality: qualityDisplay,
       loadPercent,
-      active_streams_percent: total_cameras > 0 ? Math.round((active_streams / total_cameras) * 100) : 0
+      active_streams_percent:
+        total_cameras > 0 ? Math.round((active_streams / total_cameras) * 100) : 0,
     };
 
     res.render("analytics", {
@@ -68,7 +70,7 @@ exports.getAnalyticsPage = async (req, res) => {
       dvrs,
       activeDvrs: activeDvrsWithDetails,
       activePage: "analytics",
-      stats
+      stats,
     });
   } catch (error) {
     console.error("Analytics loading error:", error);
@@ -82,11 +84,11 @@ exports.getAnalyticsData = async (req, res) => {
 
     const activeDvrsSummary = {};
     const allStreams = await streamStore.getAllStreams();
-    
+
     for (const stream of allStreams) {
       const dvrId = stream.dvrId;
       if (!dvrId) continue;
-      
+
       if (!activeDvrsSummary[dvrId]) {
         activeDvrsSummary[dvrId] = {
           dvr_id: dvrId,
@@ -118,12 +120,13 @@ exports.getAnalyticsData = async (req, res) => {
 
     const loadAvg = os.loadavg()[0];
     const cpuCount = os.cpus().length || 1;
-    const loadPercent = Math.min(((loadAvg / cpuCount) * 100), 100);
-    
-    let bandwidthDisplay = '0 Mbps';
+    const loadPercent = Math.min((loadAvg / cpuCount) * 100, 100);
+
+    let bandwidthDisplay = "0 Mbps";
     if (active_streams > 0) {
-      const mbps = active_streams * 2.5; 
-      bandwidthDisplay = mbps > 1000 ? (mbps / 1024).toFixed(2) + ' Gbps' : mbps.toFixed(1) + ' Mbps';
+      const mbps = active_streams * 2.5;
+      bandwidthDisplay =
+        mbps > 1000 ? (mbps / 1024).toFixed(2) + " Gbps" : mbps.toFixed(1) + " Mbps";
     }
 
     res.json({
@@ -131,8 +134,8 @@ exports.getAnalyticsData = async (req, res) => {
       cameraStatusData,
       stats: {
         bandwidth: bandwidthDisplay,
-        latency: active_streams > 0 ? `${Math.round(loadPercent * 1.5 + 20)}ms` : '0ms',
-        quality: active_streams > 0 ? `99% HD` : '0% HD',
+        latency: active_streams > 0 ? `${Math.round(loadPercent * 1.5 + 20)}ms` : "0ms",
+        quality: active_streams > 0 ? `99% HD` : "0% HD",
       },
       totalDvrs: total_dvrs,
       totalCameras: total_cameras,
@@ -152,27 +155,40 @@ exports.getAnalyticsData = async (req, res) => {
  * Generates an internal performance report from Prometheus & Loki
  */
 exports.exportPdfReport = async (req, res) => {
-    try {
-        const timeframe = req.query.timeframe || 'now-30d';
-        logger.info(`🔍 PDF Export: Fetching telemetry from ${monitoringClient.prometheusUrl} and ${monitoringClient.lokiUrl}...`);
+  try {
+    const timeframe = req.query.timeframe || "now-30d";
+    logger.info(
+      `🔍 PDF Export: Fetching telemetry from ${monitoringClient.prometheusUrl} and ${monitoringClient.lokiUrl}...`
+    );
 
-        // 1. Fetch Structured Report Data (Internal Engine)
-        const reportData = await monitoringClient.asyncGetStructuredReport(timeframe);
-        logger.info(`✅ Telemetry Received. CPU: ${reportData.avgCpu}%, RAM: ${reportData.avgRam}%, Req: ${reportData.totalRequests}`);
+    // 1. Fetch Structured Report Data (Internal Engine)
+    const reportData = await monitoringClient.asyncGetStructuredReport(timeframe);
+    logger.info(
+      `✅ Telemetry Received. CPU: ${reportData.avgCpu}%, RAM: ${reportData.avgRam}%, Req: ${reportData.totalRequests}`
+    );
 
-        // 2. Generate PDF Buffer using the new card-based template
-        const pdfBuffer = await reportGenerator.generate(reportData, timeframe.replace('now-', 'Last '));
-        logger.info(`📄 PDF Generated successfully.`);
+    // 2. Generate PDF Buffer using the new card-based template
+    const pdfBuffer = await reportGenerator.generate(
+      reportData,
+      timeframe.replace("now-", "Last ")
+    );
+    logger.info(`📄 PDF Generated successfully.`);
 
-        // 3. Send Response
-        res.setHeader('Content-Type', 'application/pdf');
-        res.setHeader('Content-Disposition', `attachment; filename=StreamVision_Infrastructure_Report_${new Date().toISOString().split('T')[0]}.pdf`);
-        res.send(pdfBuffer);
-
-    } catch (error) {
-        logger.error(`Failed to export PDF report: ${error.message}`);
-        res.status(500).send(`Error generating report: ${error.message}. Please check if Prometheus (${monitoringClient.prometheusUrl}) and Loki (${monitoringClient.lokiUrl}) are reachable from the app container.`);
-    }
+    // 3. Send Response
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename=StreamVision_Infrastructure_Report_${new Date().toISOString().split("T")[0]}.pdf`
+    );
+    res.send(pdfBuffer);
+  } catch (error) {
+    logger.error(`Failed to export PDF report: ${error.message}`);
+    res
+      .status(500)
+      .send(
+        `Error generating report: ${error.message}. Please check if Prometheus (${monitoringClient.prometheusUrl}) and Loki (${monitoringClient.lokiUrl}) are reachable from the app container.`
+      );
+  }
 };
 
 /**
@@ -180,12 +196,12 @@ exports.exportPdfReport = async (req, res) => {
  * Returns structured infrastructure metrics
  */
 exports.getMonthlyReportApi = async (req, res) => {
-    try {
-        const timeframe = req.query.timeframe || 'now-30d';
-        const reportData = await monitoringClient.asyncGetStructuredReport(timeframe);
-        res.json(reportData);
-    } catch (error) {
-        logger.error(`API Report error: ${error.message}`);
-        res.status(500).json({ error: "Failed to compile monitoring data" });
-    }
+  try {
+    const timeframe = req.query.timeframe || "now-30d";
+    const reportData = await monitoringClient.asyncGetStructuredReport(timeframe);
+    res.json(reportData);
+  } catch (error) {
+    logger.error(`API Report error: ${error.message}`);
+    res.status(500).json({ error: "Failed to compile monitoring data" });
+  }
 };
