@@ -45,7 +45,8 @@ exports.getAnalyticsPage = async (req, res) => {
     let bandwidthDisplay = "0 Mbps";
     if (active_streams > 0) {
       const mbps = active_streams * 2.5;
-      bandwidthDisplay = mbps > 1000 ? (mbps / 1024).toFixed(2) + " Gbps" : mbps.toFixed(1) + " Mbps";
+      bandwidthDisplay =
+        mbps > 1000 ? (mbps / 1024).toFixed(2) + " Gbps" : mbps.toFixed(1) + " Mbps";
     }
 
     res.render("analytics", {
@@ -60,7 +61,8 @@ exports.getAnalyticsPage = async (req, res) => {
         latency: active_streams > 0 ? `${Math.round(loadPercent * 1.5 + 20)}ms` : "0ms",
         quality: active_streams > 0 ? `99% HD` : "0% HD",
         loadPercent,
-        active_streams_percent: total_cameras > 0 ? Math.round((active_streams / total_cameras) * 100) : 0,
+        active_streams_percent:
+          total_cameras > 0 ? Math.round((active_streams / total_cameras) * 100) : 0,
       },
     });
   } catch (error) {
@@ -100,7 +102,8 @@ exports.getAnalyticsData = async (req, res) => {
     let bandwidthDisplay = "0 Mbps";
     if (active_streams > 0) {
       const mbps = active_streams * 2.5;
-      bandwidthDisplay = mbps > 1000 ? (mbps / 1024).toFixed(2) + " Gbps" : mbps.toFixed(1) + " Mbps";
+      bandwidthDisplay =
+        mbps > 1000 ? (mbps / 1024).toFixed(2) + " Gbps" : mbps.toFixed(1) + " Mbps";
     }
 
     res.json({
@@ -135,11 +138,26 @@ exports.exportPdfReport = async (req, res) => {
     const timeframe = req.query.timeframe || "now-30d";
     logger.info(`🔍 PDF Export: Fetching metrics for timeframe: ${timeframe}`);
 
-    const reportData = await monitoringClient.asyncGetStructuredReport(timeframe);
-    const pdfBuffer = await reportGenerator.generate(reportData, timeframe.replace("now-", "Last ").replace("d", " Days").replace("h", " Hours"));
+    const [reportData, allStreams, dvrs] = await Promise.all([
+      monitoringClient.asyncGetStructuredReport(timeframe),
+      streamStore.getAllStreams(),
+      getAllDvrs(),
+    ]);
+
+    // Inject Asset Awareness
+    reportData.activeCameras = allStreams.length;
+    reportData.totalCameras = dvrs.reduce((sum, dvr) => sum + (dvr.total_cameras || 0), 0);
+
+    const pdfBuffer = await reportGenerator.generate(
+      reportData,
+      timeframe.replace("now-", "Last ").replace("d", " Days").replace("h", " Hours")
+    );
 
     res.setHeader("Content-Type", "application/pdf");
-    res.setHeader("Content-Disposition", `attachment; filename=StreamVision_Report_${new Date().toISOString().split("T")[0]}.pdf`);
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename=StreamVision_Report_${new Date().toISOString().split("T")[0]}.pdf`
+    );
     res.send(pdfBuffer);
   } catch (error) {
     logger.error(`Live PDF Export Error: ${error.message}`);
@@ -158,13 +176,27 @@ exports.exportTestPdfReport = async (req, res) => {
       avgRam: "62.8",
       totalRequests: 125430,
       errorRate: "0.15",
-      criticalErrors: 0,
+      activeCameras: 18,
+      totalCameras: 20,
+      criticalErrors: 2,
       services: [
-        { name: "Traefik Gateway", status: "healthy", details: "Operational. Processing 1.2k req/s" },
-        { name: "API Cluster", status: "healthy", details: "3/3 nodes active. Avg response 42ms" },
-        { name: "FFmpeg Workers", status: "healthy", details: "Hardware acceleration active" }
+        {
+          name: "Global Traffic Gateway",
+          status: "healthy",
+          details: "Operational. Processing 1.2k secure req/s",
+        },
+        {
+          name: "Platform Management Service",
+          status: "healthy",
+          details: "Core cluster responsive. Avg latency 42ms",
+        },
+        {
+          name: "Video Processing Engine",
+          status: "healthy",
+          details: "Hardware-accelerated streaming active",
+        },
       ],
-      alerts: []
+      alerts: [],
     };
 
     const pdfBuffer = await reportGenerator.generate(mockData, "System Test (Mock Data)");
