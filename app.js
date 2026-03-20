@@ -225,12 +225,15 @@ app.use("/hls", (req, res, next) => {
 app.use(
   "/hls",
   express.static(streamDir, {
+    etag: false,
+    lastModified: false,
     setHeaders: (res, filePath) => {
+      res.setHeader("Access-Control-Allow-Origin", "*");
       if (filePath.endsWith(".m3u8")) {
         res.setHeader("Cache-Control", "no-cache");
         res.setHeader("Content-Type", "application/vnd.apple.mpegurl");
       } else if (filePath.endsWith(".ts")) {
-        res.setHeader("Cache-Control", "public, max-age=60");
+        res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
         res.setHeader("Content-Type", "video/mp2t");
       }
     },
@@ -241,14 +244,18 @@ app.use(
 app.use(
   "/streams",
   (req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
     if (req.path.endsWith(".m3u8")) {
       res.setHeader("Cache-Control", "no-cache");
     } else if (req.path.endsWith(".ts")) {
-      res.setHeader("Cache-Control", "public, max-age=60");
+      res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
     }
     next();
   },
-  express.static(path.join(__dirname, "public", "streams"))
+  express.static(path.join(__dirname, "public", "streams"), {
+    etag: false,
+    lastModified: false
+  })
 );
 
 // 1. Public Routes (No Auth, No strict Rate Limiting)
