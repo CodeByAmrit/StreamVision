@@ -22,14 +22,9 @@ const logger = createLogger({
 });
 
 if (isProduction) {
-  // Only write actual server errors to file in production to keep disk usage extremely small
-  logger.add(
-    new transports.File({
-      filename: "logs/error.log",
-      level: "error",
-      format: format.combine(format.timestamp(), format.json())
-    })
-  );
+  // Production relies on standard stdout pipeline
+  // Promtail will scrape Docker container outputs securely mapping them into Loki
+  // Removing local 'error.log' reduces container storage bloat significantly.
 }
 
 module.exports = logger;

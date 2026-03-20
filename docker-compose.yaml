@@ -2,7 +2,7 @@ services:
   streamvision:
     image: codebyamrit/streamvision:latest
     container_name: streamvision_app
-    command: ["node", "cluster.js"]
+    command: [ "node", "cluster.js" ]
     expose:
       - "3000"
     env_file:
@@ -44,7 +44,6 @@ services:
       - "traefik.http.middlewares.hls-headers.headers.customResponseHeaders.Access-Control-Allow-Origin=*"
       - "traefik.http.routers.nginx-hls.middlewares=hls-headers"
       - "traefik.http.services.nginx-hls.loadbalancer.server.port=80"
-
 
 networks:
 
