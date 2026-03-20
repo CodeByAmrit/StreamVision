@@ -6,8 +6,16 @@ const logger = require('./logger');
  */
 class MonitoringClient {
     constructor() {
-        this.prometheusUrl = process.env.PROMETHEUS_URL || 'http://prometheus:9090';
-        this.lokiUrl = process.env.LOKI_URL || 'http://loki:3100';
+        this.prometheusUrl = process.env.PROMETHEUS_URL || 'https://prometheus.amritsharma.dev';
+        this.lokiUrl = process.env.LOKI_URL || 'https://loki.amritsharma.dev';
+        
+        // Basic Auth support for Traefik-protected public endpoints
+        this.promAuth = process.env.PROMETHEUS_USER && process.env.PROMETHEUS_PASS 
+            ? 'Basic ' + Buffer.from(`${process.env.PROMETHEUS_USER}:${process.env.PROMETHEUS_PASS}`).toString('base64') 
+            : null;
+        this.lokiAuth = process.env.LOKI_USER && process.env.LOKI_PASS 
+            ? 'Basic ' + Buffer.from(`${process.env.LOKI_USER}:${process.env.LOKI_PASS}`).toString('base64') 
+            : null;
     }
 
     /**
@@ -31,7 +39,8 @@ class MonitoringClient {
     async queryPrometheus(query) {
         try {
             const url = `${this.prometheusUrl}/api/v1/query?query=${encodeURIComponent(query)}`;
-            const response = await fetch(url, { signal: AbortSignal.timeout(5000) });
+            const headers = this.promAuth ? { 'Authorization': this.promAuth } : {};
+            const response = await fetch(url, { headers, signal: AbortSignal.timeout(5000) });
             if (!response.ok) throw new Error(`Status ${response.status}: ${response.statusText}`);
             const data = await response.json();
             return data.status === 'success' ? data.data.result : [];
@@ -47,9 +56,10 @@ class MonitoringClient {
         const duration = this.getTimeframeDuration(timeframe);
         
         // Parallel Fetch - Let errors bubble up to controller
+        // Note: Using subquery syntax [duration:resolution] to calculate averages from instant vectors over time.
         const [cpuRes, ramRes, reqRes, err5xxRes, logsSummary] = await Promise.all([
-            this.queryPrometheus(`avg_over_time(100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)[${duration}])`),
-            this.queryPrometheus(`avg_over_time(((node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100)[${duration}])`),
+            this.queryPrometheus(`avg_over_time((100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100))[${duration}:1h])`),
+            this.queryPrometheus(`avg_over_time(((node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100)[${duration}:1h])`),
             this.queryPrometheus(`sum(increase(traefik_entrypoint_requests_total{entrypoint="websecure"}[${duration}]))`),
             this.queryPrometheus(`sum(increase(traefik_entrypoint_requests_total{entrypoint="websecure", code=~"5.."}[${duration}]))`),
             this.getLogSummary(timeframe)
@@ -83,8 +93,9 @@ class MonitoringClient {
         try {
             const query = `count_over_time({container="streamvision_app"} |= "error" [${duration}])`;
             const url = `${this.lokiUrl}/loki/api/v1/query?query=${encodeURIComponent(query)}`;
+            const headers = this.lokiAuth ? { 'Authorization': this.lokiAuth } : {};
             
-            const response = await fetch(url, { signal: AbortSignal.timeout(5000) });
+            const response = await fetch(url, { headers, signal: AbortSignal.timeout(5000) });
             if (!response.ok) throw new Error(`Status ${response.status}: ${response.statusText}`);
             const data = await response.json();
             
