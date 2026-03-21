@@ -1,31 +1,29 @@
-# syntax=docker/dockerfile:1
-
-FROM node:lts-slim AS base
+# Stage 1: Build production dependencies
+FROM node:22-alpine AS build
 WORKDIR /usr/src/app
 
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-  --mount=type=cache,target=/var/lib/apt,sharing=locked \
-  apt-get update && \
-  apt-get install -y ffmpeg --no-install-recommends
-
-FROM base AS build
 COPY package*.json ./
 
 RUN --mount=type=cache,target=/root/.npm \
   npm ci --only=production
 
-FROM base AS final
+FROM node:22-alpine AS final
+
+RUN apk add --no-cache ffmpeg
+
 ENV NODE_ENV=production
-ARG APP_VERSION=v4.0.0
+ARG APP_VERSION=v4.2.17
 ENV APP_VERSION=$APP_VERSION
+
 WORKDIR /usr/src/app
 
-RUN mkdir -p logs && chown -R node:node /usr/src/app
+RUN mkdir -p logs streams && chown -R node:node /usr/src/app
 
-# Copy dependencies and application code with proper ownership
-COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
+COPY --from=build --chown=node:node /usr/src/app/node_modules ./node_modules
+
 COPY --chown=node:node . .
 
 EXPOSE 3000
 USER node
+
 CMD [ "node", "cluster.js" ]
