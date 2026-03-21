@@ -11,6 +11,7 @@ const apiLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   keyGenerator: getClientIp,
+  validate: false,
   message: { error: "Too many requests, please try again later." },
   handler: (req, res, next, options) => {
     logger.warn(`Rate limit exceeded for IP: ${getClientIp(req)} on URL: ${req.originalUrl}`);
@@ -25,6 +26,7 @@ const authLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   keyGenerator: getClientIp,
+  validate: false,
   message: { error: "Too many login attempts, please try again in 30 minutes." },
   handler: (req, res, next, options) => {
     logger.error(`Brute-force attempt suspected for IP: ${getClientIp(req)} on URL: ${req.originalUrl}`);

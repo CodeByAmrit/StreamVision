@@ -175,8 +175,9 @@ app.use(express.urlencoded({ extended: true, limit: "1mb" }));
 app.use(cookieParser());
 
 // CSRF Protection Initialization
-const { generateToken, doubleCsrfProtection } = doubleCsrf({
+const { generateCsrfToken, doubleCsrfProtection } = doubleCsrf({
   getSecret: () => process.env.jwt_token || "super-secret-key",
+  getSessionIdentifier: (req) => req.cookies.token || "guest-session", // Bind token to JWT cookie
   cookieName: "x-csrf-token",
   cookieOptions: {
     httpOnly: true,
@@ -291,7 +292,7 @@ app.use("/", (req, res, next) => {
 
 // Middleware to inject CSRF token into all views
 app.use((req, res, next) => {
-  res.locals.csrfToken = generateToken(req, res);
+  res.locals.csrfToken = generateCsrfToken(req, res);
   next();
 });
 
