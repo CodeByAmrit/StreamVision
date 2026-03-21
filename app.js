@@ -230,10 +230,14 @@ app.use(
     setHeaders: (res, filePath) => {
       res.setHeader("Access-Control-Allow-Origin", "*");
       if (filePath.endsWith(".m3u8")) {
-        res.setHeader("Cache-Control", "no-cache");
+        res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        res.setHeader("Pragma", "no-cache");
+        res.setHeader("Expires", "0");
         res.setHeader("Content-Type", "application/vnd.apple.mpegurl");
       } else if (filePath.endsWith(".ts")) {
-        res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+        res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        res.setHeader("Pragma", "no-cache");
+        res.setHeader("Expires", "0");
         res.setHeader("Content-Type", "video/mp2t");
       }
     },
@@ -246,9 +250,13 @@ app.use(
   (req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     if (req.path.endsWith(".m3u8")) {
-      res.setHeader("Cache-Control", "no-cache");
+      res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+      res.setHeader("Pragma", "no-cache");
+      res.setHeader("Expires", "0");
     } else if (req.path.endsWith(".ts")) {
-      res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+      res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+      res.setHeader("Pragma", "no-cache");
+      res.setHeader("Expires", "0");
     }
     next();
   },

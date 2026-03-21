@@ -135,11 +135,11 @@
             const checkManifest = () => {
               if (!isTabActive) return;
 
-              fetch(source, { method: "HEAD" })
+              fetch(`${source}?t=${Date.now()}`, { method: "HEAD", cache: "no-store" })
                 .then((res) => {
                   if (res.ok) {
                     // Step 3: Initialize HLS.js ONLY when file is ready
-                    initializePlayer(video, source);
+                    initializePlayer(video, `${source}?t=${Date.now()}`);
                   } else if (retries < MAX_RETRIES) {
                     retries++;
                     setTimeout(checkManifest, RETRY_INTERVAL);
