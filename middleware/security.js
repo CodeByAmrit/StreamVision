@@ -29,7 +29,9 @@ const authLimiter = rateLimit({
   validate: false,
   message: { error: "Too many login attempts, please try again in 30 minutes." },
   handler: (req, res, next, options) => {
-    logger.error(`Brute-force attempt suspected for IP: ${getClientIp(req)} on URL: ${req.originalUrl}`);
+    logger.error(
+      `Brute-force attempt suspected for IP: ${getClientIp(req)} on URL: ${req.originalUrl}`
+    );
     res.status(options.statusCode).send(options.message);
   },
 });

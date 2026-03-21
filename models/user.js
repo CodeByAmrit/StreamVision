@@ -107,7 +107,12 @@ class User {
 
       const isMatch = bcrypt.compareSync(password, user.password);
       if (!isMatch) {
-        await logActivity("security", "login_fail", `Failed login attempt for email: ${email}`, req.ip);
+        await logActivity(
+          "security",
+          "login_fail",
+          `Failed login attempt for email: ${email}`,
+          req.ip
+        );
         return res.status(403).json({ status: "Invalid Password" });
       }
 

@@ -351,10 +351,7 @@ function showFlashMessage(message, type = "success") {
 
   const icon = document.createElement("i");
   icon.className =
-    "fas mr-3 " +
-    (messageType === "success"
-      ? "fa-check-circle"
-      : "fa-exclamation-circle");
+    "fas mr-3 " + (messageType === "success" ? "fa-check-circle" : "fa-exclamation-circle");
 
   const textSpan = document.createElement("span");
   textSpan.textContent = message;
@@ -427,7 +424,7 @@ function updateDvrUI(cameraStreams) {
 
   // Find all existing DVR rows and reset their status first
   const allRows = document.querySelectorAll("div[data-dvr-id]");
-  allRows.forEach(row => {
+  allRows.forEach((row) => {
     const dvrId = row.getAttribute("data-dvr-id");
     dvrMap[dvrId] = { online: false, activeCameras: 0, cameras: [] };
   });
@@ -455,26 +452,29 @@ function updateDvrUI(cameraStreams) {
     const badgeContainer = dvrRow.querySelector(".status-badge");
     if (badgeContainer) {
       if (stats.online) {
-        badgeContainer.className = "status-badge inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 border border-transparent dark:border-current/10";
+        badgeContainer.className =
+          "status-badge inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 border border-transparent dark:border-current/10";
         let innerHtml = '<i class="fas fa-circle-check mr-1.5 opacity-80"></i> Online';
-        if(stats.activeCameras > 0) {
+        if (stats.activeCameras > 0) {
           innerHtml += `<span class="ml-1.5 pl-1.5 border-l border-current/20 text-[10px] uppercase font-bold tracking-wider opacity-90">${stats.activeCameras} Cam</span>`;
         }
         badgeContainer.innerHTML = innerHtml;
       } else {
-        badgeContainer.className = "status-badge inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400 border border-transparent dark:border-current/10";
-        badgeContainer.innerHTML = '<i class="fas fa-circle-exclamation mr-1.5 opacity-80"></i> Offline';
+        badgeContainer.className =
+          "status-badge inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400 border border-transparent dark:border-current/10";
+        badgeContainer.innerHTML =
+          '<i class="fas fa-circle-exclamation mr-1.5 opacity-80"></i> Offline';
       }
     }
 
     // Update actions (View/Live View toggle)
     const actionsLinks = dvrRow.querySelectorAll("a[href^='/public/dvr/']");
-    actionsLinks.forEach(link => {
-       if(stats.online) {
-         link.innerHTML = '<i class="fas fa-eye mr-1.5"></i> Live';
-       } else {
-         link.innerHTML = '<i class="fas fa-eye mr-1.5"></i> View';
-       }
+    actionsLinks.forEach((link) => {
+      if (stats.online) {
+        link.innerHTML = '<i class="fas fa-eye mr-1.5"></i> Live';
+      } else {
+        link.innerHTML = '<i class="fas fa-eye mr-1.5"></i> View';
+      }
     });
 
     // Update live stream info
@@ -482,38 +482,43 @@ function updateDvrUI(cameraStreams) {
     if (liveBox) {
       if (stats.cameras && stats.cameras.length > 0) {
         let streamsHtml = '<p class="text-gray-500 dark:text-gray-400 mb-1">Live Streams</p>';
-        stats.cameras.forEach(c => {
-           streamsHtml += `<p class="text-[11px] text-gray-700 dark:text-gray-300">${c.resolution || '—'} · ${c.fps || '--'} FPS · ${c.bitrate || '--'} kbps</p>`;
+        stats.cameras.forEach((c) => {
+          streamsHtml += `<p class="text-[11px] text-gray-700 dark:text-gray-300">${c.resolution || "—"} · ${c.fps || "--"} FPS · ${c.bitrate || "--"} kbps</p>`;
         });
         liveBox.innerHTML = streamsHtml;
       } else {
-        liveBox.innerHTML = '<p class="text-gray-500 dark:text-gray-400 mb-1">Live Streams</p><p class="text-xs text-gray-400">No active streams</p>';
+        liveBox.innerHTML =
+          '<p class="text-gray-500 dark:text-gray-400 mb-1">Live Streams</p><p class="text-xs text-gray-400">No active streams</p>';
       }
     }
-    
+
     // Update summary counts in the hidden details area
-    const detailsContainer = dvrRow.querySelector('.additional-info');
-    if(detailsContainer) {
-       const statTexts = detailsContainer.querySelectorAll('p.font-medium');
-       if(statTexts && statTexts.length >= 2) {
-          // Find the "Total / Active" camera stats element by index. It should be the first font-medium p below the live box
-          const camsP = Array.from(statTexts).find(p => p.textContent.includes('Total') || p.textContent.includes('Active'));
-          if(camsP) {
-             const totalMatch = camsP.textContent.match(/(\d+)\s+Total/);
-             const total = totalMatch ? totalMatch[1] : 0;
-             let newHtml = `${total} Total`;
-             if(stats.activeCameras > 0) {
-               newHtml += ` <span class="text-green-600 dark:text-green-400 ml-1">(${stats.activeCameras} Active)</span>`;
-             }
-             camsP.innerHTML = newHtml;
+    const detailsContainer = dvrRow.querySelector(".additional-info");
+    if (detailsContainer) {
+      const statTexts = detailsContainer.querySelectorAll("p.font-medium");
+      if (statTexts && statTexts.length >= 2) {
+        // Find the "Total / Active" camera stats element by index. It should be the first font-medium p below the live box
+        const camsP = Array.from(statTexts).find(
+          (p) => p.textContent.includes("Total") || p.textContent.includes("Active")
+        );
+        if (camsP) {
+          const totalMatch = camsP.textContent.match(/(\d+)\s+Total/);
+          const total = totalMatch ? totalMatch[1] : 0;
+          let newHtml = `${total} Total`;
+          if (stats.activeCameras > 0) {
+            newHtml += ` <span class="text-green-600 dark:text-green-400 ml-1">(${stats.activeCameras} Active)</span>`;
           }
-          
-          // Update Status detailed text
-          const statusP = Array.from(statTexts).find(p => p.textContent.includes('Online') || p.textContent.includes('Offline'));
-          if(statusP) {
-             statusP.innerHTML = stats.online ? "Online ✓" : "Offline";
-          }
-       }
+          camsP.innerHTML = newHtml;
+        }
+
+        // Update Status detailed text
+        const statusP = Array.from(statTexts).find(
+          (p) => p.textContent.includes("Online") || p.textContent.includes("Offline")
+        );
+        if (statusP) {
+          statusP.innerHTML = stats.online ? "Online ✓" : "Offline";
+        }
+      }
     }
   });
 }

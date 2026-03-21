@@ -35,9 +35,7 @@ const getCameraById = async (req, res) => {
     if (rows.length === 0) {
       return res.status(404).json({ error: "Camera not found" });
     }
-    const [dvr] = await db.execute(`SELECT dvr_name FROM dvrs WHERE id = ?`, [
-      rows[0].dvr_id,
-    ]);
+    const [dvr] = await db.execute(`SELECT dvr_name FROM dvrs WHERE id = ?`, [rows[0].dvr_id]);
     // console.log(rows);
     res.render("edit_camera", { dvr: dvr[0], cameraId, camera: rows[0], user: req.user });
   } catch (error) {
@@ -54,10 +52,9 @@ const getCamerasByDvrId = async (req, res) => {
   if (!dvrId) return res.status(400).json({ error: "Invalid DVR ID" });
 
   try {
-    const [rows] = await db.execute(
-      `SELECT * FROM cameras WHERE dvr_id = ? ORDER BY id DESC`,
-      [dvrId]
-    );
+    const [rows] = await db.execute(`SELECT * FROM cameras WHERE dvr_id = ? ORDER BY id DESC`, [
+      dvrId,
+    ]);
     res.json(rows);
   } catch (error) {
     console.error("Error fetching cameras by DVR ID:", error);

@@ -277,13 +277,21 @@ function initializeReportGenerator() {
   if (generatePdfBtn && timeframeSelect) {
     generatePdfBtn.addEventListener("click", () => {
       const timeframe = timeframeSelect.value;
-      triggerDownload(generatePdfBtn, `/analytics/export-pdf?timeframe=${timeframe}`, "Generating Performance Report...");
+      triggerDownload(
+        generatePdfBtn,
+        `/analytics/export-pdf?timeframe=${timeframe}`,
+        "Generating Performance Report..."
+      );
     });
   }
 
   if (generateTestBtn) {
     generateTestBtn.addEventListener("click", () => {
-      triggerDownload(generateTestBtn, "/analytics/test-pdf", "Generating Diagnostic Test Report...");
+      triggerDownload(
+        generateTestBtn,
+        "/analytics/test-pdf",
+        "Generating Diagnostic Test Report..."
+      );
     });
   }
 }

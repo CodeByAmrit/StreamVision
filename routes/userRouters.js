@@ -32,7 +32,7 @@ router.get("/dashboard", checkAuth, async (req, res) => {
     for (const stream of allStreams) {
       const dvrId = stream.dvrId;
       if (!dvrId) continue;
-      
+
       if (!activeDvrsSummary[dvrId]) {
         activeDvrsSummary[dvrId] = {
           dvr_id: dvrId,
@@ -70,8 +70,8 @@ router.get("/dashboard", checkAuth, async (req, res) => {
     const uptimeDays = Math.floor(uptimeSeconds / (3600 * 24));
     let uptimeDisplay = `${uptimeDays} d`;
     if (uptimeDays === 0) {
-       const uptimeHours = Math.floor(uptimeSeconds / 3600);
-       uptimeDisplay = `${uptimeHours} h`;
+      const uptimeHours = Math.floor(uptimeSeconds / 3600);
+      uptimeDisplay = `${uptimeHours} h`;
     }
 
     const processMemoryMb = (process.memoryUsage().rss / 1024 / 1024).toFixed(1);
@@ -80,7 +80,7 @@ router.get("/dashboard", checkAuth, async (req, res) => {
       memoryUsagePercent,
       serverLoadPercent: Math.min(serverLoadPercent, 100), // Cap at 100% for UI
       uptimeDisplay,
-      processMemoryMb
+      processMemoryMb,
     };
 
     // 6. Render dashboard
@@ -92,7 +92,7 @@ router.get("/dashboard", checkAuth, async (req, res) => {
       active_streams,
       dvrs,
       activeDvrs: activeDvrsWithDetails,
-      systemStats
+      systemStats,
     });
   } catch (error) {
     console.error("Dashboard loading error:", error);
@@ -122,36 +122,43 @@ router.post("/login", authLimiter, loginSchema, validate, async (req, res) => {
   }
 });
 
-router.post("/change-password", authLimiter, checkAuth, passwordChangeSchema, validate, async (req, res) => {
-  try {
-    const id = req.user.id;
-    const { currentPassword, newPassword, confirmPassword } = req.body;
+router.post(
+  "/change-password",
+  authLimiter,
+  checkAuth,
+  passwordChangeSchema,
+  validate,
+  async (req, res) => {
+    try {
+      const id = req.user.id;
+      const { currentPassword, newPassword, confirmPassword } = req.body;
 
-    // Check if new passwords match
-    if (newPassword !== confirmPassword) {
-      return res.status(400).json({ status: "error", message: "New passwords do not match." });
+      // Check if new passwords match
+      if (newPassword !== confirmPassword) {
+        return res.status(400).json({ status: "error", message: "New passwords do not match." });
+      }
+
+      // Find user
+      const user = await User.findById(id);
+      if (!user) {
+        return res.status(404).json({ status: "error", message: "User not found." });
+      }
+
+      // Verify current password
+      const isMatch = bcrypt.compareSync(currentPassword, user.password);
+      if (!isMatch) {
+        return res.status(401).json({ status: "error", message: "Current password is incorrect." });
+      }
+
+      await User.updatePassword(id, newPassword);
+
+      return res.status(200).json({ status: "success", message: "Password changed successfully." });
+    } catch (error) {
+      console.error("Error during password change:", error);
+      res.status(500).json({ status: "error", message: "Internal Server Error" });
     }
-
-    // Find user
-    const user = await User.findById(id);
-    if (!user) {
-      return res.status(404).json({ status: "error", message: "User not found." });
-    }
-
-    // Verify current password
-    const isMatch = bcrypt.compareSync(currentPassword, user.password);
-    if (!isMatch) {
-      return res.status(401).json({ status: "error", message: "Current password is incorrect." });
-    }
-
-    await User.updatePassword(id, newPassword);
-
-    return res.status(200).json({ status: "success", message: "Password changed successfully." });
-  } catch (error) {
-    console.error("Error during password change:", error);
-    res.status(500).json({ status: "error", message: "Internal Server Error" });
   }
-});
+);
 
 // router.post('/signup', async (req, res) => {
 //     try {

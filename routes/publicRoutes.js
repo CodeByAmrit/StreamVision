@@ -13,7 +13,7 @@ router.get("/public/dvr/:dvrId", async (req, res) => {
        FROM dvrs d
        LEFT JOIN locations l ON d.location_id = l.id
        WHERE d.id = ?`,
-       [dvrId]
+      [dvrId]
     );
 
     if (!rows || rows.length === 0) {

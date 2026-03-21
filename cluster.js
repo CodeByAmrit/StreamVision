@@ -7,7 +7,7 @@ const numCPUs = os.cpus().length;
 
 if (cluster.isMaster) {
   console.log(`Master ${process.pid} is running`);
-  
+
   for (let i = 0; i < numCPUs; i++) {
     const worker = cluster.fork();
     streamStore.setupPrimaryHandlers(worker);
@@ -28,7 +28,6 @@ if (cluster.isMaster) {
 
   process.on("SIGINT", gracefulShutdown);
   process.on("SIGTERM", gracefulShutdown);
-
 } else {
   require("./app"); // Each worker runs the Express app
 }

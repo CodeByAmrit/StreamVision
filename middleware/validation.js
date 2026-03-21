@@ -9,13 +9,23 @@ const validate = (req, res, next) => {
 };
 
 const dvrSchema = [
-  body("dvr_name").trim().isLength({ min: 3, max: 100 }).withMessage("DVR Name must be 3-100 characters"),
+  body("dvr_name")
+    .trim()
+    .isLength({ min: 3, max: 100 })
+    .withMessage("DVR Name must be 3-100 characters"),
   body("location_id").notEmpty().withMessage("Location is required"),
-  body("new_location").optional({ checkFalsy: true }).trim().isLength({ min: 2 }).withMessage("New location name is too short"),
+  body("new_location")
+    .optional({ checkFalsy: true })
+    .trim()
+    .isLength({ min: 2 })
+    .withMessage("New location name is too short"),
 ];
 
 const cameraSchema = [
-  body("camera_name").trim().isLength({ min: 2, max: 100 }).withMessage("Camera Name must be 2-100 characters"),
+  body("camera_name")
+    .trim()
+    .isLength({ min: 2, max: 100 })
+    .withMessage("Camera Name must be 2-100 characters"),
   body("rtsp_url")
     .trim()
     .custom((value) => value.startsWith("rtsp://"))
@@ -31,7 +41,9 @@ const loginSchema = [
 
 const passwordChangeSchema = [
   body("currentPassword").notEmpty(),
-  body("newPassword").isLength({ min: 6 }).withMessage("New password must be at least 6 characters"),
+  body("newPassword")
+    .isLength({ min: 6 })
+    .withMessage("New password must be at least 6 characters"),
   body("confirmPassword").custom((value, { req }) => {
     if (value !== req.body.newPassword) {
       throw new Error("Passwords do not match");
