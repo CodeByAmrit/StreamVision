@@ -1,25 +1,40 @@
 const express = require("express");
 const router = express.Router();
-const ffmpeg = require("fluent-ffmpeg");
-const ffprobeStatic = require("ffprobe-static");
+const { spawnSync } = require("child_process");
 const Camera = require("../models/cameraModel"); // Adjust the path to your Camera model
 const cameraController = require("../controllers/camerasController");
 
 router.get("/:id", cameraController.getCameraById_ejs);
 
-ffmpeg.setFfprobePath(ffprobeStatic.path);
-
 router.get("/:id/ffprobe", async (req, res) => {
   try {
-    const camera = await Camera.findById(req.params.id);
+    const camera = await Camera.findById(req, res);
     if (!camera) return res.status(404).json({ error: "Camera not found" });
 
-    ffmpeg.ffprobe(camera.rtsp_url, (err, metadata) => {
-      if (err) return res.status(500).json({ error: err.message });
+    const result = spawnSync("ffprobe", [
+      "-v",
+      "quiet",
+      "-print_format",
+      "json",
+      "-show_format",
+      "-show_streams",
+      camera.rtsp_url,
+    ]);
+
+    if (result.error) {
+      console.error("FFprobe error:", result.error);
+      return res.status(500).json({ error: "Failed to probe stream" });
+    }
+
+    try {
+      const metadata = JSON.parse(result.stdout.toString());
       return res.json(metadata);
-    });
+    } catch (parseError) {
+      return res.status(500).json({ error: "Failed to parse ffprobe output" });
+    }
   } catch (e) {
     console.error(e);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 

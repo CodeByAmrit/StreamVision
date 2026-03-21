@@ -1,5 +1,5 @@
 # Stage 1: Build production dependencies
-FROM node:22-alpine AS build
+FROM node:24-alpine AS build
 WORKDIR /usr/src/app
 
 COPY package*.json ./
@@ -7,7 +7,7 @@ COPY package*.json ./
 RUN --mount=type=cache,target=/root/.npm \
   npm ci --only=production
 
-FROM node:22-alpine AS final
+FROM node:24-alpine AS final
 
 RUN apk add --no-cache ffmpeg
 

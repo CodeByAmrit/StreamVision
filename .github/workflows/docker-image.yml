@@ -15,7 +15,7 @@ jobs:
     steps:
       # 1️⃣ Checkout code
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       # 2️⃣ Login to DockerHub
       - name: Login to DockerHub

@@ -44,3 +44,13 @@ client/vite.config.js
 client/package.json
 client/package-lock.json
 client/README.md
+aws-script.sh
+clean_topmenu.js
+.antigravity/
+.gemini/
+.env*
+*.md
+LICENSE
+package-lock.json
+!public/
+!views/

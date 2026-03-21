@@ -8,7 +8,7 @@ const compression = require("compression");
 const cookieParser = require("cookie-parser");
 const favicon = require("serve-favicon");
 const fs = require("fs");
-const csrf = require("csurf");
+const { doubleCsrf } = require("csrf-csrf");
 
 const http = require("http");
 
@@ -174,14 +174,17 @@ app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true, limit: "1mb" }));
 app.use(cookieParser());
 
-// CSRF Protection Initialization (Cookie-based)
-const csrfProtection = csrf({ cookie: true });
-
-// Pass CSRF token and nonce to all views
-app.use((req, res, next) => {
-  // Use a helper to only apply CSRF to non-API routes if needed
-  // For now, we apply it globally but handle the token generation
-  next();
+// CSRF Protection Initialization
+const { generateToken, doubleCsrfProtection } = doubleCsrf({
+  getSecret: () => process.env.jwt_token || "super-secret-key",
+  cookieName: "x-csrf-token",
+  cookieOptions: {
+    httpOnly: true,
+    sameSite: "lax",
+    path: "/",
+    secure: process.env.NODE_ENV === "production",
+  },
+  getTokenFromRequest: (req) => req.headers["x-csrf-token"] || req.body?._csrf,
 });
 
 // Allow Cloudflare and browsers to cache static assets aggressively (30 days)
@@ -262,7 +265,7 @@ app.use(
   },
   express.static(path.join(__dirname, "public", "streams"), {
     etag: false,
-    lastModified: false
+    lastModified: false,
   })
 );
 
@@ -283,17 +286,12 @@ app.use("/", (req, res, next) => {
   if (req.path.startsWith("/public/")) {
     return next();
   }
-  csrfProtection(req, res, next);
+  doubleCsrfProtection(req, res, next);
 });
 
 // Middleware to inject CSRF token into all views
 app.use((req, res, next) => {
-  // Only try to generate token if csurf was initialized for this request
-  if (typeof req.csrfToken === "function") {
-    res.locals.csrfToken = req.csrfToken();
-  } else {
-    res.locals.csrfToken = null;
-  }
+  res.locals.csrfToken = generateToken(req, res);
   next();
 });
 
