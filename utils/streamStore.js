@@ -118,14 +118,15 @@ async function startHlsStream(rtspUrl, cameraId, dvrId) {
   }
 
   const streamId = hashRtspUrl(rtspUrl);
-  const hlsUrl = `/hls/${streamId}/index.m3u8`;
 
   // Check if stream is already active
   if (activeStreams.has(streamId)) {
-    return { hlsUrl, isNew: false };
+    return { hlsUrl: activeStreams.get(streamId).hlsUrl, isNew: false };
   }
 
-  const outputPath = path.join(streamDir, streamId);
+  const sessionTimestamp = Date.now();
+  const outputPath = path.join(streamDir, streamId, String(sessionTimestamp));
+  const hlsUrl = `/hls/${streamId}/${sessionTimestamp}/index.m3u8`;
   const playlistPath = path.join(outputPath, "index.m3u8");
 
   try {
@@ -133,6 +134,13 @@ async function startHlsStream(rtspUrl, cameraId, dvrId) {
       fs.mkdirSync(streamDir, { recursive: true });
     }
 
+    // Ensure parent streamId directory exists
+    const parentPath = path.join(streamDir, streamId);
+    if (!fs.existsSync(parentPath)) {
+      fs.mkdirSync(parentPath, { recursive: true });
+    }
+
+    // Create session-specific output directory
     if (fs.existsSync(outputPath)) {
       fs.rmSync(outputPath, { recursive: true, force: true });
     }
@@ -142,45 +150,39 @@ async function startHlsStream(rtspUrl, cameraId, dvrId) {
     throw new Error("Failed to prepare stream directories");
   }
 
-  const ffmpeg = spawn(
-    "ffmpeg",
-    [
-      "-rtsp_transport",
-      "tcp",
-      "-probesize",
-      "32",
-      "-analyzeduration",
-      "0",
-      "-fflags",
-      "nobuffer",
-      "-flags",
-      "low_delay",
-      "-strict",
-      "experimental",
-      "-i",
-      rtspUrl,
-      "-c:v",
-      "copy",
-      "-preset",
-      "ultrafast",
-      "-tune",
-      "zerolatency",
-      "-f",
-      "hls",
-      "-hls_time",
-      "1",
-      "-hls_list_size",
-      "2",
-      "-hls_flags",
-      "delete_segments+omit_endlist+discont_start",
-      "-hls_segment_type",
-      "mpegts",
-      "-hls_segment_filename",
-      `${outputPath}/segment_%03d.ts`,
-      playlistPath,
-    ],
-    { stdio: "ignore" }
-  );
+  const ffmpeg = spawn("ffmpeg", [
+    "-rtsp_transport",
+    "tcp",
+    "-probesize",
+    "8192",
+    "-analyzeduration",
+    "1000000",
+    "-fflags",
+    "nobuffer+flush_packets",
+    "-flags",
+    "low_delay",
+    "-use_wallclock_as_timestamps",
+    "1",
+    "-i",
+    rtspUrl,
+    "-c:v",
+    "copy",
+    "-vsync",
+    "passthrough",
+    "-f",
+    "hls",
+    "-hls_time",
+    "2",
+    "-hls_list_size",
+    "3",
+    "-hls_flags",
+    "delete_segments+append_list+omit_endlist+program_date_time",
+    "-hls_segment_type",
+    "mpegts",
+    "-hls_segment_filename",
+    `${outputPath}/segment_%03d.ts`,
+    playlistPath,
+  ]);
 
   ffmpeg.on("error", (err) => {
     logger.error(`[FFmpeg Error]: ${err.message}`);
@@ -192,6 +194,11 @@ async function startHlsStream(rtspUrl, cameraId, dvrId) {
     try {
       if (fs.existsSync(outputPath)) {
         fs.rmSync(outputPath, { recursive: true, force: true });
+      }
+      // Cleanup parent directory if empty
+      const parentPath = path.join(streamDir, streamId);
+      if (fs.existsSync(parentPath) && fs.readdirSync(parentPath).length === 0) {
+        fs.rmdirSync(parentPath);
       }
     } catch (e) {
       logger.error(`Failed to cleanup stream output directory ${outputPath}:`, e);

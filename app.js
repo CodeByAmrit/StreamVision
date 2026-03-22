@@ -234,12 +234,19 @@ app.use(
     setHeaders: (res, filePath) => {
       res.setHeader("Access-Control-Allow-Origin", "*");
       if (filePath.endsWith(".m3u8")) {
-        res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        res.setHeader(
+          "Cache-Control",
+          "no-cache, no-store, must-revalidate, max-age=0, s-maxage=0"
+        );
         res.setHeader("Pragma", "no-cache");
         res.setHeader("Expires", "0");
         res.setHeader("Content-Type", "application/vnd.apple.mpegurl");
       } else if (filePath.endsWith(".ts")) {
-        res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        // Segments are now unique per session, but we still disable cache just in case
+        res.setHeader(
+          "Cache-Control",
+          "no-cache, no-store, must-revalidate, max-age=0, s-maxage=0"
+        );
         res.setHeader("Pragma", "no-cache");
         res.setHeader("Expires", "0");
         res.setHeader("Content-Type", "video/mp2t");
@@ -254,11 +261,11 @@ app.use(
   (req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     if (req.path.endsWith(".m3u8")) {
-      res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+      res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate, max-age=0, s-maxage=0");
       res.setHeader("Pragma", "no-cache");
       res.setHeader("Expires", "0");
     } else if (req.path.endsWith(".ts")) {
-      res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+      res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate, max-age=0, s-maxage=0");
       res.setHeader("Pragma", "no-cache");
       res.setHeader("Expires", "0");
     }
