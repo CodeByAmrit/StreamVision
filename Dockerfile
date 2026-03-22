@@ -12,7 +12,7 @@ FROM node:24-alpine AS final
 RUN apk add --no-cache ffmpeg
 
 ENV NODE_ENV=production
-ARG APP_VERSION=v4.2.17
+ARG APP_VERSION=v4.2.19
 ENV APP_VERSION=$APP_VERSION
 
 WORKDIR /usr/src/app

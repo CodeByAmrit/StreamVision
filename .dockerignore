@@ -51,6 +51,5 @@ clean_topmenu.js
 .env*
 *.md
 LICENSE
-package-lock.json
 !public/
 !views/
