@@ -224,7 +224,12 @@
                       manifestLoadingTimeOut: 15000,
                       manifestLoadingMaxRetry: 15,
                       fragLoadingMaxRetry: 10,
-                      fragLoadingRetryDelay: 1000
+                      fragLoadingRetryDelay: 1000,
+                      xhrSetup: function(xhr, url) {
+                          if (url.includes('.m3u8')) {
+                              xhr.open('GET', url + (url.includes('?') ? '&' : '?') + 'v=' + Date.now(), true);
+                          }
+                      }
                   });
                   hls.loadSource(source);
                   hls.attachMedia(video);

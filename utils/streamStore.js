@@ -121,7 +121,14 @@ async function startHlsStream(rtspUrl, cameraId, dvrId) {
 
   // Check if stream is already active
   if (activeStreams.has(streamId)) {
-    return { hlsUrl: activeStreams.get(streamId).hlsUrl, isNew: false };
+    const session = activeStreams.get(streamId);
+    // Safety: Verify FFmpeg process is actually alive before returning the URL
+    if (session.ffmpeg && (session.ffmpeg.exitCode !== null || session.ffmpeg.killed)) {
+      logger.warn(`Stale stream entry detected for ${streamId} (FFmpeg dead). Re-initializing.`);
+      activeStreams.delete(streamId);
+    } else {
+      return { hlsUrl: session.hlsUrl, isNew: false };
+    }
   }
 
   const sessionTimestamp = Date.now();
