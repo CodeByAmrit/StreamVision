@@ -116,8 +116,8 @@
       /* =====================================================
        HLS VIDEO PLAYER
     ===================================================== */
-      const RETRY_INTERVAL = 500;
-      const MAX_RETRIES = 30;
+      const RETRY_INTERVAL = 1000;
+      const MAX_RETRIES = 60;
       const hlsInstances = [];
 
       function tryLoadHlsStream(video, cameraId) {
@@ -164,8 +164,10 @@
       function initializePlayer(video, source) {
         if (Hls.isSupported()) {
           const hls = new Hls({
-            manifestLoadingTimeOut: 10000,
-            manifestLoadingMaxRetry: 10,
+            manifestLoadingTimeOut: 15000,
+            manifestLoadingMaxRetry: 15,
+            fragLoadingMaxRetry: 10,
+            fragLoadingRetryDelay: 1000,
             lowLatencyMode: true,
           });
           hlsInstances.push(hls);

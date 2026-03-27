@@ -207,7 +207,7 @@
           logs.scrollTop = logs.scrollHeight;
       }
 
-      async function initStream(retries = 30, delay = 500) {
+      async function initStream(retries = 60, delay = 1000) {
           try {
               const res = await fetch(`/api/public/camera/${cameraId}/hls`);
               if (!res.ok) {
@@ -219,7 +219,13 @@
               const source = data.hlsUrl;
               
               if (Hls.isSupported()) {
-                  const hls = new Hls({ lowLatencyMode: true });
+                  const hls = new Hls({ 
+                      lowLatencyMode: true,
+                      manifestLoadingTimeOut: 15000,
+                      manifestLoadingMaxRetry: 15,
+                      fragLoadingMaxRetry: 10,
+                      fragLoadingRetryDelay: 1000
+                  });
                   hls.loadSource(source);
                   hls.attachMedia(video);
                   hls.on(Hls.Events.MANIFEST_PARSED, () => {
