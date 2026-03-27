@@ -10,6 +10,8 @@ services:
     restart: unless-stopped
     tmpfs:
       - /tmp
+    volumes:
+      - ./streams:/usr/src/app/streams
     security_opt:
       - no-new-privileges:true
     logging:

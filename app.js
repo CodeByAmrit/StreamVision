@@ -372,6 +372,9 @@ app.get("/api/public/camera/:id/hls", async (req, res) => {
 // =================== Start Server ===================
 const server = http.createServer(app);
 
+// Global cleanup of potentially stale streams from previous crash/run
+streamStore.cleanupAll();
+
 // Performance Tuning: Keep-Alive
 // Set timeout higher than proxy (Cloudflare/Traefik) to reuse connections efficiently
 server.keepAliveTimeout = 65000;

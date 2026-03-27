@@ -134,19 +134,23 @@ async function startHlsStream(rtspUrl, cameraId, dvrId) {
       fs.mkdirSync(streamDir, { recursive: true });
     }
 
-    // Ensure parent streamId directory exists
+    // Clean start: Remove EVERYTHING inside the parent streamId directory
+    // This ensures no old session fragments or playlists confuse the frontend/Nginx
     const parentPath = path.join(streamDir, streamId);
-    if (!fs.existsSync(parentPath)) {
-      fs.mkdirSync(parentPath, { recursive: true });
+    if (fs.existsSync(parentPath)) {
+      try {
+        fs.rmSync(parentPath, { recursive: true, force: true });
+        logger.info(`Cleared old session data for stream ${streamId}`);
+      } catch (err) {
+        logger.error(`Failed to clear old session data for ${streamId}:`, err);
+      }
     }
 
-    // Create session-specific output directory
-    if (fs.existsSync(outputPath)) {
-      fs.rmSync(outputPath, { recursive: true, force: true });
-    }
+    // Now recreate necessary paths
+    fs.mkdirSync(parentPath, { recursive: true });
     fs.mkdirSync(outputPath, { recursive: true });
   } catch (err) {
-    logger.error(`Error creating/clearing directories for stream ${streamId}:`, err);
+    logger.error(`Error preparing directories for stream ${streamId}:`, err);
     throw new Error("Failed to prepare stream directories");
   }
 
