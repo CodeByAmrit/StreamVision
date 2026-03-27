@@ -5,7 +5,7 @@ const path = require("path");
 const cluster = require("cluster");
 const logger = require("./logger");
 
-const STREAM_DURATION_LIMIT = 4 * 60 * 1000; // 4 minutes in milliseconds
+const STREAM_DURATION_LIMIT = (parseInt(process.env.STREAM_AUTO_STOP_MINUTES) || 120) * 60 * 1000; // Default 2 hours
 const streamDir = path.join(__dirname, "..", "streams");
 
 // In-memory store of active FFmpeg streams (Only populated in Primary/Master process)
