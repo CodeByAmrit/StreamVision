@@ -33,10 +33,10 @@
     "pdfkit-table": "^0.1.99",
     "serve-favicon": "^2.5.1",
     "uuid": "^13.0.0",
-    "winston": "^3.19.0"
+    "winston": "^3.19.0",
+    "flowbite": "^4.0.1"
   },
   "devDependencies": {
-    "flowbite": "^4.0.1",
     "nodemon": "^3.1.14",
     "prettier": "^3.8.1",
     "prettier-plugin-ejs": "^1.0.3",

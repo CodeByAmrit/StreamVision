@@ -37,13 +37,13 @@
 The StreamVision architecture is designed for high-performance RTSP to HLS conversion with minimal latency, utilizing Node.js's scalability features.
 
 1.  **Workflow Model:** The application uses a **Master-Worker process model** (Node.js `cluster` module).
-    -   **Master Process:** Manages the lifecycle of workers and provides IPC (Inter-Process Communication) handlers to start/stop streams.
-    -   **Worker Processes:** Run the Express.js application, handling HTTP requests and serving the UI/API.
+    - **Master Process:** Manages the lifecycle of workers and provides IPC (Inter-Process Communication) handlers to start/stop streams.
+    - **Worker Processes:** Run the Express.js application, handling HTTP requests and serving the UI/API.
 2.  **Ingestion:** The system receives raw RTSP streams from DVRs or IP Cameras via TCP (configured in `ffmpeg` flags for reliability).
 3.  **Processing:** When a stream is requested, the Master process spawns a dedicated **FFmpeg process**. This process is managed by `worker_threads` and `child_process.spawn`.
 4.  **Segmentation:** FFmpeg converts the RTSP input into **HLS (.m3u8)** playlists and **MPEG-TS (.ts)** segments.
-    -   Segments are 1-second long for near real-time latency.
-    -   Stale segments are automatically cleaned up to save disk space.
+    - Segments are 1-second long for near real-time latency.
+    - Stale segments are automatically cleaned up to save disk space.
 5.  **Delivery:** HLS segments are served via Express static middleware (or Nginx in production) and played back using **Hls.js** on the frontend.
 
 ---
@@ -116,15 +116,15 @@ cp .env.example .env
 
 Open `.env` and fill in your configuration:
 
-| Variable | Description | Example |
-| :--- | :--- | :--- |
-| `PORT` | Web server port | `3000` |
-| `DB_HOST` | MySQL hostname | `localhost` |
-| `DB_USER` | MySQL username | `root` |
-| `DB_PASSWORD` | MySQL password | `******` |
-| `DB_DATABASE` | MySQL database name | `streamvision` |
-| `jwt_token` | Secret for auth tokens | `secure_token_here` |
-| `STREAM_AUTO_STOP_MINUTES` | Auto-stop duration | `120` |
+| Variable                   | Description            | Example             |
+| :------------------------- | :--------------------- | :------------------ |
+| `PORT`                     | Web server port        | `3000`              |
+| `DB_HOST`                  | MySQL hostname         | `localhost`         |
+| `DB_USER`                  | MySQL username         | `root`              |
+| `DB_PASSWORD`              | MySQL password         | `******`            |
+| `DB_DATABASE`              | MySQL database name    | `streamvision`      |
+| `jwt_token`                | Secret for auth tokens | `secure_token_here` |
+| `STREAM_AUTO_STOP_MINUTES` | Auto-stop duration     | `120`               |
 
 ---
 
@@ -133,14 +133,16 @@ Open `.env` and fill in your configuration:
 The platform provides several internal and public API endpoints for stream management.
 
 ### Public Endpoints (No Auth)
+
 - `GET /api/public/camera/:id/hls`: Returns the active HLS URL for a specific camera.
 - `GET /public/dvr/:id`: Direct link to the public viewing dashboard for a DVR.
 
 ### Protected Endpoints (Auth Required)
+
 - `POST /api/start-stream`: Starts an RTSP to HLS conversion session.
-    -   **Body:** `{ "rtspUrl": "rtsp://..." }`
+  - **Body:** `{ "rtspUrl": "rtsp://..." }`
 - `POST /api/stop-stream`: Manually terminates a stream session.
-    -   **Body:** `{ "rtspUrl": "rtsp://..." }`
+  - **Body:** `{ "rtspUrl": "rtsp://..." }`
 
 ---
 
@@ -157,6 +159,7 @@ StreamVision includes an integrated monitoring client for enterprise-grade obser
 ## 📁 PDF Report Generation
 
 Located in `utils/reportGenerator.js`, this utility allows for generating detailed PDF reports containing:
+
 - Camera uptime and health status.
 - System activity and security events.
 - Customizable location-based summary statistics.
@@ -265,14 +268,16 @@ npm run start:pm2
 ## 🔧 Troubleshooting & FAQ
 
 ### **RTSP Stream Not Loading?**
--   Ensure FFmpeg is installed and in your system `PATH`.
--   Verify the RTSP URL is accessible from your server (try `ffplay rtsp://your_url`).
--   Check Docker logs: `docker-compose logs -f streamvision_app`.
--   Verify database camera configuration (RTSP URL, port, credentials).
+
+- Ensure FFmpeg is installed and in your system `PATH`.
+- Verify the RTSP URL is accessible from your server (try `ffplay rtsp://your_url`).
+- Check Docker logs: `docker-compose logs -f streamvision_app`.
+- Verify database camera configuration (RTSP URL, port, credentials).
 
 ### **HLS Performance Tuning**
--   Segments are 1-second long by default for low latency. If buffering occurs, adjust `-hls_time` in `utils/streamStore.js`.
--   Adjust `UV_THREADPOOL_SIZE` in `cluster.js` if file I/O becomes a bottleneck.
+
+- Segments are 1-second long by default for low latency. If buffering occurs, adjust `-hls_time` in `utils/streamStore.js`.
+- Adjust `UV_THREADPOOL_SIZE` in `cluster.js` if file I/O becomes a bottleneck.
 
 ---
 
