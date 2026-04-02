@@ -8,25 +8,43 @@
 
 ## ✨ Features
 
-- 🔒 Dynamic DVR login with username/password/IP
-- 🐳 **Containerized Deployment:** Run the entire application with a single command using Docker Compose. No need to install FFmpeg or manage dependencies manually.
-- 💨 Stream up to 16 RTSP camera channels per DVR
-- ⚙️ FFmpeg-based RTSP to HLS conversion (one worker per DVR)
-- 🌐 Public view for each DVR's live streams
-- 🧠 Lazy loading of video players using Intersection Observer
-- 🖥️ EJS templating with Tailwind CSS
-- 📁 Organized and scalable architecture (routes, controllers, workers, views)
+- 🔒 **Secure Access:** Multi-layered security with JWT authentication, Bcrypt password hashing, and CSRF protection.
+- 🐳 **Containerized Deployment:** Fully Dockerized setup for effortless deployment including automatic FFmpeg handling and Nginx reverse proxy.
+- 💨 **High-Performance Streaming:** Sub-second latency RTSP to HLS conversion using a scalable Cluster-based process model.
+- 🖥️ **Centralized Dashboard:** Manage multiple DVRs and up to 16 RTSP camera channels per DVR from a single interface.
+- 📊 **Real-time Analytics:** Track stream usage, active sessions, and system performance with built-in analytics.
+- 📁 **Automated Reporting:** Generate professional PDF reports for system activity and camera health using `pdfkit`.
+- 🌐 **Public Streaming:** Dedicated public viewing URLs for simplified stream sharing with optimized Hls.js playback.
+- 🧠 **Resource Efficiency:** Lazy loading of video players and automatic stream cleanup after inactivity.
+- 🎨 **Modern UI:** Responsive design built with EJS, Tailwind CSS v4, and Flowbite components.
 
 ---
 
 ## 🛠 Tech Stack
 
-- **Backend:** Node.js, Express
-- **Frontend:** EJS, Tailwind CSS, HLS.js
-- **Streaming Engine:** FFmpeg (Containerized, RTSP → HLS)
-- **Database:** MySQL (for DVRs, Cameras, Locations)
-- **Containerization:** Docker, Docker Compose
-- **Worker Management:** `worker_threads` (Node.js)
+- **Backend:** Node.js, Express.js (v5.x), Cluster API
+- **Frontend:** EJS (Embedded JavaScript), Tailwind CSS v4, Flowbite, Hls.js
+- **Media Engine:** FFmpeg (RTSP → HLS conversion)
+- **Database:** MySQL 8.0+ (using `mysql2/promise`)
+- **Security:** CSRF-CSRF (Double-Submit Cookie), JWT, Bcrypt
+- **Monitoring:** Prometheus, Loki (via `monitoringClient.js`)
+- **Deployment:** Docker, Docker Compose, Nginx
+
+---
+
+## 🏗 System Architecture
+
+The StreamVision architecture is designed for high-performance RTSP to HLS conversion with minimal latency, utilizing Node.js's scalability features.
+
+1.  **Workflow Model:** The application uses a **Master-Worker process model** (Node.js `cluster` module).
+    -   **Master Process:** Manages the lifecycle of workers and provides IPC (Inter-Process Communication) handlers to start/stop streams.
+    -   **Worker Processes:** Run the Express.js application, handling HTTP requests and serving the UI/API.
+2.  **Ingestion:** The system receives raw RTSP streams from DVRs or IP Cameras via TCP (configured in `ffmpeg` flags for reliability).
+3.  **Processing:** When a stream is requested, the Master process spawns a dedicated **FFmpeg process**. This process is managed by `worker_threads` and `child_process.spawn`.
+4.  **Segmentation:** FFmpeg converts the RTSP input into **HLS (.m3u8)** playlists and **MPEG-TS (.ts)** segments.
+    -   Segments are 1-second long for near real-time latency.
+    -   Stale segments are automatically cleaned up to save disk space.
+5.  **Delivery:** HLS segments are served via Express static middleware (or Nginx in production) and played back using **Hls.js** on the frontend.
 
 ---
 
@@ -34,26 +52,42 @@
 
 ```bash
 StreamVision/
-├── app.js                 # Main Express server
-├── Dockerfile             # Instructions to build the application's Docker image
-├── docker-compose.yaml    # Defines the multi-container Docker application
-├── ecosystem.config.js    # PM2 process manager configuration
-├── package.json           # Project metadata and dependencies
-├── README.md              # Project documentation
-├── tailwind.config.js     # Tailwind CSS configuration
-├── .env.example           # Example environment variables
-├── .gitignore             # Git ignore rules
-├── config/                # Configuration files
-├── controllers/           # Business logic
-├── database/              # Database-related files
-│   └── structure.sql      # SQL script for database structure
-├── models/                # Data models
-├── public/                # Static assets and stream outputs
+├── app.js                 # Express server & middleware configuration
+├── cluster.js             # Master process (Cluster management & IPC)
+├── Dockerfile             # Docker image definition
+├── docker-compose.yaml    # Multi-container orchestration (App & Nginx)
+├── .env.example           # Environment variables template
+├── config/
+│   └── db.js              # MySQL connection (mysql2/promise)
+├── controllers/           # Business logic for each feature
+│   ├── analyticsController.js   # Usage tracking & stats
+│   ├── camerasController.js     # Camera CRUD & config
+│   ├── dvrController.js         # DVR management
+│   ├── publicStreamController.js # Public viewing logic
+│   └── settingsController.js    # App settings management
 ├── routes/                # Express route definitions
-├── services/              # Service logic
-├── src/                   # Source files for CSS
-├── utils/                 # Utility functions
-└── views/                 # EJS templates
+│   ├── api/               # Backend API endpoints
+│   ├── cameraRoutes.js    # Camera management UI routes
+│   ├── userRouters.js     # Auth & Profile routes
+│   └── publicRoutes.js    # Public viewing & streaming routes
+├── services/              # Core background services
+│   ├── auth.js            # JWT & Bcrypt logic
+│   ├── rtspHealth.service.js    # Stream health monitoring
+│   └── rtspMetadata.service.js  # Metadata extraction from RTSP
+├── utils/                 # Shared utility functions
+│   ├── streamStore.js     # Master stream management (spawn FFmpeg)
+│   ├── activityLogger.js  # Audit logs for system actions
+│   ├── reportGenerator.js # PDF report creation (pdfkit)
+│   └── logger.js          # Winston-based logging
+├── views/                 # EJS Templates
+│   ├── partials/          # Reusable UI components (Navbar, Sidebar)
+│   ├── dashboard.ejs      # Main admin overview
+│   └── camera.ejs         # Individual camera viewing
+├── public/                # Static assets
+│   ├── css/               # Compiled Tailwind CSS
+│   └── streams/           # Active HLS segments (temporary)
+└── database/
+    └── structure.sql      # Initial database schema
 ```
 
 ---
@@ -72,37 +106,60 @@ git clone https://github.com/your-username/StreamVision.git
 cd StreamVision
 ```
 
-### 2\. Configure Environment
+### 2. Configure Environment
 
-Create a `.env` file by copying the example file:
+Create a `.env` file by copying the template file:
 
 ```bash
 cp .env.example .env
 ```
 
-Now, open the `.env` file and fill in your configuration details, especially the database credentials.
+Open `.env` and fill in your configuration:
 
-```ini
-# Server Configuration
-PORT=3000
-NODE_ENV=production
+| Variable | Description | Example |
+| :--- | :--- | :--- |
+| `PORT` | Web server port | `3000` |
+| `DB_HOST` | MySQL hostname | `localhost` |
+| `DB_USER` | MySQL username | `root` |
+| `DB_PASSWORD` | MySQL password | `******` |
+| `DB_DATABASE` | MySQL database name | `streamvision` |
+| `jwt_token` | Secret for auth tokens | `secure_token_here` |
+| `STREAM_AUTO_STOP_MINUTES` | Auto-stop duration | `120` |
 
-# Database Configuration
-DB_HOST=host.docker.internal # Or your DB's IP address
-DB_USER=root
-DB_PASSWORD=yourpassword
-DB_DATABASE=streamvision
-DB_PORT=3306
+---
 
-# JWT Configuration
-jwt_token=your_jwt_secret
+## 🚀 API Documentation
 
-# Password Hashing
-saltRounds=10
+The platform provides several internal and public API endpoints for stream management.
 
-# SSL Configuration (Optional)
-DB_CA=/path/to/your/server-cert.pem
-```
+### Public Endpoints (No Auth)
+- `GET /api/public/camera/:id/hls`: Returns the active HLS URL for a specific camera.
+- `GET /public/dvr/:id`: Direct link to the public viewing dashboard for a DVR.
+
+### Protected Endpoints (Auth Required)
+- `POST /api/start-stream`: Starts an RTSP to HLS conversion session.
+    -   **Body:** `{ "rtspUrl": "rtsp://..." }`
+- `POST /api/stop-stream`: Manually terminates a stream session.
+    -   **Body:** `{ "rtspUrl": "rtsp://..." }`
+
+---
+
+## 📊 Monitoring & Logging
+
+StreamVision includes an integrated monitoring client for enterprise-grade observability.
+
+- **Metrics:** Built-in Prometheus metrics exporter.
+- **Log Aggregation:** Ready-to-use Grafana Loki integration for centralized log search.
+- **Audit Logs:** Every camera/DVR state change is recorded with user attribution in `utils/activityLogger.js`.
+
+---
+
+## 📁 PDF Report Generation
+
+Located in `utils/reportGenerator.js`, this utility allows for generating detailed PDF reports containing:
+- Camera uptime and health status.
+- System activity and security events.
+- Customizable location-based summary statistics.
 
 ### 3\. Database Setup
 
@@ -205,6 +262,20 @@ npm run start:pm2
 
 ---
 
+## 🔧 Troubleshooting & FAQ
+
+### **RTSP Stream Not Loading?**
+-   Ensure FFmpeg is installed and in your system `PATH`.
+-   Verify the RTSP URL is accessible from your server (try `ffplay rtsp://your_url`).
+-   Check Docker logs: `docker-compose logs -f streamvision_app`.
+-   Verify database camera configuration (RTSP URL, port, credentials).
+
+### **HLS Performance Tuning**
+-   Segments are 1-second long by default for low latency. If buffering occurs, adjust `-hls_time` in `utils/streamStore.js`.
+-   Adjust `UV_THREADPOOL_SIZE` in `cluster.js` if file I/O becomes a bottleneck.
+
+---
+
 ## 📄 License
 
 ISC © Amrit
@@ -215,4 +286,4 @@ ISC © Amrit
 
 - FFmpeg team for powerful media processing
 - Hls.js for excellent player implementation
-- Tailwind CSS for utility-first styling
+- Tailwind CSS & Flowbite for modern styling
