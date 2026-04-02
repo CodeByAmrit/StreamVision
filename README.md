@@ -99,10 +99,10 @@ StreamVision/
 - Docker
 - Docker Compose
 
-### 1\. Clone the Repository
+### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/StreamVision.git
+git clone https://github.com/CodeByAmrit/StreamVision.git
 cd StreamVision
 ```
 
