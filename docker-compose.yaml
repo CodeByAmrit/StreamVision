@@ -1,7 +1,18 @@
 services:
+  fix-permissions:
+    image: alpine
+    container_name: fix_stream_permissions
+    user: root
+    volumes:
+      - ./streams:/streams
+    command: chmod 777 /streams
+
   streamvision:
     image: codebyamrit/streamvision:latest
     container_name: streamvision_app
+    depends_on:
+      fix-permissions:
+        condition: service_completed_successfully
     command: [ "node", "cluster.js" ]
     expose:
       - "3000"
