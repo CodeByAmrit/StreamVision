@@ -27,6 +27,7 @@ services:
       - "traefik.http.routers.streamvision.entrypoints=websecure"
       - "traefik.http.routers.streamvision.tls.certresolver=letsencrypt"
       - "traefik.http.services.streamvision.loadbalancer.server.port=3000"
+      - "logging.service=streamvision"
 
   nginx_hls:
     image: nginx:alpine
@@ -46,6 +47,7 @@ services:
       - "traefik.http.middlewares.hls-headers.headers.customResponseHeaders.Access-Control-Allow-Origin=*"
       - "traefik.http.routers.nginx-hls.middlewares=hls-headers"
       - "traefik.http.services.nginx-hls.loadbalancer.server.port=80"
+      - "logging.service=streamvision-hls"
 
 networks:
 
