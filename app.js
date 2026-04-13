@@ -157,6 +157,7 @@ app.use(
           "https://cdnjs.cloudflare.com",
           "https://cdn.jsdelivr.net",
           "https://cloud.umami.is",
+          "https://api-gateway.umami.dev",
           "https://cctvcameralive.in",
         ],
         "form-action": ["'self'", "https://docs.google.com"],
