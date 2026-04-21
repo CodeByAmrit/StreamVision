@@ -130,7 +130,7 @@ app.use(
           "https://cdn.jsdelivr.net",
           "https://cdnjs.cloudflare.com",
           "https://cloud.umami.is",
-          "https://cctvcameralive.in",
+          "https://cctvweblink.in",
           (req, res) => (res.locals.nonce ? `'nonce-${res.locals.nonce}'` : ""),
         ].filter(Boolean),
         "worker-src": ["'self'", "blob:"],
@@ -158,7 +158,7 @@ app.use(
           "https://cdn.jsdelivr.net",
           "https://cloud.umami.is",
           "https://api-gateway.umami.dev",
-          "https://cctvcameralive.in",
+          "https://cctvweblink.in",
         ],
         "form-action": ["'self'", "https://docs.google.com"],
       },
@@ -175,7 +175,7 @@ app.use(favicon(path.join(__dirname, "public", "images", "fci.png")));
 
 app.use(
   cors({
-    origin: ["https://cctvcameralive.in"],
+    origin: ["https://cctvweblink.in"],
     credentials: true,
   })
 );

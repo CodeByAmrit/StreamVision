@@ -34,7 +34,7 @@ services:
       - proxy
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.streamvision.rule=Host(`cctvcameralive.in`)"
+      - "traefik.http.routers.streamvision.rule=Host(`cctvweblink.in`)"
       - "traefik.http.routers.streamvision.entrypoints=websecure"
       - "traefik.http.routers.streamvision.tls.certresolver=letsencrypt"
       - "traefik.http.services.streamvision.loadbalancer.server.port=3000"
@@ -51,7 +51,7 @@ services:
       - proxy
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.nginx-hls.rule=Host(`cctvcameralive.in`) && PathPrefix(`/hls`)"
+      - "traefik.http.routers.nginx-hls.rule=Host(`cctvweblink.in`) && PathPrefix(`/hls`)"
       - "traefik.http.routers.nginx-hls.priority=20"
       - "traefik.http.routers.nginx-hls.entrypoints=websecure"
       - "traefik.http.routers.nginx-hls.tls.certresolver=letsencrypt"
