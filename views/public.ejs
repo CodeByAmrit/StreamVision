@@ -173,7 +173,8 @@
             lowLatencyMode: true,
             xhrSetup: function(xhr, url) {
               if (url.includes(".m3u8")) {
-                xhr.open("GET", url + (url.includes("?") ? "&" : "?") + "t=" + Date.now(), true);
+                const cleanUrl = url.split("?")[0];
+                xhr.open("GET", cleanUrl + "?t=" + Date.now(), true);
               }
             },
           });

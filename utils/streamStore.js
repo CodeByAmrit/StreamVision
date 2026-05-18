@@ -224,6 +224,7 @@ async function startHlsStream(rtspUrl, cameraId, dvrId) {
     dvrId,
     startedAt: new Date(),
     timeout: null,
+    playlistPath,
   });
 
   resetStreamTimeout(streamId);
@@ -290,6 +291,26 @@ function cleanupAll() {
   } catch (err) {
     logger.error("Error during global streams cleanup:", err);
   }
+}
+
+// Watchdog to kill FFmpeg processes that have hung (playlist not updated for 15s)
+if (!cluster.isWorker) {
+  setInterval(() => {
+    const now = Date.now();
+    for (const [streamId, stream] of activeStreams.entries()) {
+      try {
+        if (stream.playlistPath && fs.existsSync(stream.playlistPath)) {
+          const stats = fs.statSync(stream.playlistPath);
+          if (now - stats.mtimeMs > 15000) {
+            logger.warn(`Watchdog: Stream ${streamId} is hung (playlist stale for >15s). Killing FFmpeg.`);
+            stream.ffmpeg.kill("SIGKILL");
+          }
+        }
+      } catch (err) {
+        // ignore fs errors if file is deleted during iteration
+      }
+    }
+  }, 10000);
 }
 
 module.exports = {
