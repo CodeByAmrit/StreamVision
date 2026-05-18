@@ -127,14 +127,14 @@ app.use(
         "default-src": ["'self'", "ws:", "wss:"],
         "script-src": [
           "'self'",
+          "'unsafe-inline'",
+          "'unsafe-eval'",
           "https://cdn.jsdelivr.net",
           "https://cdnjs.cloudflare.com",
           "https://cloud.umami.is",
           "https://cctvweblink.in",
-          "https://ajax.cloudflare.com",
-          "'sha256-yhrt+knDS35cxN0tEETw1LXBcK6YuSFNb0ACIyaFWy4='",
-          (req, res) => (res.locals.nonce ? `'nonce-${res.locals.nonce}'` : ""),
-        ].filter(Boolean),
+          "https://ajax.cloudflare.com"
+        ],
         "worker-src": ["'self'", "blob:"],
         "style-src": [
           "'self'",
