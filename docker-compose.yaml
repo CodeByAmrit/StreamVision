@@ -1,18 +1,7 @@
 services:
-  fix-permissions:
-    image: alpine
-    container_name: fix_stream_permissions
-    user: root
-    volumes:
-      - ./streams:/streams
-    command: chmod 777 /streams
-
   streamvision:
     image: codebyamrit/streamvision:latest
     container_name: streamvision_app
-    depends_on:
-      fix-permissions:
-        condition: service_completed_successfully
     command: [ "node", "cluster.js" ]
     expose:
       - "3000"
@@ -22,7 +11,7 @@ services:
     tmpfs:
       - /tmp
     volumes:
-      - ./streams:/usr/src/app/streams
+      - stream_data:/usr/src/app/streams
     security_opt:
       - no-new-privileges:true
     logging:
@@ -37,3 +26,6 @@ services:
       - "traefik.http.routers.streamvision.tls.certresolver=letsencrypt"
       - "traefik.http.services.streamvision.loadbalancer.server.port=3000"
       - "logging.service=streamvision"
+
+volumes:
+  stream_data:
