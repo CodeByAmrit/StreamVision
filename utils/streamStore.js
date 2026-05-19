@@ -164,8 +164,6 @@ async function startHlsStream(rtspUrl, cameraId, dvrId) {
   const ffmpeg = spawn("ffmpeg", [
     "-rtsp_transport",
     "tcp",
-    "-stimeout",
-    "10000000",
     "-probesize",
     "32",
     "-fflags",
