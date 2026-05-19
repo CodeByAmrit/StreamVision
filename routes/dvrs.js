@@ -4,6 +4,7 @@ const dvrController = require("../controllers/dvrController");
 const db = require("../config/db");
 const dvrManager = require("../utils/streamManager");
 const { dvrSchema, validate } = require("../middleware/validation");
+const { probeRealtimeStatus } = require("../services/realtimeStatus.service");
 
 router.get("/", dvrController.getAllDvrsPaginated);
 router.post("/add", dvrSchema, validate, dvrController.addDvr);
@@ -61,6 +62,42 @@ router.get("/status", async (req, res) => {
   }
   console.log("DVR Status:", result);
   res.json(result);
+});
+
+router.get("/:id/realtime", async (req, res) => {
+  const dvrId = req.params.id;
+
+  try {
+    // Fetch all cameras for this DVR including their RTSP URLs
+    const [cameras] = await db.execute(
+      `SELECT id, camera_name, rtsp_url FROM cameras WHERE dvr_id = ?`,
+      [dvrId]
+    );
+
+    if (!cameras || cameras.length === 0) {
+      return res.json([]);
+    }
+
+    // Run ffprobe in parallel on all cameras
+    const results = await Promise.all(
+      cameras.map(async (cam) => {
+        const status = await probeRealtimeStatus(cam.rtsp_url);
+        return {
+          id: cam.id,
+          camera_name: cam.camera_name,
+          online: status.online,
+          resolution: status.resolution,
+          codec: status.codec,
+          details: status.details
+        };
+      })
+    );
+
+    res.json(results);
+  } catch (error) {
+    console.error("Error fetching realtime status:", error);
+    res.status(500).json({ error: "Failed to fetch realtime status" });
+  }
 });
 
 module.exports = router;

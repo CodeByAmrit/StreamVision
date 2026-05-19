@@ -1,6 +1,6 @@
 {
   "name": "stream-vision",
-  "version": "4.2.18",
+  "version": "4.2.34",
   "main": "app.js",
   "scripts": {
     "start": "node app",

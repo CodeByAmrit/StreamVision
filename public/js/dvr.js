@@ -41,6 +41,9 @@ function initializeDVRManagement() {
 
   // Add animation to table rows
   animateTableRows();
+
+  // Initialize DVR Detail Panel functionality
+  initializeDVRDetailPanel();
 }
 
 // Delete DVR functionality
@@ -135,6 +138,149 @@ function initializeDeleteButtons() {
       currentDvrId = null;
       currentDvrName = null;
     }
+  });
+}
+
+// DVR Detail Panel functionality
+function initializeDVRDetailPanel() {
+  const dvrRows = document.querySelectorAll("div[data-dvr-id]");
+  const emptyState = document.getElementById("dvr-detail-empty");
+  const loadingState = document.getElementById("dvr-detail-loading");
+  const contentState = document.getElementById("dvr-detail-content");
+
+  // Detail Panel Elements
+  const detailName = document.getElementById("detail-dvr-name");
+  const detailLocation = document.getElementById("detail-dvr-location");
+  const detailStatus = document.getElementById("detail-dvr-status");
+  const detailActiveStreams = document.getElementById("detail-active-streams");
+  const detailLastChecked = document.getElementById("detail-last-checked");
+  const detailCameraList = document.getElementById("detail-camera-list");
+  const detailBtnView = document.getElementById("detail-btn-view");
+
+  dvrRows.forEach(row => {
+    // We add cursor-pointer to rows visually
+    row.classList.add("cursor-pointer");
+
+    row.addEventListener("click", async function (e) {
+      // Ignore click if it was on a button or link
+      if (e.target.closest("button") || e.target.closest("a")) {
+        return;
+      }
+
+      const dvrId = this.getAttribute("data-dvr-id");
+      const dvrName = this.querySelector("h4").textContent.trim();
+      const locationName = this.querySelector(".fa-map-marker-alt").nextElementSibling.textContent.trim();
+
+      // Highlight the active row visually
+      dvrRows.forEach(r => r.classList.remove("ring-2", "ring-blue-500", "bg-blue-50/20", "dark:bg-blue-900/10"));
+      this.classList.add("ring-2", "ring-blue-500", "bg-blue-50/20", "dark:bg-blue-900/10");
+
+      // Show loading
+      emptyState.classList.add("hidden");
+      contentState.classList.add("hidden");
+      loadingState.classList.remove("hidden");
+
+      try {
+        // Fetch real-time status from FFmpeg API
+        const res = await fetch(`/dvr/${dvrId}/realtime`);
+        const cameras = await res.json();
+
+        // Populate Data
+        detailName.textContent = dvrName;
+        detailLocation.innerHTML = `<i class="fas fa-map-marker-alt mr-1"></i> ${locationName}`;
+        detailBtnView.href = `/public/dvr/${dvrId}`;
+        
+        const now = new Date();
+        detailLastChecked.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+        let onlineCameras = 0;
+        let cameraHtml = "";
+
+        if (!Array.isArray(cameras) || cameras.length === 0) {
+          cameraHtml = `<p class="text-xs text-gray-500 italic p-3 text-center border border-dashed border-gray-200 dark:border-gray-700 rounded">No cameras assigned to this DVR.</p>`;
+          detailStatus.className = "shrink-0 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border bg-gray-50 text-gray-700 border-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700";
+          detailStatus.textContent = "Empty";
+        } else {
+          cameras.forEach(cam => {
+            if (cam.online) onlineCameras++;
+            const statusColor = cam.online ? "bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]" : "bg-red-500";
+            const bgClass = cam.online ? "bg-white dark:bg-gray-800" : "bg-gray-50 dark:bg-gray-800/60 opacity-80";
+            
+            let detailsHtml = "";
+            if (cam.online && cam.details) {
+              detailsHtml = `
+                <div class="mt-2 pt-2 border-t border-gray-100 dark:border-gray-700/60 grid grid-cols-3 gap-2">
+                  <div class="text-[9px]">
+                    <span class="text-gray-400 block mb-0.5 uppercase tracking-wide">Format</span>
+                    <span class="font-mono text-gray-700 dark:text-gray-300">${cam.details.format_name}</span>
+                  </div>
+                  <div class="text-[9px]">
+                    <span class="text-gray-400 block mb-0.5 uppercase tracking-wide">Bitrate</span>
+                    <span class="font-mono text-gray-700 dark:text-gray-300">${cam.details.bitrate}</span>
+                  </div>
+                  <div class="text-[9px]">
+                    <span class="text-gray-400 block mb-0.5 uppercase tracking-wide">FPS</span>
+                    <span class="font-mono text-gray-700 dark:text-gray-300">${cam.details.fps}</span>
+                  </div>
+                  <div class="text-[9px]">
+                    <span class="text-gray-400 block mb-0.5 uppercase tracking-wide">Profile</span>
+                    <span class="font-mono text-gray-700 dark:text-gray-300">${cam.details.profile}</span>
+                  </div>
+                  <div class="text-[9px]">
+                    <span class="text-gray-400 block mb-0.5 uppercase tracking-wide">Pixel Format</span>
+                    <span class="font-mono text-gray-700 dark:text-gray-300">${cam.details.pix_fmt}</span>
+                  </div>
+                  <div class="text-[9px]">
+                    <span class="text-gray-400 block mb-0.5 uppercase tracking-wide">Time Base</span>
+                    <span class="font-mono text-gray-700 dark:text-gray-300">${cam.details.time_base}</span>
+                  </div>
+                </div>
+              `;
+            }
+
+            cameraHtml += `
+              <div class="flex flex-col p-2.5 rounded border border-gray-200 dark:border-gray-700 ${bgClass}">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2.5 min-w-0">
+                    <div class="w-2 h-2 rounded-full shrink-0 ${statusColor}"></div>
+                    <span class="text-xs font-bold text-gray-800 dark:text-gray-200 truncate">${cam.camera_name}</span>
+                  </div>
+                  <div class="flex items-center gap-2 shrink-0">
+                    ${cam.codec !== "-" ? `<span class="text-[9px] font-mono bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-gray-500 dark:text-gray-400">${cam.codec}</span>` : ""}
+                    <span class="text-[10px] font-bold ${cam.online ? 'text-gray-600 dark:text-gray-300' : 'text-red-500'}">${cam.resolution}</span>
+                  </div>
+                </div>
+                ${detailsHtml}
+              </div>
+            `;
+          });
+          
+          if (onlineCameras === cameras.length) {
+            detailStatus.className = "shrink-0 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border bg-green-50 text-green-700 border-green-200 dark:bg-green-500/10 dark:text-green-400 dark:border-green-500/20";
+            detailStatus.textContent = "Healthy";
+          } else if (onlineCameras > 0) {
+             detailStatus.className = "shrink-0 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border bg-yellow-50 text-yellow-700 border-yellow-200 dark:bg-yellow-500/10 dark:text-yellow-400 dark:border-yellow-500/20";
+             detailStatus.textContent = "Partial";
+          } else {
+             detailStatus.className = "shrink-0 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border bg-red-50 text-red-700 border-red-200 dark:bg-red-500/10 dark:text-red-400 dark:border-red-500/20";
+             detailStatus.textContent = "Offline";
+          }
+        }
+
+        detailActiveStreams.textContent = `${onlineCameras} / ${cameras.length}`;
+        detailCameraList.innerHTML = cameraHtml;
+
+        // Show Content
+        loadingState.classList.add("hidden");
+        contentState.classList.remove("hidden");
+      } catch (err) {
+        console.error("Failed to fetch DVR realtime details:", err);
+        showFlashMessage("Failed to connect to DVR cameras", "error");
+        
+        loadingState.classList.add("hidden");
+        emptyState.classList.remove("hidden");
+      }
+    });
   });
 }
 
