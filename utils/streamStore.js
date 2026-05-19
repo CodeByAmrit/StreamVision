@@ -226,6 +226,7 @@ async function startHlsStream(rtspUrl, cameraId, dvrId) {
   });
 
   resetStreamTimeout(streamId);
+  logger.info(`🎥 Started serving Camera ID: ${cameraId || 'Unknown'} (DVR ID: ${dvrId || 'Unknown'}) at stream ID: ${streamId}`);
   return { hlsUrl, isNew: true };
 }
 

@@ -5,7 +5,6 @@ const checkAuth = require("../services/checkauth");
 const { getAllDvrs } = require("../controllers/dvrController");
 const streamStore = require("../utils/streamStore");
 const bcrypt = require("bcrypt");
-const os = require("os");
 require("dotenv").config();
 const { loginSchema, passwordChangeSchema, validate } = require("../middleware/validation");
 const { authLimiter } = require("../middleware/security");
@@ -56,33 +55,6 @@ router.get("/dashboard", checkAuth, async (req, res) => {
     const total_cameras = dvrs.reduce((count, dvr) => count + (dvr.total_cameras || 0), 0);
     const active_streams = allStreams.length;
 
-    // 5. Calculate Real System Metrics
-    const totalMem = os.totalmem();
-    const freeMem = os.freemem();
-    const usedMem = totalMem - freeMem;
-    const memoryUsagePercent = ((usedMem / totalMem) * 100).toFixed(1);
-
-    const cpus = os.cpus();
-    const loadAvg = os.loadavg()[0]; // 1-minute load average
-    const serverLoadPercent = ((loadAvg / cpus.length) * 100).toFixed(1);
-
-    const uptimeSeconds = os.uptime();
-    const uptimeDays = Math.floor(uptimeSeconds / (3600 * 24));
-    let uptimeDisplay = `${uptimeDays} d`;
-    if (uptimeDays === 0) {
-      const uptimeHours = Math.floor(uptimeSeconds / 3600);
-      uptimeDisplay = `${uptimeHours} h`;
-    }
-
-    const processMemoryMb = (process.memoryUsage().rss / 1024 / 1024).toFixed(1);
-
-    const systemStats = {
-      memoryUsagePercent,
-      serverLoadPercent: Math.min(serverLoadPercent, 100), // Cap at 100% for UI
-      uptimeDisplay,
-      processMemoryMb,
-    };
-
     // 6. Render dashboard
     res.render("dashboard", {
       title: "Dashboard",
@@ -92,7 +64,6 @@ router.get("/dashboard", checkAuth, async (req, res) => {
       active_streams,
       dvrs,
       activeDvrs: activeDvrsWithDetails,
-      systemStats,
     });
   } catch (error) {
     console.error("Dashboard loading error:", error);

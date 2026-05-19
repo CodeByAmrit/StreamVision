@@ -1,6 +1,5 @@
 const { getAllDvrs } = require("../controllers/dvrController");
 const streamStore = require("../utils/streamStore");
-const os = require("os");
 const monitoringClient = require("../utils/monitoringClient");
 const reportGenerator = require("../utils/reportGenerator");
 const logger = require("../utils/logger");
@@ -38,10 +37,6 @@ exports.getAnalyticsPage = async (req, res) => {
     const total_cameras = dvrs.reduce((count, dvr) => count + (dvr.total_cameras || 0), 0);
     const active_streams = allStreams.length;
 
-    const loadAvg = os.loadavg()[0];
-    const cpuCount = os.cpus().length || 1;
-    const loadPercent = Math.min((loadAvg / cpuCount) * 100, 100);
-
     let bandwidthDisplay = "0 Mbps";
     if (active_streams > 0) {
       const mbps = active_streams * 2.5;
@@ -58,9 +53,8 @@ exports.getAnalyticsPage = async (req, res) => {
       activePage: "analytics",
       stats: {
         bandwidth: bandwidthDisplay,
-        latency: active_streams > 0 ? `${Math.round(loadPercent * 1.5 + 20)}ms` : "0ms",
+        latency: active_streams > 0 ? "20ms" : "0ms", // simplified latency mock
         quality: active_streams > 0 ? `99% HD` : "0% HD",
-        loadPercent,
         active_streams_percent:
           total_cameras > 0 ? Math.round((active_streams / total_cameras) * 100) : 0,
       },
@@ -95,9 +89,6 @@ exports.getAnalyticsData = async (req, res) => {
 
     const active_streams = allStreams.length;
     const total_cameras = dvrs.reduce((count, dvr) => count + (dvr.total_cameras || 0), 0);
-    const loadAvg = os.loadavg()[0];
-    const cpuCount = os.cpus().length || 1;
-    const loadPercent = Math.min((loadAvg / cpuCount) * 100, 100);
 
     let bandwidthDisplay = "0 Mbps";
     if (active_streams > 0) {
@@ -114,7 +105,7 @@ exports.getAnalyticsData = async (req, res) => {
       cameraStatusData: [active_streams, total_cameras - active_streams],
       stats: {
         bandwidth: bandwidthDisplay,
-        latency: active_streams > 0 ? `${Math.round(loadPercent * 1.5 + 20)}ms` : "0ms",
+        latency: active_streams > 0 ? "20ms" : "0ms", // simplified mock
         quality: active_streams > 0 ? `99% HD` : "0% HD",
       },
       totalDvrs: dvrs.length,

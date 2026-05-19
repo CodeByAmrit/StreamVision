@@ -86,7 +86,7 @@ app.use(async (req, res, next) => {
     ) {
       const now = Date.now();
       if (!cachedActivities || now - lastFetchTime > CACHE_DURATION) {
-        cachedActivities = await getRecentActivities(5);
+        cachedActivities = await getRecentActivities(10);
         lastFetchTime = now;
       }
       res.locals.recentActivities = cachedActivities;
@@ -98,7 +98,13 @@ app.use(async (req, res, next) => {
 });
 
 const skipVideo = (req, res) => {
-  return req.url.endsWith(".ts") || req.url.includes("/streams/");
+  // Skip video chunks and streaming manifests to prevent log spam
+  return (
+    req.url.includes(".ts") ||
+    req.url.includes(".m3u8") ||
+    req.url.includes("/hls/") ||
+    req.url.includes("/streams/")
+  );
 };
 
 app.use(
@@ -133,7 +139,7 @@ app.use(
           "https://cdnjs.cloudflare.com",
           "https://cloud.umami.is",
           "https://cctvweblink.in",
-          "https://ajax.cloudflare.com"
+          "https://ajax.cloudflare.com",
         ],
         "worker-src": ["'self'", "blob:"],
         "style-src": [
