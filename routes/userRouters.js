@@ -4,7 +4,7 @@ const User = require("../models/user");
 const checkAuth = require("../services/checkauth");
 const { getAllDvrs } = require("../controllers/dvrController");
 const streamStore = require("../utils/streamStore");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 require("dotenv").config();
 const { loginSchema, passwordChangeSchema, validate } = require("../middleware/validation");
 const { authLimiter } = require("../middleware/security");

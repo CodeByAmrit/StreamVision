@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const { setUser } = require("../services/aouth");
 const db = require("../config/db"); // Your MySQL db connection wrapper
 const { logActivity } = require("../utils/activityLogger");
