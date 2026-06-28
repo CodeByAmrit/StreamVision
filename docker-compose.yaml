@@ -26,6 +26,9 @@ services:
       - "traefik.http.routers.streamvision.tls.certresolver=letsencrypt"
       - "traefik.http.services.streamvision.loadbalancer.server.port=3000"
       - "logging.service=streamvision"
+    environment:
+      - NODE_ENV=production
+      - DOTENV_KEY=${DOTENV_KEY}
 
 volumes:
   stream_data:

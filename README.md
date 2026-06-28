@@ -108,23 +108,59 @@ cd StreamVision
 
 ### 2. Configure Environment
 
-Create a `.env` file by copying the template file:
+This project supports the encrypted `.env.vault` workflow from dotenv.org. You can still use `.env.example` locally, but for production the recommended flow is to pull the runtime `.env` file from the vault.
+
+#### Local development
+
+If you want a plain `.env` sample file, copy the example:
 
 ```bash
 cp .env.example .env
 ```
 
-Open `.env` and fill in your configuration:
+Alternatively, pull the development values directly from vault:
 
-| Variable                   | Description            | Example             |
-| :------------------------- | :--------------------- | :------------------ |
-| `PORT`                     | Web server port        | `3000`              |
-| `DB_HOST`                  | MySQL hostname         | `localhost`         |
-| `DB_USER`                  | MySQL username         | `root`              |
-| `DB_PASSWORD`              | MySQL password         | `******`            |
-| `DB_DATABASE`              | MySQL database name    | `streamvision`      |
-| `jwt_token`                | Secret for auth tokens | `secure_token_here` |
-| `STREAM_AUTO_STOP_MINUTES` | Auto-stop duration     | `120`               |
+```bash
+npx dotenv-vault pull development .env -y
+```
+
+#### Production / VPS deployment
+
+Keep `.env.vault` in the repository. On the VPS, generate the runtime file before you start Docker:
+
+```bash
+cd /path/to/StreamVision
+npx dotenv-vault pull production .env -y
+```
+
+If you cannot run `dotenv-vault login` on the server, provide the decrypt credential via `DOTENV_ME`:
+
+```bash
+export DOTENV_ME="your_dotenv_me_token"
+npx dotenv-vault pull production .env -y
+```
+
+Open `.env` and fill in your configuration if you created it manually from `.env.example`.
+
+| Variable                   | Description                     | Example                    |
+| :------------------------- | :------------------------------ | :------------------------- |
+| `NODE_ENV`                 | Environment mode                | `production`               |
+| `PORT`                     | Web server port                 | `3000`                     |
+| `DB_HOST`                  | MySQL hostname                  | `localhost`                |
+| `DB_PORT`                  | MySQL port                      | `3306`                     |
+| `DB_USER`                  | MySQL username                  | `root`                     |
+| `DB_PASSWORD`              | MySQL password                  | `******`                   |
+| `DB_DATABASE`              | MySQL database name             | `streamvision`             |
+| `DB_CA`                    | MySQL SSL CA (base64 string)    | `<base64 certificate>`     |
+| `jwt_token`                | Secret for auth tokens          | `secure_token_here`        |
+| `saltRounds`               | Bcrypt work factor              | `12`                       |
+| `STREAM_AUTO_STOP_MINUTES` | Auto-stop duration in minutes   | `120`                      |
+| `PROMETHEUS_URL`           | Prometheus endpoint             | `http://prometheus:9090`   |
+| `PROMETHEUS_USER`          | Prometheus basic auth user      | `user`                     |
+| `PROMETHEUS_PASS`          | Prometheus basic auth password  | `pass`                     |
+| `LOKI_URL`                 | Loki endpoint                   | `http://loki:3100`         |
+| `LOKI_USER`                | Loki basic auth user            | `user`                     |
+| `LOKI_PASS`                | Loki basic auth password        | `pass`                     |
 
 ---
 
@@ -182,6 +218,52 @@ docker-compose up --build -d
 ```
 
 The application will now be running on the port you specified in your `.env` file (e.g., `http://localhost:3000`).
+
+### Dokploy / VPS Deployment Checklist
+
+Use this flow when your Docker image is built in GitHub Actions and your VPS or Dokploy deployment only needs runtime configuration.
+
+1. SSH into the VPS and change to the project directory:
+   ```bash
+   cd /path/to/StreamVision
+   ```
+2. Make sure `.env.vault` is present in the repository.
+3. If you use vault credentials instead of logging in interactively, export `DOTENV_ME`:
+   ```bash
+   export DOTENV_ME="your_dotenv_me_token"
+   ```
+4. Pull the production env file from dotenv-vault:
+   ```bash
+   npx dotenv-vault pull production .env -y
+   ```
+5. Start the container stack using Docker Compose:
+   ```bash
+   docker compose up -d
+   ```
+   If Dokploy uses the image that GitHub Actions already pushed, this command will use the existing image and the new runtime `.env` values.
+6. Check logs and confirm the app started successfully:
+   ```bash
+   docker compose logs -f streamvision_app
+   ```
+
+> Important: Do not commit `.env` into git. Keep only `.env.vault` in version control.
+
+#### If Dokploy injects environment variables directly
+
+If your production deployment platform can provide runtime env vars without `.env`, ensure it supplies the same values listed in `.env.example`.
+
+- `NODE_ENV=production`
+- `PORT`
+- `DB_HOST`
+- `DB_PORT`
+- `DB_USER`
+- `DB_PASSWORD`
+- `DB_DATABASE`
+- `DB_CA` (base64-encoded cert for production MySQL SSL)
+- `jwt_token`
+- `saltRounds`
+- `STREAM_AUTO_STOP_MINUTES`
+- optional: `PROMETHEUS_URL`, `PROMETHEUS_USER`, `PROMETHEUS_PASS`, `LOKI_URL`, `LOKI_USER`, `LOKI_PASS`
 
 ### Managing the Container
 
