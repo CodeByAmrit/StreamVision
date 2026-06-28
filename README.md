@@ -124,23 +124,20 @@ Alternatively, pull the development values directly from vault:
 npx dotenv-vault pull development .env -y
 ```
 
-#### Production / VPS deployment
+#### Production / VPS deployment (Recommended Zero-Config Flow)
 
-Keep `.env.vault` in the repository. On the VPS, generate the runtime file before you start Docker:
-
-```bash
-cd /path/to/StreamVision
-npx dotenv-vault pull production .env -y
-```
-
-If you cannot run `dotenv-vault login` on the server, provide the decrypt credential via `DOTENV_ME`:
+Keep `.env.vault` in the repository (it is included in the Docker build context by default). On your VPS or Dokploy UI, simply set the `DOTENV_KEY` environment variable:
 
 ```bash
-export DOTENV_ME="your_dotenv_me_token"
-npx dotenv-vault pull production .env -y
+DOTENV_KEY="dotenv://:key_xyz@dotenv.org/vault/.env.vault?environment=production"
 ```
 
-Open `.env` and fill in your configuration if you created it manually from `.env.example`.
+When your Node.js application starts (either in Docker or directly), `dotenv` will automatically detect `DOTENV_KEY`, decrypt `.env.vault`, and inject the production secrets into `process.env`. No manual environment setup or `.env` files are required on the host/VPS.
+
+*(Optional)* If you ever need to manually pull the production `.env` file on the VPS:
+```bash
+npx dotenv-vault pull production .env -y
+```
 
 | Variable                   | Description                     | Example                    |
 | :------------------------- | :------------------------------ | :------------------------- |
@@ -223,47 +220,16 @@ The application will now be running on the port you specified in your `.env` fil
 
 Use this flow when your Docker image is built in GitHub Actions and your VPS or Dokploy deployment only needs runtime configuration.
 
-1. SSH into the VPS and change to the project directory:
-   ```bash
-   cd /path/to/StreamVision
-   ```
-2. Make sure `.env.vault` is present in the repository.
-3. If you use vault credentials instead of logging in interactively, export `DOTENV_ME`:
-   ```bash
-   export DOTENV_ME="your_dotenv_me_token"
-   ```
-4. Pull the production env file from dotenv-vault:
-   ```bash
-   npx dotenv-vault pull production .env -y
-   ```
-5. Start the container stack using Docker Compose:
-   ```bash
-   docker compose up -d
-   ```
-   If Dokploy uses the image that GitHub Actions already pushed, this command will use the existing image and the new runtime `.env` values.
-6. Check logs and confirm the app started successfully:
-   ```bash
-   docker compose logs -f streamvision_app
-   ```
-
-> Important: Do not commit `.env` into git. Keep only `.env.vault` in version control.
-
-#### If Dokploy injects environment variables directly
-
-If your production deployment platform can provide runtime env vars without `.env`, ensure it supplies the same values listed in `.env.example`.
-
-- `NODE_ENV=production`
-- `PORT`
-- `DB_HOST`
-- `DB_PORT`
-- `DB_USER`
-- `DB_PASSWORD`
-- `DB_DATABASE`
-- `DB_CA` (base64-encoded cert for production MySQL SSL)
-- `jwt_token`
-- `saltRounds`
-- `STREAM_AUTO_STOP_MINUTES`
-- optional: `PROMETHEUS_URL`, `PROMETHEUS_USER`, `PROMETHEUS_PASS`, `LOKI_URL`, `LOKI_USER`, `LOKI_PASS`
+1. **Ensure `.env.vault` is in Git**: Verify that `.env.vault` is committed to version control.
+2. **Verify `.dockerignore`**: Ensure `.env.vault` is included in the build context (which is done automatically via the negation `!.env.vault` at the bottom of `.dockerignore`).
+3. **Set Up Dokploy UI Environment Variables**:
+   In the Dokploy application settings UI, you only need to define two variables:
+   - `NODE_ENV=production`
+   - `DOTENV_KEY="your_production_dotenv_key_here"`
+   
+   *(You do not need to manually input DB credentials, JWT tokens, etc., in the Dokploy UI. They are decrypted automatically from the vault).*
+4. **Deploy**: Deploy the Docker image (created and pushed via your GitHub Actions workflow) onto Dokploy.
+5. **Verification**: Once deployed, the application will automatically read the `DOTENV_KEY`, decrypt `.env.vault` internally, and inject all variables into `process.env` at startup. Check Dokploy/container logs to confirm the app starts successfully.
 
 ### Managing the Container
 

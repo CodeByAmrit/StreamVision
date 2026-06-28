@@ -1,4 +1,5 @@
 process.env.UV_THREADPOOL_SIZE = 128; // Rapidly scale Node's internal File I/O capacity
+require("dotenv").config();
 const cluster = require("cluster");
 const os = require("os");
 const streamStore = require("./utils/streamStore");

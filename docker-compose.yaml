@@ -6,7 +6,8 @@ services:
     expose:
       - "3000"
     env_file:
-      - .env
+      - path: .env
+        required: false
     restart: unless-stopped
     tmpfs:
       - /tmp
