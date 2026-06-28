@@ -53,3 +53,7 @@ clean_topmenu.js
 LICENSE
 !public/
 !views/
+
+.flaskenv*
+!.env.project
+!.env.vault
